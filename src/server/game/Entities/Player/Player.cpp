@@ -5660,7 +5660,15 @@ void Player::RepopAtGraveyard()
     // note: this can be called also when the player is alive
     // for example from WorldSession::HandleMovementOpcodes
 
+    // Such zones are considered unreachable as a ghost and the player must be automatically revived
+
     AreaTableEntry const* zone = GetAreaEntryByAreaID(GetAreaId());
+
+    if (((!isAlive() && zone && zone->flags & AREA_FLAG_NEED_FLY) || GetTransport() || GetPositionZ() < -500.0f || GetAreaId() == 148) && GetAreaId() != 297) 
+    {
+        ResurrectPlayer(0.5f);
+        SpawnCorpseBones();
+    }
    
     WorldSafeLocsEntry const* ClosestGrave;
 
@@ -5680,7 +5688,7 @@ void Player::RepopAtGraveyard()
   
     // if no grave found, stay at the current location
     // and don't show spirit healer location
-    if (ClosestGrave && (GetZoneId() != 148/* || GetZoneId() != 000 */))
+    if (ClosestGrave && (GetZoneId() != 148))
     {
         TeleportTo(ClosestGrave->map_id, ClosestGrave->x, ClosestGrave->y, ClosestGrave->z, GetOrientation());
         if (isDead())                                        // not send if alive, because it used in TeleportTo()
@@ -5694,16 +5702,8 @@ void Player::RepopAtGraveyard()
         }
         
     }
-    else if (GetPositionZ() < -500.0f && !ClosestGrave)
+    else if (GetPositionZ() < -500.0f)
         TeleportTo(m_homebindMapId, m_homebindX, m_homebindY, m_homebindZ, GetOrientation());
-
-    // Such zones are considered unreachable as a ghost and the player must be automatically revived
-  //  if ((!isAlive() && zone && zone->flags & AREA_FLAG_NEED_FLY) || GetTransport() || GetPositionZ() < -500.0f)
-    if (((!isAlive() && zone && zone->flags & AREA_FLAG_NEED_FLY) || (GetMapId() == 1 || GetMapId() == 0 || GetMapId() == 571 || GetMapId() == 531) || GetPositionZ() < -500.0f || GetTransport()) && GetAreaId() != 297) 
-    {
-        ResurrectPlayer(0.5f);
-        SpawnCorpseBones();
-    }
     
 }
 
@@ -7288,7 +7288,7 @@ bool Player::RewardHonor(Unit* victim, uint32 groupsize, int32 honor, bool pvpto
         if (!victim || victim == this || victim->GetTypeId() != TYPEID_PLAYER)
             return false;
 
-        if (GetBGTeam() == victim->ToPlayer()->GetBGTeam())
+        if (GetTeam() == victim->ToPlayer()->GetTeam())
             return false;
 
         return true;
@@ -7320,8 +7320,14 @@ bool Player::RewardHonor(Unit* victim, uint32 groupsize, int32 honor, bool pvpto
 
         if (Player* plrVictim = victim->ToPlayer())
         {
-            if (GetBGTeam() == plrVictim->GetBGTeam() && !sWorld->IsFFAPvPRealm())
-                return false;
+		if (InBattleground())
+		{
+                 if (GetBGTeam() == plrVictim->GetBGTeam() && !sWorld->IsFFAPvPRealm())
+                     return false;
+		}
+		else 
+                 if (GetTeam() == plrVictim->GetTeam() && !sWorld->IsFFAPvPRealm())
+                     return false;
 
             uint8 k_level = getLevel();
             uint8 k_grey = Trinity::XP::GetGrayLevel(k_level);
@@ -7612,7 +7618,7 @@ void Player::UpdateArea(uint32 newArea)
 
     // previously this was in UpdateZone (but after UpdateArea) so nothing will break
     pvpInfo.IsInNoPvPArea = false;
-    if (area && area->IsSanctuary())    // in sanctuary
+    if (area && area->IsSanctuary() && GetAreaId() != 297)    // in sanctuary
     {
         SetByteFlag(UNIT_FIELD_BYTES_2, 1, UNIT_BYTE2_FLAG_SANCTUARY);
         pvpInfo.IsInNoPvPArea = true;

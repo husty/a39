@@ -29,6 +29,9 @@ EndScriptData */
 #include "BattlegroundMgr.h"
 #include "WorldSession.h"
 #include "Player.h"
+#include "ArenaTeam.h"
+#include "Battleground.h"
+#include "BattlegroundMgr.h"
 
 class arena_spectator_commands : public CommandScript
 {
@@ -337,8 +340,7 @@ enum NpcSpectatorAtions {
     NPC_SPECTATOR_ACTION_SELECTED_PLAYER    = 3000
 };
 
-const uint16 TopGamesRating = 1800;
-const uint8  GamesOnPage    = 20;
+const uint8  GamesOnPage    = 15;
 
 class npc_arena_spectator : public CreatureScript
 {
@@ -347,8 +349,8 @@ class npc_arena_spectator : public CreatureScript
 
         bool OnGossipHello(Player* pPlayer, Creature* pCreature)
         {
-			pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Games: 2100+mmr", GOSSIP_SENDER_MAIN, NPC_SPECTATOR_ACTION_LIST_TOP_GAMES);
-			pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Games: 1000+mmr", GOSSIP_SENDER_MAIN, NPC_SPECTATOR_ACTION_LIST_GAMES);
+	     pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Games: 2v2", GOSSIP_SENDER_MAIN, NPC_SPECTATOR_ACTION_LIST_TOP_GAMES);
+	     pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Games: 3v3", GOSSIP_SENDER_MAIN, NPC_SPECTATOR_ACTION_LIST_GAMES);
             pPlayer->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, pCreature->GetGUID());
             return true;
         }
@@ -436,15 +438,17 @@ class npc_arena_spectator : public CreatureScript
 
         void ShowPage(Player* player, uint16 page, bool isTop)
         {
-            uint16 highGames  = 0;
-            uint16 lowGames   = 0;
+            uint16 TypeTwo = 0;
+            uint16 TypeThree = 0;
             bool haveNextPage = false;
             for (uint8 i = BATTLEGROUND_NA; i <= BATTLEGROUND_RL; ++i)
             {
                 if (!sBattlegroundMgr->IsArenaType((BattlegroundTypeId)i))
                     continue;
 
-                BattlegroundContainer arenas = sBattlegroundMgr->GetBattlegroundsByType((BattlegroundTypeId)i);
+                //BattlegroundContainer arenas = sBattlegroundMgr->GetBattlegroundsByType((BattlegroundTypeId)i);
+                BattlegroundContainer arenas = sBattlegroundMgr->GetBattlegroundsByType(BattlegroundTypeId(i));
+
 		  for (BattlegroundContainer::const_iterator itr = arenas.begin(); itr != arenas.end(); ++itr)
                 {
                     Battleground* arena = itr->second;
@@ -452,32 +456,32 @@ class npc_arena_spectator : public CreatureScript
                     if (!arena->GetPlayersSize())
                         continue;
 
-                    uint16 mmr = arena->GetArenaMatchmakerRatingByIndex(0) + arena->GetArenaMatchmakerRatingByIndex(1);
-                    mmr /= 2;
+                    uint16 mmrTwo = arena->GetArenaMatchmakerRatingByIndex(0);
+                    uint16 mmrThree = arena->GetArenaMatchmakerRatingByIndex(1);
 
-                    if (isTop && mmr >= TopGamesRating)
+                    if (isTop && arena->GetArenaType() == ARENA_TYPE_3v3)
                     {
-                        highGames++;
-                        if (highGames > (page + 1) * GamesOnPage)
+                        TypeThree++;
+                        if (TypeThree > (page + 1) * GamesOnPage)
                         {
                             haveNextPage = true;
                             break;
                         }
 
-                        if (highGames >= page * GamesOnPage)
-                            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, GetGamesStringData(arena, mmr), GOSSIP_SENDER_MAIN, NPC_SPECTATOR_ACTION_SELECTED_PLAYER + GetFirstPlayerGuid(arena));
+                        if (TypeThree >= page * GamesOnPage)
+                            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, GetGamesStringData(arena, mmrThree), GOSSIP_SENDER_MAIN, NPC_SPECTATOR_ACTION_SELECTED_PLAYER + GetFirstPlayerGuid(arena));
                     }
-                    else if (!isTop && mmr < TopGamesRating)
+                    else if (!isTop && arena->GetArenaType() == ARENA_TYPE_2v2)
                     {
-                        lowGames++;
-                        if (lowGames > (page + 1) * GamesOnPage)
+                        TypeTwo++;
+                        if (TypeTwo > (page + 1) * GamesOnPage)
                         {
                             haveNextPage = true;
                             break;
                         }
 
-                        if (lowGames >= page * GamesOnPage)
-                            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, GetGamesStringData(arena, mmr), GOSSIP_SENDER_MAIN, NPC_SPECTATOR_ACTION_SELECTED_PLAYER + GetFirstPlayerGuid(arena));
+                        if (TypeTwo >= page * GamesOnPage)
+                            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, GetGamesStringData(arena, mmrTwo), GOSSIP_SENDER_MAIN, NPC_SPECTATOR_ACTION_SELECTED_PLAYER + GetFirstPlayerGuid(arena));
                     }
                 }
             }

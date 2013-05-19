@@ -1,12 +1,7 @@
 #include "ScriptPCH.h"
 #include "AccountMgr.h"
 #include "Group.h"
- 
-struct PvPIslandInfo
-{
-    uint8 killCount;
-};
- 
+
 enum PvPIsland
 {
     AREA_PVP_ISLAND             = 297,
@@ -125,12 +120,6 @@ class pvp_island : public PlayerScript
         uint64 victimGUID;
         char msg[500];
  
-        void OnLogout(Player* player)
-        {
-            if (player->GetGUID() == killerGUID)
-                return;
-        }
- 
         // When player leaves PvP Island and his GUID was stored as the GUID of a killer, the group will be reset
         void OnUpdateZone(Player* player, uint32 newZone, uint32 newArea)
         {
@@ -138,12 +127,8 @@ class pvp_island : public PlayerScript
             if (Group* group = player->GetGroup())
 	         if (newArea != AREA_PVP_ISLAND)
 		      group->Disband(true);
-
-            if (newArea != AREA_PVP_ISLAND || newArea != AREA_WILD_SHORE)
-                if (player->GetGUID() == killerGUID)
-		      return;
         }
- 
+        
         void OnPVPKill(Player* killer, Player* victim)
         {
             if (killer->GetAreaId() == AREA_PVP_ISLAND)
@@ -156,21 +141,20 @@ class pvp_island : public PlayerScript
                     // If player killed himself, do not execute any code (think of when a warlock uses Hellfire, when player falls to dead, etc.)
                     if (killerGUID == victimGUID)
                     {
-                        victim->m_Events.AddEvent(new pvp_island_resurrect_event(victim), victim->m_Events.CalculateTime(1000));
+                        victim->m_Events.AddEvent(new pvp_island_resurrect_event(victim), victim->m_Events.CalculateTime(500));
  
                         if (victim->getClass() == CLASS_HUNTER || victim->getClass() == CLASS_WARLOCK)
-                            victim->m_Events.AddEvent(new pvp_island_resurrect_event_pet(victim), victim->m_Events.CalculateTime(2000));
- 
+                            victim->m_Events.AddEvent(new pvp_island_resurrect_event_pet(victim), victim->m_Events.CalculateTime(3000));
                         return;
                     }
 
                     // This will cause the victim to be resurrected, teleported and health set to 100% after 1 second of dieing
-                    victim->m_Events.AddEvent(new pvp_island_resurrect_event(victim), victim->m_Events.CalculateTime(1000));
+                    victim->m_Events.AddEvent(new pvp_island_resurrect_event(victim), victim->m_Events.CalculateTime(500));
  
                     // This will cause warlocks and hunters to have their last-used pet to be re-summoned when arriving on the island
                     if (victim->getClass() == CLASS_HUNTER || victim->getClass() == CLASS_WARLOCK)
-                        victim->m_Events.AddEvent(new pvp_island_resurrect_event_pet(victim), victim->m_Events.CalculateTime(2000));
-
+                        victim->m_Events.AddEvent(new pvp_island_resurrect_event_pet(victim), victim->m_Events.CalculateTime(3000));
+                   return;
                 }
             }
         }
@@ -282,6 +266,8 @@ class npc_teleport_pvp_island : public CreatureScript
                         if (group->isRaidGroup())
                             group->Disband(true);
 		      }
+		      player->SetByteFlag(UNIT_FIELD_BYTES_2, 1, UNIT_BYTE2_FLAG_PVP);
+                    player->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PVP_ATTACKABLE);
 
 	              player->CastSpell(player, SPELL_SPIRITUAL_IMMUNITY, true);
  
