@@ -74,14 +74,23 @@ public:
         Player* player = handler->GetSession()->GetPlayer();
 
         // 2s MMR check
-        uint16 mmr;
+        uint16 mmrTwo;
         {
-			if(ArenaTeam *getmmr = sArenaTeamMgr->GetArenaTeamById(player->GetArenaTeamId(0)))
-			     mmr = getmmr->GetMember(player->GetGUID())->MatchMakerRating;
-		      else if (mmr < 1000)
-			     mmr = 1500;
+			if (ArenaTeam *getmmr = sArenaTeamMgr->GetArenaTeamById(player->GetArenaTeamId(0)))
+			    mmrTwo = getmmr->GetMember(player->GetGUID())->MatchMakerRating;
+		     else if (!mmrTwo)
+			    mmrTwo = 1500;
         }
-	    handler->PSendSysMessage("Your 2s Mmr is: %u.", mmr);
+		uint16 mmrThree;
+        {
+			if (ArenaTeam *getmmr = sArenaTeamMgr->GetArenaTeamById(player->GetArenaTeamId(1)))
+			    mmrThree = getmmr->GetMember(player->GetGUID())->MatchMakerRating;
+		     else if (!mmrThree)
+			    mmrThree = 1500;
+        }
+	    handler->PSendSysMessage("Your mmr from 2v2 arena match is: %u.", mmrTwo);
+	    handler->PSendSysMessage("Your mmr from 3v3 arena match is: %u.", mmrThree);
+	    handler->PSendSysMessage("You search 2v2 player with mmr between: %u, - %u. For 3v3 Between: %u - %u.", (mmrTwo - 300), (mmrTwo + 300), (mmrThree - 300), (mmrThree + 300));
 		return true;
       }
 };
