@@ -125,8 +125,8 @@ class pvp_island : public PlayerScript
         {
             // Prevent Group
             if (Group* group = player->GetGroup())
-	         if (newArea != AREA_PVP_ISLAND)
-		      group->Disband(true);
+	         if (newArea != AREA_PVP_ISLAND && player->GetAreaId() == AREA_PVP_ISLAND)
+		        group->Disband(true);
         }
         
         void OnPVPKill(Player* killer, Player* victim)
