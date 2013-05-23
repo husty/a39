@@ -621,9 +621,9 @@ inline Player* Battleground::_GetPlayerForTeam(uint32 teamId, BattlegroundPlayer
     Player* player = _GetPlayer(itr, context);
     if (player)
     {
-        //uint32 team = itr->second.Team;
-        //if (!team)
-            uint32 team = player->GetBGTeam();
+        uint32 team = itr->second.Team;
+        if (!team)
+            team = player->GetBGTeam();
         if (team != teamId)
             player = NULL;
     }
