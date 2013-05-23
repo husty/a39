@@ -18,8 +18,7 @@ class FastArenaCrystal : public GameObjectScript
             if (Battleground *bg = player->GetBattleground())
                 if (bg->isArena())
 				{
-			        std::string msg (bg->ClickFastStart(player, go));
-				    go->MonsterWhisper("Player Clicked on Crystal: ", msg.c_str(), player->GetGUID());
+				    go->MonsterWhisper("You Clicked on Crystal: " player->GetGUID());
 				    return true;
 				}
                     
