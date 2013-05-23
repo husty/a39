@@ -5655,9 +5655,9 @@ uint32 Spell::GetCCDelay(SpellInfo const* _spell)
         case SPELLFAMILY_HUNTER:
             // Traps
             if (_spell->SpellFamilyFlags[0] & 0x8 ||      // Frozen trap
-				_spell->Id == 57879 ||                    // Snake Trap
+				_spell->Id == 57879 || _spell->Id == 49886 ||                 // Snake Trap
                 _spell->SpellFamilyFlags[2] & 0x00024000) // Explosive and Immolation Trap
-                return 0;
+                return 140;
             // Entrapment
             if (_spell->SpellIconID == 20)
                 return 0;
