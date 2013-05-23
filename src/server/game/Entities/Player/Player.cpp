@@ -5664,7 +5664,7 @@ void Player::RepopAtGraveyard()
 
     AreaTableEntry const* zone = GetAreaEntryByAreaID(GetAreaId());
 
-    if (((!isAlive() && zone && zone->flags & AREA_FLAG_NEED_FLY) || GetTransport() || GetPositionZ() < -500.0f || GetAreaId() == 148) && GetAreaId() != 297) 
+    if (((!isAlive() && zone && zone->flags & AREA_FLAG_NEED_FLY) || GetTransport() || GetPositionZ() < -500.0f || GetAreaId() == 1336) && GetAreaId() != 297) 
     {
         ResurrectPlayer(0.5f);
         SpawnCorpseBones();
