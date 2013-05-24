@@ -2665,7 +2665,17 @@ void SpellMgr::LoadSpellCustomAttr()
                 case SPELL_AURA_POWER_BURN:
                     spellInfo->AttributesCu |= SPELL_ATTR0_CU_NO_INITIAL_THREAT;
                     break;
-            }
+			}
+            switch (spellInfo->Effects[j].Mechanic)
+            {
+                case MECHANIC_ROOT:
+                case MECHANIC_INTERRUPT:
+                case MECHANIC_SILENCE:
+                case MECHANIC_HORROR:
+                case MECHANIC_INFECTED:
+                    spellInfo->AttributesCu |= SPELL_ATTR0_CU_CAN_RESIST;
+                    break;
+             }
 
             switch (spellInfo->Effects[j].Effect)
             {
@@ -2693,6 +2703,16 @@ void SpellMgr::LoadSpellCustomAttr()
                 case SPELL_EFFECT_JUMP_DEST:
                 case SPELL_EFFECT_LEAP_BACK:
                     spellInfo->AttributesCu |= SPELL_ATTR0_CU_CHARGE;
+                    break;
+                case SPELL_EFFECT_DISPEL:
+                case SPELL_EFFECT_STEAL_BENEFICIAL_BUFF:
+                case SPELL_AURA_PERIODIC_MANA_LEECH:
+                    spellInfo->AttributesCu |= SPELL_ATTR0_CU_CAN_RESIST;
+                    break;
+                case SPELL_EFFECT_POWER_DRAIN:
+                case SPELL_EFFECT_POWER_BURN:
+                    spellInfo->AttributesCu |= SPELL_ATTR0_CU_NO_INITIAL_THREAT;
+                    spellInfo->AttributesCu |= SPELL_ATTR0_CU_CAN_RESIST;
                     break;
                 case SPELL_EFFECT_PICKPOCKET:
                     spellInfo->AttributesCu |= SPELL_ATTR0_CU_PICKPOCKET;
@@ -2728,6 +2748,27 @@ void SpellMgr::LoadSpellCustomAttr()
                     break;
                 }
             }
+        }
+		
+        switch (spellInfo->Mechanic)
+        {
+            case MECHANIC_FEAR:
+            case MECHANIC_CHARM:
+            case MECHANIC_SNARE:
+            case MECHANIC_POLYMORPH:
+            case MECHANIC_STUN:
+            case MECHANIC_BANISH:
+                spellInfo->AttributesCu |= SPELL_ATTR0_CU_CAN_RESIST;
+                break;
+            case MECHANIC_FREEZE:
+                spellInfo->AttributesCu |= SPELL_ATTR0_CU_AURA_CC;
+                spellInfo->AttributesCu |= SPELL_ATTR0_CU_CAN_RESIST;
+                break;
+            case MECHANIC_ROOT:
+            case MECHANIC_SILENCE:
+            case MECHANIC_INTERRUPT:
+                spellInfo->AttributesCu |= SPELL_ATTR0_CU_CAN_RESIST;
+                break;
         }
 
         if (!spellInfo->_IsPositiveEffect(EFFECT_0, false))

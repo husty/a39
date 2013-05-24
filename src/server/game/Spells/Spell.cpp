@@ -2642,7 +2642,23 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
             /// @todo This is a hack. But we do not know what types of stealth should be interrupted by CC
             if ((m_spellInfo->AttributesCu & SPELL_ATTR0_CU_AURA_CC) && unit->IsControlledByPlayer())
                 unit->RemoveAurasByType(SPELL_AURA_MOD_STEALTH);
-        }
+				
+			if (unit->GetTypeId() == TYPEID_PLAYER && m_spellInfo->AttributesCu & SPELL_ATTR0_CU_CAN_RESIST)
+			{			
+				int32 resistChance = unit->GetMechanicResistChance(m_spellInfo);
+				if (resistChance)
+				{
+					resistChance -= float(m_caster->GetSpellPenetrationItemMod());
+					resistChance = int32(resistChance / 52 * 1000); // Resist Chance Formular 130 Resist -> 25% 
+				   
+					if (resistChance > 10000)
+						resistChance = 10000;
+					
+					if (irand(0,10000) < resistChance)
+						return SPELL_MISS_RESIST;
+				}
+			}
+		}
         else if (m_caster->IsFriendlyTo(unit))
         {
             // for delayed spells ignore negative spells (after duel end) for friendly targets
@@ -2665,6 +2681,24 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
             }
         }
     }
+    else if (!m_spellInfo->IsPositive())
+    {
+		if (unit->GetTypeId() == TYPEID_PLAYER && m_spellInfo->AttributesCu & SPELL_ATTR0_CU_CAN_RESIST)
+        {			
+		    int32 resistChance = unit->GetMechanicResistChance(m_spellInfo);
+			if (resistChance)
+			{
+				resistChance -= float(m_caster->GetSpellPenetrationItemMod());
+				resistChance = int32(resistChance / 52 * 1000); // Resist Chance Formular 130 Resist -> 25% 
+				   
+				if (resistChance > 10000)
+					resistChance = 10000;
+					
+				if (irand(0,10000) < resistChance)
+					return SPELL_MISS_RESIST;
+			}
+		}
+	}
 
     // Get Data Needed for Diminishing Returns, some effects may have multiple auras, so this must be done on spell hit, not aura add
     m_diminishGroup = GetDiminishingReturnsGroupForSpell(m_spellInfo, m_triggeredByAuraSpell);
