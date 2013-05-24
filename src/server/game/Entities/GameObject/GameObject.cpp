@@ -474,8 +474,6 @@ void GameObject::Update(uint32 diff)
 						{
                             if (tmpPlayer->isSpectator())
                                 return;
-							if (owner->IsFriendlyTo(tmpPlayer))
-								return;
                         }
 
                         // some traps do not have spell but should be triggered
