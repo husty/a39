@@ -2689,6 +2689,7 @@ void SpellMgr::LoadSpellCustomAttr()
                     break;
                 case SPELL_EFFECT_POWER_DRAIN:
                 case SPELL_EFFECT_POWER_BURN:
+                    spellInfo->AttributesCu |= SPELL_ATTR0_CU_CAN_RESIST;
                 case SPELL_EFFECT_HEAL_MAX_HEALTH:
                 case SPELL_EFFECT_HEALTH_LEECH:
                 case SPELL_EFFECT_HEAL_PCT:
@@ -2707,11 +2708,6 @@ void SpellMgr::LoadSpellCustomAttr()
                 case SPELL_EFFECT_DISPEL:
                 case SPELL_EFFECT_STEAL_BENEFICIAL_BUFF:
                 case SPELL_AURA_PERIODIC_MANA_LEECH:
-                    spellInfo->AttributesCu |= SPELL_ATTR0_CU_CAN_RESIST;
-                    break;
-                case SPELL_EFFECT_POWER_DRAIN:
-                case SPELL_EFFECT_POWER_BURN:
-                    spellInfo->AttributesCu |= SPELL_ATTR0_CU_NO_INITIAL_THREAT;
                     spellInfo->AttributesCu |= SPELL_ATTR0_CU_CAN_RESIST;
                     break;
                 case SPELL_EFFECT_PICKPOCKET:

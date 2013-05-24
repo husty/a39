@@ -2648,7 +2648,7 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 				int32 resistChance = unit->GetMechanicResistChance(m_spellInfo);
 				if (resistChance)
 				{
-					resistChance -= float(m_caster->GetSpellPenetrationItemMod());
+					resistChance -= float(m_caster->ToPlayer()->GetSpellPenetrationItemMod());
 					resistChance = int32(resistChance / 52 * 1000); // Resist Chance Formular 130 Resist -> 25% 
 				   
 					if (resistChance > 10000)
@@ -2688,7 +2688,7 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 		    int32 resistChance = unit->GetMechanicResistChance(m_spellInfo);
 			if (resistChance)
 			{
-				resistChance -= float(m_caster->GetSpellPenetrationItemMod());
+				resistChance -= float(m_caster->ToPlayer()->GetSpellPenetrationItemMod());
 				resistChance = int32(resistChance / 52 * 1000); // Resist Chance Formular 130 Resist -> 25% 
 				   
 				if (resistChance > 10000)
