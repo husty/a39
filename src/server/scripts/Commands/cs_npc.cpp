@@ -257,7 +257,7 @@ public:
         if (frating)
 			rating = atol(frating);
 
-        uint32 vendor_entry = vendor ? vendor->GetEntry() : 0;
+        uint32 vendor_entry = vendor->GetEntry();
 
         if (!sObjectMgr->IsVendorItemValid(vendor_entry, itemId, maxcount, incrtime, extendedcost, rating, handler->GetSession()->GetPlayer()))
         {
