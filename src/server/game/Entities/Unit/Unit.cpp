@@ -2571,6 +2571,7 @@ SpellMissInfo Unit::MagicSpellHitResult(Unit* victim, SpellInfo const* spell)
    else if (HitChance > 10000)
         HitChance = 10000;
 		
+	int32 tmp = 10000 - HitChance;
 	int32 rand = irand(0, 10000);
 		
     if (!(HitChance > 500 && victim->GetTypeId() == TYPEID_PLAYER))
