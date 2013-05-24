@@ -2622,7 +2622,8 @@ SpellMissInfo Unit::MagicSpellHitResult(Unit* victim, SpellInfo const* spell)
 		    int32 resistChance = victim->GetMechanicResistChance(spell);
 			if (resistChance)
 			{
-				resistChance -= float(modOwner->GetSpellPenetrationItemMod());
+			    if (Player* modOwner = GetSpellModOwner())
+				    resistChance -= float(modOwner->GetSpellPenetrationItemMod());
 				resistChance = int32(resistChance / 52 * 1000); // Resist Chance Formular 130 Resist -> 25% 
 				   
 				if (resistChance > 10000)
