@@ -2737,7 +2737,7 @@ void SpellMgr::LoadSpellCustomAttr()
 			    case SPELL_AURA_MOD_POSSESS:
                 case SPELL_AURA_MOD_CONFUSE:
                 case SPELL_AURA_PERIODIC_DAMAGE:
-                case SPELL_AURA_PERIODIC_DAMAGE_PERCENT
+                case SPELL_AURA_PERIODIC_DAMAGE_PERCENT:
                 case SPELL_AURA_POWER_BURN:
                     spellInfo->AttributesCu |= SPELL_ATTR0_CU_CAN_RESIST;
                     break;
@@ -2786,6 +2786,17 @@ void SpellMgr::LoadSpellCustomAttr()
 		        spellInfo->AttributesCu |= SPELL_ATTR0_CU_CAN_RESIST;
                 break;
 		    default:
+			    break;
+		}
+		
+		// Add CustomATTR for CantInstantInShop (We using Instant cast spell with 5000 or 4000ms casting time. We must prevent bug using CustomATTR
+		switch (spellInfo->Id)
+		{
+		    case 42891: // PyroBlast
+			case 47825: // Soul Fire
+			    spellInfo->AttributesCu |= SPELL_ATTR0_CANT_INSTANT_SHOP;
+				break;
+			default:
 			    break;
 		}
 		
