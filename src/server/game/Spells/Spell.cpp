@@ -2647,21 +2647,25 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 			if (unit->GetTypeId() == TYPEID_PLAYER && (m_caster->GetTypeId() == TYPEID_PLAYER || m_caster->IsControlledByPlayer() || m_caster->ToCreature()->isPet()) && m_spellInfo->AttributesCu & SPELL_ATTR0_CU_CAN_RESIST)
 			{			
 				int32 resistChance = unit->GetResistance(SpellSchoolMask(m_spellInfo->SchoolMask));
-				int16 SpellPenetration = float(m_caster->ToPlayer()->GetSpellPenetrationItemMod());
 				if (resistChance && !(m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_NORMAL))
 				{
+				    if (m_caster->GetTypeId() == TYPEID_PLAYER)
+					    int16 SpellPenetration = float(m_caster->ToPlayer()->GetSpellPenetrationItemMod());
+					else
+					    int16 SpellPenetration = 0.0f;
 					if (SpellPenetration && SpellPenetration > resistChance)
 						resistChance = 0;
 					else
 					{
-						resistChance = int32((resistChance - SpellPenetration) / 56 * 1000); // Resist Chance Formular 130 Resist -> 23,07% 
+					    resistChance -= SpellPenetration;
+						resistChance = int32((resistChance / 56 * 1000); // Resist Chance Formular 130 Resist -> 23,07% 
 				   
 						if (resistChance > 10000) // Resist Can't be higher than 100% 
 							resistChance = 10000;
 						else if (resistChance < 0) // Resist can't be lower than 0
 							resistChance = 0;
 					
-						if (resistChance && irand(0,10000) < resistChance) // % * 100 (25% -> 2500)
+						if (resistChance && urand(0,10000) < resistChance) // % * 100 (25% -> 2500)
 							return SPELL_MISS_RESIST;
 					}
 				}
@@ -2695,14 +2699,19 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 	    if (unit->GetTypeId() == TYPEID_PLAYER && (m_caster->GetTypeId() == TYPEID_PLAYER || m_caster->IsControlledByPlayer() || m_caster->ToCreature()->isPet()) && m_spellInfo->AttributesCu & SPELL_ATTR0_CU_CAN_RESIST)
 		{			
 			int32 resistChance = unit->GetResistance(SpellSchoolMask(m_spellInfo->SchoolMask));
-			int16 SpellPenetration = float(m_caster->ToPlayer()->GetSpellPenetrationItemMod());
 			if (resistChance && !(m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_NORMAL))
 			{
+				int16 SpellPenetration = float(m_caster->ToPlayer()->GetSpellPenetrationItemMod());
+				if (m_caster->GetTypeId() == TYPEID_PLAYER)
+					int16 SpellPenetration = float(m_caster->ToPlayer()->GetSpellPenetrationItemMod());
+			    else
+					int16 SpellPenetration = 0.0f;
 				if (SpellPenetration && SpellPenetration > resistChance)
-				    resistChance = 0;
+					resistChance = 0;
 				else
 				{
-					resistChance = int32((resistChance - SpellPenetration) / 56 * 1000); // Resist Chance Formular 130 Resist -> 23,07% 
+					resistChance -= SpellPenetration;
+				    resistChance = int32((resistChance / 56 * 1000); // Resist Chance Formular 130 Resist -> 23,07% 
 				   
 					if (resistChance > 10000) // Resist Can't be higher than 100% 
 						resistChance = 10000;
