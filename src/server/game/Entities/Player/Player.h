@@ -1743,6 +1743,7 @@ class Player : public Unit, public GridObject<Player>
         bool UpdateStats(Stats stat);
         bool UpdateAllStats();
         void UpdateResistances(uint32 school);
+        void ApplySpellPenetrationBonus(int32 amount, bool apply);
         void UpdateArmor();
         void UpdateMaxHealth();
         void UpdateMaxPower(Powers power);

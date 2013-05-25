@@ -1613,6 +1613,35 @@ uint32 Unit::CalcArmorReducedDamage(Unit* victim, const uint32 damage, SpellInfo
     return std::max<uint32>(damage * (1.0f - tmpvalue), 1);
 }
 
+uint32 Unit::GetSpellPenetration(SpellSchoolMask schoolMask) const
+{
+    int32 spellPenetration = 0;
+
+    Unit const* source = ToPlayer();
+
+    // Magic damage, check for resists
+    if (!source)
+    {
+        source = ToCreature();
+
+        if (source)
+        {
+            source = source->ToCreature()->GetOwner();
+            if (source)
+                source = source->ToPlayer();
+        }
+    }
+
+    if (source && !isTotem())
+        spellPenetration += source->ToPlayer()->GetSpellPenetrationItemMod();
+    else
+        source = this;
+
+    spellPenetration += -source->GetTotalAuraModifierByMiscMask(SPELL_AURA_MOD_TARGET_RESISTANCE, schoolMask);
+
+    return uint32(std::max<int32>(spellPenetration, 0));
+}
+
 void Unit::CalcAbsorbResist(Unit* victim, SpellSchoolMask schoolMask, DamageEffectType damagetype, uint32 const damage, uint32 *absorb, uint32 *resist, SpellInfo const* spellInfo)
 {
     if (!victim || !victim->isAlive() || !damage)
