@@ -2620,11 +2620,11 @@ SpellMissInfo Unit::MagicSpellHitResult(Unit* victim, SpellInfo const* spell)
 		if (victim->GetTypeId() == TYPEID_PLAYER && spell->AttributesCu & SPELL_ATTR0_CU_CAN_RESIST)
         {			
 		    int32 resistChance = victim->GetResistance(SpellSchoolMask(spell->SchoolMask));
-			if (resistChance)
+			if (resistChance && !(spell->SchoolMask & SPELL_SCHOOL_MASK_NORMAL))
 			{
 			    if (Player* modOwner = GetSpellModOwner())
 				    resistChance -= float(modOwner->GetSpellPenetrationItemMod());
-				resistChance = int32(resistChance / 52 * 1000); // Resist Chance Formular 130 Resist -> 25% 
+				resistChance = int32(resistChance / 58 * 1000); // Resist Chance Formular 130 Resist -> 22,41% 
 				   
 				if (resistChance > 10000)
 					resistChance = 10000;

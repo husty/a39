@@ -2666,17 +2666,7 @@ void SpellMgr::LoadSpellCustomAttr()
                     spellInfo->AttributesCu |= SPELL_ATTR0_CU_NO_INITIAL_THREAT;
                     break;
 			}
-            switch (spellInfo->Effects[j].Mechanic)
-            {
-                case MECHANIC_ROOT:
-                case MECHANIC_INTERRUPT:
-                case MECHANIC_SILENCE:
-                case MECHANIC_HORROR:
-                case MECHANIC_INFECTED:
-                    spellInfo->AttributesCu |= SPELL_ATTR0_CU_CAN_RESIST;
-                    break;
-             }
-
+			
             switch (spellInfo->Effects[j].Effect)
             {
                 case SPELL_EFFECT_SCHOOL_DAMAGE:
@@ -2689,7 +2679,6 @@ void SpellMgr::LoadSpellCustomAttr()
                     break;
                 case SPELL_EFFECT_POWER_DRAIN:
                 case SPELL_EFFECT_POWER_BURN:
-                    spellInfo->AttributesCu |= SPELL_ATTR0_CU_CAN_RESIST;
                 case SPELL_EFFECT_HEAL_MAX_HEALTH:
                 case SPELL_EFFECT_HEALTH_LEECH:
                 case SPELL_EFFECT_HEAL_PCT:
@@ -2704,11 +2693,6 @@ void SpellMgr::LoadSpellCustomAttr()
                 case SPELL_EFFECT_JUMP_DEST:
                 case SPELL_EFFECT_LEAP_BACK:
                     spellInfo->AttributesCu |= SPELL_ATTR0_CU_CHARGE;
-                    break;
-                case SPELL_EFFECT_DISPEL:
-                case SPELL_EFFECT_STEAL_BENEFICIAL_BUFF:
-                case SPELL_AURA_PERIODIC_MANA_LEECH:
-                    spellInfo->AttributesCu |= SPELL_ATTR0_CU_CAN_RESIST;
                     break;
                 case SPELL_EFFECT_PICKPOCKET:
                     spellInfo->AttributesCu |= SPELL_ATTR0_CU_PICKPOCKET;
@@ -2745,7 +2729,7 @@ void SpellMgr::LoadSpellCustomAttr()
                 }
             }
         }
-		
+		// Resistance ATTR
         switch (spellInfo->Mechanic)
         {
             case MECHANIC_FEAR:
@@ -2765,7 +2749,19 @@ void SpellMgr::LoadSpellCustomAttr()
             case MECHANIC_INTERRUPT:
                 spellInfo->AttributesCu |= SPELL_ATTR0_CU_CAN_RESIST;
                 break;
+			default:
+			    break;
         }
+		switch (spellInfo->Id)
+		{
+		    case 48158: // SW:D
+			case 44572: // Deep Freeze
+		    case 47847: // Shadow Fury
+		        spellInfo->AttributesCu |= SPELL_ATTR0_CU_CAN_RESIST;
+                break;
+		    default:
+			    break;
+		}
 
         if (!spellInfo->_IsPositiveEffect(EFFECT_0, false))
             spellInfo->AttributesCu |= SPELL_ATTR0_CU_NEGATIVE_EFF0;
