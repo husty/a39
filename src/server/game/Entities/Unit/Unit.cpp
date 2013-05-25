@@ -344,7 +344,15 @@ void Unit::Update(uint32 p_time)
 
     if (CanHaveThreatList() && getThreatManager().isNeedUpdateToClient(p_time))
         SendThreatListUpdate();
-
+		
+	if (!ToPlayer()->GetSession()->HasPermission(RBAC_PERM_USE_START_GM_LEVEL) && GetTypeId() == TYPEID_PLAYER && ToPlayer()->isGameMaster())
+    {
+		if (Player* player = ToPlayer())
+		{
+			player->SetGMVisible(true);
+			player->SetGameMaster(false);
+		}
+	}
     if (GetTypeId() == TYPEID_PLAYER || (ToCreature()->isPet() && IsControlledByPlayer()))
     {
         if (Player* player = ToPlayer())
@@ -352,34 +360,13 @@ void Unit::Update(uint32 p_time)
             Pet* pet = player->GetPet();
 
         	// Player must have combat when pet isInCombat
-       	 if (pet && pet->isInCombat())
-		 {
-		    	CombatStart(player); // if Player is in combat, owner get combat.. 
+			if (pet && pet->isInCombat())
+			{
+					CombatStart(player); // if Player is in combat, owner get combat.. 
                    	SetInCombatState(true, player);
-        	 }
-
-		 // Update combat when enemy is in Stealth && or not exist in 60yds
-		 /*if (player->InBattleground() || player->duel)
-       	 {
-            		int32 EnemyPlayerInCombatRange;
-            		std::list<Player*> PlayerList;
-	     		Trinity::AnyPlayerInObjectRangeCheck checker(player, 60.0f);
-	     		Trinity::PlayerListSearcher<Trinity::AnyPlayerInObjectRangeCheck> searcher(player, PlayerList, checker);
-	     		for (std::list<Player*>::const_iterator itr = PlayerList.begin(); itr != PlayerList.end(); ++itr)
-			{
- 			     if ((!(*itr)->IsFriendlyTo(player) && (!(*itr)->HasAuraType(SPELL_AURA_MOD_STEALTH) || !(*itr)->HasAura(1784))))
-		    	         EnemyPlayerInCombatRange++;
 			}
-
-            		if (!EnemyPlayerInCombatRange)
-			{
-                  		player->SetInCombatState(false, player);
-		        	CombatStop(player); // if Player is in combat, owner get combat.. 
-		 	}
-
-       	}*/
-	 }
-   }
+	    }
+    }
 
     // update combat timer only for players and pets (only pets with PetAI)
     if (isInCombat() && (GetTypeId() == TYPEID_PLAYER || (ToCreature()->isPet() && IsControlledByPlayer())))
