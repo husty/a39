@@ -2651,14 +2651,13 @@ void SpellMgr::LoadSpellCustomAttr()
                 case SPELL_AURA_AOE_CHARM:
                 case SPELL_AURA_MOD_FEAR:
                 case SPELL_AURA_MOD_STUN:
-				    spellInfo->AttributesCu |= SPELL_ATTR0_CU_CAN_RESIST;
                     spellInfo->AttributesCu |= SPELL_ATTR0_CU_AURA_CC;
                     break;
-                case SPELL_AURA_PERIODIC_HEAL:
-                case SPELL_AURA_PERIODIC_DAMAGE:
-                case SPELL_AURA_PERIODIC_DAMAGE_PERCENT:
                 case SPELL_AURA_PERIODIC_LEECH:
                 case SPELL_AURA_PERIODIC_MANA_LEECH:
+                case SPELL_AURA_PERIODIC_DAMAGE:
+                case SPELL_AURA_PERIODIC_DAMAGE_PERCENT:
+                case SPELL_AURA_PERIODIC_HEAL:
                 case SPELL_AURA_PERIODIC_HEALTH_FUNNEL:
                 case SPELL_AURA_PERIODIC_ENERGIZE:
                 case SPELL_AURA_OBS_MOD_HEALTH:
@@ -2730,7 +2729,30 @@ void SpellMgr::LoadSpellCustomAttr()
                 }
             }
         }
-		// Resistance ATTR
+		// Resistance ATTR Define Saqirmdev Script
+		for (uint8 j = 0; j < MAX_SPELL_EFFECTS; ++j)
+        {
+            switch (spellInfo->Effects[j].ApplyAuraName)
+            {
+			    case SPELL_AURA_MOD_POSSESS:
+                case SPELL_AURA_MOD_CONFUSE:
+                case SPELL_AURA_PERIODIC_DAMAGE:
+                case SPELL_AURA_PERIODIC_DAMAGE_PERCENT
+                case SPELL_AURA_POWER_BURN:
+                    spellInfo->AttributesCu |= SPELL_ATTR0_CU_CAN_RESIST;
+                    break;
+			}
+			
+			switch (spellInfo->Effects[j].Effect)
+            {
+                case SPELL_EFFECT_SCHOOL_DAMAGE:
+                case SPELL_EFFECT_POWER_DRAIN:
+                case SPELL_EFFECT_POWER_BURN:
+                    spellInfo->AttributesCu |= SPELL_ATTR0_CU_CAN_RESIST;
+                    break;
+		    }
+		}
+		
         switch (spellInfo->Mechanic)
         {
             case MECHANIC_FEAR:
@@ -2751,19 +2773,23 @@ void SpellMgr::LoadSpellCustomAttr()
                 spellInfo->AttributesCu |= SPELL_ATTR0_CU_CAN_RESIST;
                 break;
         }
+		
 		switch (spellInfo->Id)
 		{
 		    case 48158: // SW:D
 			case 44572: // Deep Freeze
 		    case 47847: // Shadow Fury
 			case 42950: // Dragon's breath
+			case 49560: // Death grip Trigger (Pull)
+			case 49576: // Death Grip Info (For Return Resist)
 			case 8129: // Resist 8129
 		        spellInfo->AttributesCu |= SPELL_ATTR0_CU_CAN_RESIST;
                 break;
 		    default:
 			    break;
 		}
-
+		
+		// Continue After Resistance Script
         if (!spellInfo->_IsPositiveEffect(EFFECT_0, false))
             spellInfo->AttributesCu |= SPELL_ATTR0_CU_NEGATIVE_EFF0;
 

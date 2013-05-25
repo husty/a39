@@ -2643,19 +2643,27 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
             if ((m_spellInfo->AttributesCu & SPELL_ATTR0_CU_AURA_CC) && unit->IsControlledByPlayer())
                 unit->RemoveAurasByType(SPELL_AURA_MOD_STEALTH);
 				
+			// Binary Resistance System by Saqirmdev
 			if (unit->GetTypeId() == TYPEID_PLAYER && m_spellInfo->AttributesCu & SPELL_ATTR0_CU_CAN_RESIST)
 			{			
 				int32 resistChance = unit->GetResistance(SpellSchoolMask(m_spellInfo->SchoolMask));
+				int16 SpellPenetration = float(m_caster->ToPlayer()->GetSpellPenetrationItemMod());
 				if (resistChance && !(m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_NORMAL))
 				{
-					resistChance -= float(m_caster->ToPlayer()->GetSpellPenetrationItemMod());
-					resistChance = int32(resistChance / 58 * 1000); // Resist Chance Formular 130 Resist -> 22,41% 
+					if (SpellPenetration && SpellPenetration > resistChance)
+						resistChance = 0;
+					else
+					{
+						resistChance = int32((resistChance - SpellPenetration) / 56 * 1000); // Resist Chance Formular 130 Resist -> 23,07% 
 				   
-					if (resistChance > 10000)
-						resistChance = 10000;
+						if (resistChance > 10000) // Resist Can't be higher than 100% 
+							resistChance = 10000;
+						else if (resistChance < 0) // Resist can't be lower than 0
+							resistChance = 0;
 					
-					if (irand(1,10000) < resistChance)
-						return SPELL_MISS_RESIST;
+						if (resistChance && irand(0,10000) < resistChance) // % * 100 (25% -> 2500)
+							return SPELL_MISS_RESIST;
+					}
 				}
 			}				
 		}
@@ -2683,19 +2691,27 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
     }
 	else if (!m_spellInfo->IsPositive())
 	{
+		// Binary Resistance System by Saqirmdev
 	    if (unit->GetTypeId() == TYPEID_PLAYER && m_spellInfo->AttributesCu & SPELL_ATTR0_CU_CAN_RESIST)
 		{			
 			int32 resistChance = unit->GetResistance(SpellSchoolMask(m_spellInfo->SchoolMask));
+			int16 SpellPenetration = float(m_caster->ToPlayer()->GetSpellPenetrationItemMod());
 			if (resistChance && !(m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_NORMAL))
 			{
-				resistChance -= float(m_caster->ToPlayer()->GetSpellPenetrationItemMod());
-				resistChance = int32(resistChance / 58 * 1000); // Resist Chance Formular 130 Resist -> 22,41% 
+				if (SpellPenetration && SpellPenetration > resistChance)
+				    resistChance = 0;
+				else
+				{
+					resistChance = int32((resistChance - SpellPenetration) / 56 * 1000); // Resist Chance Formular 130 Resist -> 23,07% 
 				   
-				if (resistChance > 10000)
-					resistChance = 10000;
+					if (resistChance > 10000) // Resist Can't be higher than 100% 
+						resistChance = 10000;
+					else if (resistChance < 0) // Resist can't be lower than 0
+						resistChance = 0;
 					
-				if (irand(1,10000) < resistChance)
-					return SPELL_MISS_RESIST;
+					if (resistChance && irand(0,10000) < resistChance) // % * 100 (25% -> 2500)
+						return SPELL_MISS_RESIST;
+				}
 			}
 		}
     }			
@@ -2785,34 +2801,33 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
                         if (m_spellInfo->AttributesEx5 & SPELL_ATTR5_HASTE_AFFECT_DURATION)
                             m_originalCaster->ModSpellCastTime(aurSpellInfo, duration, this);
 							
-				 // Seduction with Improved Succubus talent - fix duration. 
+				       // Seduction with Improved Succubus talent - fix duration. 
                         if (m_spellInfo->Id == 6358 && unit->GetTypeId() == TYPEID_PLAYER && m_originalCaster->GetOwner()) 
-                            { 
-                                 float mod = 1.0f; 
-                                 float durationadd = 0.0f; 
+                        { 
+                                float mod = 1.0f; 
+                                float durationadd = 0.0f; 
 
-                                 if (m_originalCaster->GetOwner()->HasAura(18754)) 
-                                   durationadd += float(1.5*IN_MILLISECONDS*0.22); 
-                                 else if (m_originalCaster->GetOwner()->HasAura(18755)) 
-                                   durationadd += float(1.5*IN_MILLISECONDS*0.44); 
-                                 else if (m_originalCaster->GetOwner()->HasAura(18756)) 
-                                   durationadd += float(1.5*IN_MILLISECONDS*0.66); 
+                                if (m_originalCaster->GetOwner()->HasAura(18754)) 
+                                    durationadd += float(1.5*IN_MILLISECONDS*0.22); 
+                                else if (m_originalCaster->GetOwner()->HasAura(18755)) 
+                                    durationadd += float(1.5*IN_MILLISECONDS*0.44); 
+                                else if (m_originalCaster->GetOwner()->HasAura(18756)) 
+                                    durationadd += float(1.5*IN_MILLISECONDS*0.66); 
 
-                                 if (durationadd) 
-                                   { 
+                                if (durationadd) 
+                                { 
                                        switch (m_diminishLevel) 
                                        { 
-                                         case DIMINISHING_LEVEL_1: break; 
-                                         // lol, we lost 1 second here 
-                                         case DIMINISHING_LEVEL_2: duration += 1000; mod = 0.5f; break; 
-                                         case DIMINISHING_LEVEL_3: duration += 1000; mod = 0.25f; break; 
-                                         case DIMINISHING_LEVEL_IMMUNE: { m_spellAura->Remove(); return SPELL_MISS_IMMUNE; } 
-                                         default: break; 
+                                            case DIMINISHING_LEVEL_1: break; 
+											case DIMINISHING_LEVEL_2: duration += 1000; mod = 0.5f; break; 
+											case DIMINISHING_LEVEL_3: duration += 1000; mod = 0.25f; break; 
+											case DIMINISHING_LEVEL_IMMUNE: { m_spellAura->Remove(); return SPELL_MISS_IMMUNE; } 
+											default: break; 
                                        } 
-                                 durationadd *= mod; 
-                                 duration += int32(durationadd); 
-                                   } 
-                            }
+                                       durationadd *= mod; 
+                                       duration += int32(durationadd); 
+                                } 
+                        }
                     }
                     // and duration of auras affected by SPELL_AURA_PERIODIC_HASTE
                     else if (m_originalCaster->HasAuraTypeWithAffectMask(SPELL_AURA_PERIODIC_HASTE, aurSpellInfo) || m_spellInfo->AttributesEx5 & SPELL_ATTR5_HASTE_AFFECT_DURATION)
