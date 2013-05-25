@@ -60,6 +60,7 @@
 #include "World.h"
 #include "WorldPacket.h"
 #include "WorldSession.h"
+#include "RBAC.h"
 
 #include <math.h>
 
