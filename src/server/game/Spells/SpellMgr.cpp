@@ -2651,6 +2651,7 @@ void SpellMgr::LoadSpellCustomAttr()
                 case SPELL_AURA_AOE_CHARM:
                 case SPELL_AURA_MOD_FEAR:
                 case SPELL_AURA_MOD_STUN:
+				    spellInfo->AttributesCu |= SPELL_ATTR0_CU_CAN_RESIST;
                     spellInfo->AttributesCu |= SPELL_ATTR0_CU_AURA_CC;
                     break;
                 case SPELL_AURA_PERIODIC_HEAL:
@@ -2749,14 +2750,14 @@ void SpellMgr::LoadSpellCustomAttr()
             case MECHANIC_INTERRUPT:
                 spellInfo->AttributesCu |= SPELL_ATTR0_CU_CAN_RESIST;
                 break;
-			default:
-			    break;
         }
 		switch (spellInfo->Id)
 		{
 		    case 48158: // SW:D
 			case 44572: // Deep Freeze
 		    case 47847: // Shadow Fury
+			case 42950: // Dragon's breath
+			case 8129: // Resist 8129
 		        spellInfo->AttributesCu |= SPELL_ATTR0_CU_CAN_RESIST;
                 break;
 		    default:

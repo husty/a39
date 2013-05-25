@@ -2613,27 +2613,6 @@ SpellMissInfo Unit::MagicSpellHitResult(Unit* victim, SpellInfo const* spell)
    // Roll chance
     if (rand < tmp)
         return SPELL_MISS_RESIST;
-		
-	// Resist Chance
-	if (!spell->IsPositive())
-	{
-		if (victim->GetTypeId() == TYPEID_PLAYER && spell->AttributesCu & SPELL_ATTR0_CU_CAN_RESIST)
-        {			
-		    int32 resistChance = victim->GetResistance(SpellSchoolMask(spell->SchoolMask));
-			if (resistChance && !(spell->SchoolMask & SPELL_SCHOOL_MASK_NORMAL))
-			{
-			    if (Player* modOwner = GetSpellModOwner())
-				    resistChance -= float(modOwner->GetSpellPenetrationItemMod());
-				resistChance = int32(resistChance / 58 * 1000); // Resist Chance Formular 130 Resist -> 22,41% 
-				   
-				if (resistChance > 10000)
-					resistChance = 10000;
-					
-				if (rand < resistChance)
-					return SPELL_MISS_RESIST;
-			}
-		}
-    }
 	
     // cast by caster in front of victim
     if (victim->HasInArc(M_PI, this) || victim->HasAuraType(SPELL_AURA_IGNORE_HIT_DIRECTION))
