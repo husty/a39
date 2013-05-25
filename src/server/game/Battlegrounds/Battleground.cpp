@@ -916,8 +916,8 @@ void Battleground::EndBattleground(uint32 winner)
         }
 		if (isArena())
 		{
-			player->SetGMVisible(true);
-			player->SetGameMaster(false);
+            player->SetGMVisible(true);
+            player->SetGameMaster(false);
 		}
 
         player->ResetAllPowers();

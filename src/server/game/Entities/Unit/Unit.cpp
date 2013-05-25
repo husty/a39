@@ -347,11 +347,11 @@ void Unit::Update(uint32 p_time)
 		
 	if (!ToPlayer()->GetSession()->HasPermission(RBAC_PERM_USE_START_GM_LEVEL) && GetTypeId() == TYPEID_PLAYER && ToPlayer()->isGameMaster())
     {
-		if (Player* player = ToPlayer())
-		{
-			player->SetGMVisible(true);
-			player->SetGameMaster(false);
-		}
+        if (Player* player = ToPlayer())
+        {
+            player->SetGMVisible(true);
+            player->SetGameMaster(false);
+        }
 	}
     if (GetTypeId() == TYPEID_PLAYER || (ToCreature()->isPet() && IsControlledByPlayer()))
     {
