@@ -2619,7 +2619,7 @@ SpellMissInfo Unit::MagicSpellHitResult(Unit* victim, SpellInfo const* spell)
 	{
 		if (victim->GetTypeId() == TYPEID_PLAYER && spell->AttributesCu & SPELL_ATTR0_CU_CAN_RESIST)
         {			
-		    int32 resistChance = victim->GetResistance(spell);
+		    int32 resistChance = victim->GetResistance(SpellSchoolMask(spell->SchoolMask));
 			if (resistChance)
 			{
 			    if (Player* modOwner = GetSpellModOwner())

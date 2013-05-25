@@ -2802,12 +2802,6 @@ void SpellMgr::LoadSpellCustomAttr()
             case 52743: // Head Smack
                 spellInfo->AttributesCu |= SPELL_ATTR0_CU_REQ_TARGET_FACING_CASTER;
                 break;
-	        case 49224: // Magic Suppression
-			case 49610:
-			case 49611:
-				spellInfo->procCharges = 0;
-				count++;
-				break;
             case 48955: // Refer A Friend Summon Effect
             case 2825: // Bloodlust
             case 19185: // Entrapment
@@ -3030,6 +3024,11 @@ void SpellMgr::LoadDbcDataCorrections()
 
         switch (spellInfo->Id)
         {
+	        case 49224: // Magic Suppression
+			case 49610:
+			case 49611:
+				spellInfo->procCharges = 0;
+				break;
             case 53096: // Quetz'lun's Judgment
                 spellInfo->MaxAffectedTargets = 1;
                 break;

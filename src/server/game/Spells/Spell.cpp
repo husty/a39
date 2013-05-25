@@ -2646,7 +2646,7 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 			// Resistance System
 			if (unit->GetTypeId() == TYPEID_PLAYER && m_spellInfo->AttributesCu & SPELL_ATTR0_CU_CAN_RESIST)
 			{			
-				int32 resistChance = unit->GetResistance(m_spellInfo);
+				int32 resistChance = unit->GetResistance(SpellSchoolMask(m_spellInfo->SchoolMask));
 				if (resistChance)
 				{
 					resistChance -= float(m_caster->ToPlayer()->GetSpellPenetrationItemMod());
@@ -2687,7 +2687,7 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 		// Resistance System
 		if (unit->GetTypeId() == TYPEID_PLAYER && m_spellInfo->AttributesCu & SPELL_ATTR0_CU_CAN_RESIST)
         {			
-		    int32 resistChance = unit->GetResistance(m_spellInfo);
+		    int32 resistChance = unit->GetResistance(SpellSchoolMask(m_spellInfo->SchoolMask));
 			if (resistChance)
 			{
 				resistChance -= float(m_caster->ToPlayer()->GetSpellPenetrationItemMod());
