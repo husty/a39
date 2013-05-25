@@ -2101,7 +2101,7 @@ uint32 SpellInfo::CalcCastTime(Unit* caster, Spell* spell) const
                         return 100;
 
            if (caster && caster->GetTypeId() == TYPEID_PLAYER && caster->GetAreaId() == 1336)
-                 if ((castTime == 5000 || castTime == 4000) && Attributes & SPELL_ATTR0_CANT_INSTANT_SHOP)
+                 if ((castTime == 5000 || castTime == 4000) && !(Attributes & SPELL_ATTR0_CANT_INSTANT_SHOP))
                         return 100;
 
     if (Attributes & SPELL_ATTR0_REQ_AMMO && (!IsAutoRepeatRangedSpell()))
