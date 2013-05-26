@@ -2653,7 +2653,7 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 				    if (m_caster->GetTypeId() == TYPEID_PLAYER)
 				    	SpellPenetration = float(m_caster->ToPlayer()->GetSpellPenetration(SpellSchoolMask(m_spellInfo->SchoolMask)));
 
-					if (SpellPenetration && SpellPenetration > resistChance)
+					if (SpellPenetration > resistChance)
 						resistChance = 0;
 					else
 					{
@@ -2705,10 +2705,10 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 				if (m_caster->GetTypeId() == TYPEID_PLAYER)
 					SpellPenetration = float(m_caster->ToPlayer()->GetSpellPenetration(SpellSchoolMask(m_spellInfo->SchoolMask)));
 
-				if (SpellPenetration && SpellPenetration > resistChance)
+				if (SpellPenetration > resistChance)
 					resistChance = 0;
 				else
-				{
+			    {
 					   resistChance -= SpellPenetration;
 				       resistChance = int32(resistChance / 56 * 1000); // Resist Chance Formular 130 Resist -> 23,07% 
 				   
