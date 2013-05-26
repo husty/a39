@@ -10,7 +10,7 @@ class npc_change : public CreatureScript
 		        if (player->isInCombat()) 
                 {		
 				     /// @todo check Combat
-                    creature->MonsterWhisper("You are in Combat", player->GetGUID());
+                    _creature->MonsterWhisper("You are in Combat", player->GetGUID());
 				    player->CLOSE_GOSSIP_MENU();
 					return true;
                 }

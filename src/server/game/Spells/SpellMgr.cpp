@@ -2743,7 +2743,6 @@ void SpellMgr::LoadSpellCustomAttr()
 			
 			switch (spellInfo->Effects[j].Effect)
             {
-                case SPELL_EFFECT_SCHOOL_DAMAGE:
                 case SPELL_EFFECT_POWER_DRAIN:
                 case SPELL_EFFECT_POWER_BURN:
                     spellInfo->AttributesCu |= SPELL_ATTR0_CU_CAN_RESIST;
@@ -2757,7 +2756,6 @@ void SpellMgr::LoadSpellCustomAttr()
             case MECHANIC_CHARM:
             case MECHANIC_SNARE:
             case MECHANIC_POLYMORPH:
-            case MECHANIC_STUN:
             case MECHANIC_BANISH:
                 spellInfo->AttributesCu |= SPELL_ATTR0_CU_CAN_RESIST;
                 break;
