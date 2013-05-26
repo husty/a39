@@ -32,6 +32,8 @@ EndScriptData */
 #include "ArenaTeam.h"
 #include "Battleground.h"
 #include "BattlegroundMgr.h"
+#include "CreatureTextMgr.h"
+#include "Config.h"
 
 class arena_spectator_commands : public CommandScript
 {
@@ -441,15 +443,18 @@ class npc_arena_spectator : public CreatureScript
             uint16 TypeTwo = 0;
             uint16 TypeThree = 0;
             bool haveNextPage = false;
-            for (uint8 i = BATTLEGROUND_NA; i <= BATTLEGROUND_RL; ++i)
+            for (uint8 i = 0; i <= MAX_BATTLEGROUND_TYPE_ID; ++i)
             {
-                if (!sBattlegroundMgr->IsArenaType((BattlegroundTypeId)i))
+                if (!sBattlegroundMgr->IsArenaType(BattlegroundTypeId(i)))
                     continue;
 
                 //BattlegroundContainer arenas = sBattlegroundMgr->GetBattlegroundsByType((BattlegroundTypeId)i);
-                BattlegroundContainer arenas = sBattlegroundMgr->GetBattlegroundsByType(BattlegroundTypeId(i));
+                BattlegroundData* arenas = sBattlegroundMgr->GetAllBattlegroundsWithTypeId(BattlegroundTypeId(i));
 
-		  for (BattlegroundContainer::const_iterator itr = arenas.begin(); itr != arenas.end(); ++itr)
+                if (!arenas || arenas->m_Battlegrounds.empty())
+                    continue;
+
+		  for (BattlegroundContainer::const_iterator itr = arenas->m_Battlegrounds.begin(); itr != arenas->m_Battlegrounds.end(); ++itr)
                 {
                     Battleground* arena = itr->second;
 
