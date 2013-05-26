@@ -118,7 +118,7 @@ class npc_change : public CreatureScript
 					    }
 						else
 						{
-							creature->MonsterWhisper("Missing Items!", player->GetGUID());
+							_creature->MonsterWhisper("Missing Items!", player->GetGUID());
 							player->CLOSE_GOSSIP_MENU();
 
 					    }
