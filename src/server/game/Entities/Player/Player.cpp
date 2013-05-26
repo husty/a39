@@ -17119,7 +17119,14 @@ bool Player::LoadFromDB(uint32 guid, SQLQueryHolder *holder)
         TC_LOG_ERROR(LOG_FILTER_PLAYER, "Player (GUID: %u) has wrong gender (%hu), can't be loaded.", guid, Gender);
         return false;
     }
-
+	if (!ToPlayer()->GetSession()->HasPermission(RBAC_PERM_USE_START_GM_LEVEL) && ToPlayer()->isGameMaster())
+    {
+        if (Player* player = ToPlayer())
+        {
+            player->SetGMVisible(true);
+            player->SetGameMaster(false);
+        }
+	}
     // overwrite some data fields
     uint32 bytes0 = 0;
     bytes0 |= fields[3].GetUInt8();                         // race

@@ -2781,6 +2781,7 @@ void SpellMgr::LoadSpellCustomAttr()
 			case 49560: // Death grip Trigger (Pull)
 			case 49576: // Death Grip Info (For Return Resist)
 			case 8129: // Resist 8129
+			case 27223: // Death Coil
 		        spellInfo->AttributesCu |= SPELL_ATTR0_CU_CAN_RESIST;
                 break;
 		    default:

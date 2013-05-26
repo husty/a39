@@ -835,7 +835,7 @@ class npc_muradin_gunship : public CreatureScript
                 RocketerCount = RAID_MODE(2, 4, 2, 4);
                 RiflCount = RAID_MODE(4, 6, 4, 6);
                 RocketerDieCount = 0;
-                RiflDieCount = 0;
+                RiflDieCount = 0; 
                 me->SetFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
                 EventScheduled = false;
             }
@@ -1080,22 +1080,22 @@ class npc_muradin_gunship : public CreatureScript
                             Talk(SAY_BOARDING_SKYBREAKER_1);
                             break;
                         case EVENT_BOARDING_GUNSHIP:
-							if(_instance->GetBossState(DATA_GUNSHIP_EVENT) != DONE){
+							if(_instance->GetBossState(DATA_GUNSHIP_EVENT) != DONE)
+							{
 								if (Creature* pSaurfang = ObjectAccessor::GetCreature(*me, _instance->GetData64(DATA_HIGH_OVERLORD_SAURFANG_NOT_VISUAL)))
-								{
 									pSaurfang->AI()->Talk(SAY_BOARDING_SKYBREAKER_SAURFANG);
-								}
-								if(Creature* Sergante = skybreaker->AddNPCPassengerInInstance(NPC_GB_KORKRON_SERGANTE, -15.51547f, -0.160213f, 20.87252f, 1.56211f))
-								{
+
+								if (Creature* Sergante = skybreaker->AddNPCPassengerInInstance(NPC_GB_KORKRON_SERGANTE, -15.51547f, -0.160213f, 20.87252f, 1.56211f))
 									Sergante->CastSpell(Sergante, SPELL_TELEPORT_VISUAL, true);
-								}
+
 								events.ScheduleEvent(EVENT_SUMMON_PORTAL, 90000);
 								events.ScheduleEvent(EVENT_BOARDING_REAVERS_MARINE, 3000);
 								count = 0;
 							}
                             break;
                         case EVENT_BOARDING_REAVERS_MARINE:
-							if(_instance->GetBossState(DATA_GUNSHIP_EVENT) != DONE){
+							if(_instance->GetBossState(DATA_GUNSHIP_EVENT) != DONE)
+							{
 								if(count <= SummonCount)
 								{
 									if(Creature* Reavers = skybreaker->AddNPCPassengerInInstance(NPC_GB_KORKRON_REAVERS, -15.51547f, -0.160213f, 20.87252f, 1.56211f))
