@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008-2012 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -15,35 +15,36 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
+ 
 #ifndef TRINITY_FLEEINGMOVEMENTGENERATOR_H
 #define TRINITY_FLEEINGMOVEMENTGENERATOR_H
-
+ 
 #include "MovementGenerator.h"
-
+ 
 template<class T>
 class FleeingMovementGenerator : public MovementGeneratorMedium< T, FleeingMovementGenerator<T> >
 {
     public:
         FleeingMovementGenerator(uint64 fright) : i_frightGUID(fright), i_nextCheckTime(0) {}
+ 
 
-        void DoInitialize(T &);
-        void DoFinalize(T &);
-        void DoReset(T &);
-        bool DoUpdate(T &, uint32);
+        void DoInitialize(T*);
+        void DoFinalize(T*);
+        void DoReset(T*);
+        bool DoUpdate(T*, uint32);
 
         MovementGeneratorType GetMovementGeneratorType() { return FLEEING_MOTION_TYPE; }
-
+ 
     private:
-        void _setTargetLocation(T &owner);
-        bool _getPoint(T &owner, float &x, float &y, float &z);
-        bool _setMoveData(T &owner);
-        void _Init(T &);
-
+        void _setTargetLocation(T* owner);
+        bool _getPoint(T* owner, float &x, float &y, float &z);
+        bool _setMoveData(T* owner);
+        void _Init(T*);
+ 
         bool is_water_ok   :1;
         bool is_land_ok    :1;
         bool i_only_forward:1;
-
+ 
         float i_caster_x;
         float i_caster_y;
         float i_caster_z;
@@ -53,20 +54,20 @@ class FleeingMovementGenerator : public MovementGeneratorMedium< T, FleeingMovem
         uint64 i_frightGUID;
         TimeTracker i_nextCheckTime;
 };
-
+ 
 class TimedFleeingMovementGenerator : public FleeingMovementGenerator<Creature>
 {
     public:
         TimedFleeingMovementGenerator(uint64 fright, uint32 time) :
             FleeingMovementGenerator<Creature>(fright),
             i_totalFleeTime(time) {}
-
+ 
         MovementGeneratorType GetMovementGeneratorType() { return TIMED_FLEEING_MOTION_TYPE; }
-        bool Update(Unit &, uint32);
-        void Finalize(Unit &);
-
+        bool DoUpdate(Unit*, uint32);
+        void DoFinalize(Unit*);
+ 
     private:
         TimeTracker i_totalFleeTime;
 };
-
+ 
 #endif
