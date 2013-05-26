@@ -1235,6 +1235,8 @@ class npc_kinetic_bomb : public CreatureScript
                 me->CastSpell(me, SPELL_KINETIC_BOMB_VISUAL, true);
                 me->SetReactState(REACT_PASSIVE);
                 me->GetPosition(_x, _y, _groundZ);
+				me->SetSpeed(MOVE_FLIGHT, 0.182857f, true);
+				me->SetSpeed(MOVE_RUN, 0.182857f, true);
                 me->DespawnOrUnsummon(60000);
                 _groundZ = me->GetMap()->GetHeight(me->GetPhaseMask(), _x, _y, _groundZ, true, 500.0f);
             }

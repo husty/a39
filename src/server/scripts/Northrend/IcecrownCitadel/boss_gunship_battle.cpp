@@ -1336,7 +1336,7 @@ class npc_korkron_axethrower_rifleman : public CreatureScript
                 desperated = false;
                 me->RemoveAurasDueToSpell(SPELL_EXPERIENCED);
                 me->RemoveAurasDueToSpell(SPELL_ELITE);
-                me->RemoveAurasDueToSpell(SPELL_VETERAN);				
+                me->RemoveAurasDueToSpell(SPELL_VETERAN);		
                 events.ScheduleEvent(EVENT_EXPERIENCED, urand(19000, 21000)); // ~20 sec
                 events.ScheduleEvent(EVENT_VETERAN, urand(39000, 41000));     // ~40 sec
                 events.ScheduleEvent(EVENT_ELITE, urand(59000, 61000));       // ~60 sec
@@ -1380,7 +1380,8 @@ class npc_korkron_axethrower_rifleman : public CreatureScript
                     return;
 
                 //me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE); // Dodato
-                me->AI()->AttackStart(SelectRandomPlayerInTheMaps(me->GetMap()));
+				me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);		
+                me->AI()->AttackStart(SelectNearestPlayer(100.0f));
 
                 if (!UpdateVictim())
                     return;
@@ -1755,6 +1756,9 @@ class npc_gunship_mage : public CreatureScript
 
             void UpdateAI(uint32 diff)
             {
+			
+			    me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);
+				
                 if(_instance->GetBossState(DATA_GUNSHIP_EVENT) != IN_PROGRESS)
                     return;
 
@@ -1838,7 +1842,7 @@ class npc_gunship_cannon : public CreatureScript
                         veh->RemoveAllPassengers();
                 }
                 else
-                {
+				{
                     me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
 					me->RemoveExtraUnitMovementFlag(MOVEMENTFLAG_STRAFE_LEFT);
 					me->RemoveExtraUnitMovementFlag(MOVEMENTFLAG_STRAFE_RIGHT);
