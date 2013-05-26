@@ -252,24 +252,21 @@ class npc_teleport_pvp_island : public CreatureScript
  
             void UpdateAI(const uint32 diff)
             {
-                if (Player* player = me->SelectNearestPlayer(0.7f))
+                if (Player* player = me->SelectNearestPlayer(1.0f))
                 {
                     if (!player || player->IsBeingTeleported() || !player->isAlive() || player->isInCombat())
                         return;
 
 		      // Prevent Group
-                    if (Group* group = player->GetGroup())
+              if (Group* group = player->GetGroup())
 		      {
 		          if (group->GetMembersCount() > 3) 
-			       group->Disband(true);
-			   
-                        if (group->isRaidGroup())
-                            group->Disband(true);
+			          group->Disband(true);
 		      }
 		      player->SetByteFlag(UNIT_FIELD_BYTES_2, 1, UNIT_BYTE2_FLAG_PVP);
-                    player->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PVP_ATTACKABLE);
+              player->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PVP_ATTACKABLE);
 
-	              player->CastSpell(player, SPELL_SPIRITUAL_IMMUNITY, true);
+	          player->CastSpell(player, SPELL_SPIRITUAL_IMMUNITY, true);
  
                     int i = urand(0, MAX_PLAYER_SPAWN_POINTS - 1);
                     player->TeleportTo(0, playerSpawnPoint[i].GetPositionX(), playerSpawnPoint[i].GetPositionY(), playerSpawnPoint[i].GetPositionZ(), playerSpawnPoint[i].GetOrientation());

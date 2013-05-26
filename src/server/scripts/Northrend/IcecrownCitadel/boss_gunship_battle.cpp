@@ -1381,7 +1381,7 @@ class npc_korkron_axethrower_rifleman : public CreatureScript
 
                 //me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE); // Dodato
 				me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);		
-                me->AI()->AttackStart(SelectNearestPlayer(100.0f));
+                me->AI()->SelectNearestPlayer(100.0f);
 
                 if (!UpdateVictim())
                     return;
