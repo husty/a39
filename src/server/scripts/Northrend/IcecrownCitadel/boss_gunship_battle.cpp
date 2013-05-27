@@ -1807,10 +1807,11 @@ class npc_gunship_cannon : public CreatureScript
 
         struct npc_gunship_cannonAI : public ScriptedAI
         {
-            npc_gunship_cannonAI(Creature *creature) : ScriptedAI(creature),_instance(creature->GetInstanceScript()) { }
+            npc_gunship_cannonAI(Creature *creature) : ScriptedAI(creature) { }
 
             void Reset()
             {
+	         me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
                 me->SetReactState(REACT_PASSIVE);
                 me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);
                 DoCast(me, SPELL_HEAT_DRAIN, true);
@@ -1839,8 +1840,6 @@ class npc_gunship_cannon : public CreatureScript
 
             void UpdateAI(uint32 diff)
             {
-			    if (_instance->GetBossState(DATA_GUNSHIP_EVENT) != IN_PROGRESS)
-				   me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
                 if (me->HasAura(SPELL_BELOW_ZERO))
                 {
                     me->RemoveAurasByType(SPELL_AURA_CONTROL_VEHICLE);

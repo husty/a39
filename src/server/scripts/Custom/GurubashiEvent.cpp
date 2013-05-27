@@ -240,12 +240,12 @@ public:
 			
         }
 
-		void UpdateAI(const uint32 uiDiff)
+		void UpdateAI(const uint32 diff)
         {
-			ScriptedAI::UpdateAI(uiDiff);
+			ScriptedAI::UpdateAI(diff);
 
 			// check battle state
-			if(timerState <= uiDiff){
+			if(timerState <= diff){
 				for(int i = 1; i <= summonsCount; i++){
 					if(summons[i-1]->GetHealth() < 1){
 						if(creaturesState[i-1]){
@@ -264,13 +264,13 @@ public:
 			}
 			else
 				if(fighting)
-					timerState -= uiDiff;
+					timerState -= diff;
 
 			if(timer == 0)
 				return;
 
 
-			if (timer <= uiDiff && active)
+			if (timer <= diff && active)
                 {
 					switch (nextAction){					
 						case GURU_GOTO_START_POSITION:
@@ -394,7 +394,7 @@ public:
 					
                 }
                 else
-                    timer -= uiDiff;
+                    timer -= diff;
 
 		}
 	};
