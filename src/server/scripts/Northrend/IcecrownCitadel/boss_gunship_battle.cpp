@@ -1380,8 +1380,8 @@ class npc_korkron_axethrower_rifleman : public CreatureScript
                     return;
 
                 //me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE); // Dodato
-				me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);		
                 me->AI()->AttackStart(SelectRandomPlayerInTheMaps(me->GetMap()));
+				me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);	
 
                 if (!UpdateVictim())
                     return;
@@ -1591,6 +1591,8 @@ class npc_marine_or_reaver : public CreatureScript
                 events.ScheduleEvent(EVENT_EXPERIENCED, urand(19000, 21000));  // ~20 sec
                 events.ScheduleEvent(EVENT_VETERAN, urand(39000, 41000));      // ~40 sec
                 events.ScheduleEvent(EVENT_BURNING_PITCH, urand(60000, 62000));// ~61 sec
+				if (!me->IsAlive())
+                    me->RemoveFromWorld();
             }
 
             void DamageTaken(Unit* /*attacker*/, uint32& /*damage*/)
@@ -1600,7 +1602,7 @@ class npc_marine_or_reaver : public CreatureScript
                     desperated = true;
                     DoCast(me, DesperateResolve);
                 }
-            }
+			}  
 
             bool CanAIAttack(Unit const* target) const
             {
@@ -1617,6 +1619,9 @@ class npc_marine_or_reaver : public CreatureScript
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
+					
+				if (!me->IsAlive())
+                    me->RemoveFromWorld();
 
                 events.Update(diff);
 
@@ -1774,7 +1779,8 @@ class npc_gunship_mage : public CreatureScript
                     {
                         me->AI()->DoAction(EVENT_FREEZE_CANNON);
                         timer_BelowZero = urand(10000, 15000);
-                    } else timer_BelowZero -= diff;
+                    }
+					else timer_BelowZero -= diff;
                 }
                 else
                 {					
@@ -1833,6 +1839,8 @@ class npc_gunship_cannon : public CreatureScript
 
             void UpdateAI(uint32 diff)
             {
+			    if(_instance->GetBossState(DATA_GUNSHIP_EVENT) != IN_PROGRESS)
+				   me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
                 if(me->HasAura(SPELL_BELOW_ZERO))
                 {
                     me->RemoveAurasByType(SPELL_AURA_CONTROL_VEHICLE);

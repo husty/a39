@@ -123,11 +123,11 @@ void WorldSession::HandleGroupInviteOpcode(WorldPacket& recvData)
     if (GetPlayer()->GetAreaId() == 297)
     {
         Group* plrgroupcheck = GetPlayer()->GetGroup();
-	 if (plrgroupcheck && plrgroupcheck->GetMembersCount() >= 3)
-	 {
+		if (plrgroupcheck && plrgroupcheck->GetMembersCount() >= 3)
+		{
         	SendPartyResult(PARTY_OP_INVITE, membername, ERR_IGNORING_YOU_S);
         	return;
-	 }
+		}
     }
 
     Group* group = GetPlayer()->GetGroup();

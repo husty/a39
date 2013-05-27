@@ -2643,7 +2643,7 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
             if ((m_spellInfo->AttributesCu & SPELL_ATTR0_CU_AURA_CC) && unit->IsControlledByPlayer())
                 unit->RemoveAurasByType(SPELL_AURA_MOD_STEALTH);
 				
-			// Binary Resistance System by Saqirmdev
+			/*// Binary Resistance System by Saqirmdev
 			if (unit->GetTypeId() == TYPEID_PLAYER && (m_caster->GetTypeId() == TYPEID_PLAYER || m_caster->IsControlledByPlayer() || m_caster->ToCreature()->isPet()) && m_spellInfo->AttributesCu & SPELL_ATTR0_CU_CAN_RESIST)
 			{			
 				int32 resistChance = unit->GetResistance(SpellSchoolMask(m_spellInfo->SchoolMask));
@@ -2669,7 +2669,7 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 							return SPELL_MISS_RESIST;
 					}
 				}
-			}				
+			}*/				
 		}
         else if (m_caster->IsFriendlyTo(unit))
         {
@@ -2698,19 +2698,20 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 		// Binary Resistance System by Saqirmdev
 	    if (unit->GetTypeId() == TYPEID_PLAYER && (m_caster->GetTypeId() == TYPEID_PLAYER || m_caster->IsControlledByPlayer() || m_caster->ToCreature()->isPet()) && m_spellInfo->AttributesCu & SPELL_ATTR0_CU_CAN_RESIST)
 		{			
-			int32 resistChance = unit->GetResistance(SpellSchoolMask(m_spellInfo->SchoolMask));
+			int32 resistChance = unit->GetResistance(m_spellInfo->SchoolMask);
  			int16 SpellPenetration = 0;
 			if (resistChance && !(m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_NORMAL))
 			{
 				if (m_caster->GetTypeId() == TYPEID_PLAYER)
-					SpellPenetration = float(m_caster->ToPlayer()->GetSpellPenetration(SpellSchoolMask(m_spellInfo->SchoolMask)));
+				    for (int i; i <= 6; i++)
+                	    SpellPenetration = float(m_caster->ToPlayer()->GetSpellPenetration(i));
 
 				if (SpellPenetration > resistChance)
 					resistChance = 0;
 				else
 			    {
-					   resistChance -= SpellPenetration;
-				       resistChance = int32((resistChance / 62) * 1000); // Resist Chance Formular 130 Resist -> 23,07% 
+					resistChance -= SpellPenetration;
+				    resistChance = int32((resistChance / 69) * 1000); // Resist Chance Formular 130 Resist -> 18,31% 
 				   
 					if (resistChance > 10000) // Resist Can't be higher than 100% 
 						resistChance = 10000;

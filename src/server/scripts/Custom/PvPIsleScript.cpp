@@ -128,7 +128,7 @@ class pvp_island : public PlayerScript
 	         if (newArea != AREA_PVP_ISLAND && player->GetAreaId() == AREA_PVP_ISLAND)
 		        group->Disband(true);
         }
-        
+		
         void OnPVPKill(Player* killer, Player* victim)
         {
             if (killer->GetAreaId() == AREA_PVP_ISLAND)
@@ -147,7 +147,16 @@ class pvp_island : public PlayerScript
                             victim->m_Events.AddEvent(new pvp_island_resurrect_event_pet(victim), victim->m_Events.CalculateTime(3000));
                         return;
                     }
-
+					
+					// Reward System
+					if (killerGUID != victimGUID)
+					{
+						uint8 honor = (irand(4,10) * (victim->GetLevel() / 10) + 24;
+						killer->AddItem(29434, 1);
+						killer->ModifyHonorPoints(+honor);
+						killer->MonsterWhisper("Recive: [Badge of Justice] and Honor: %u", honor, killerGUID);
+                    }
+					
                     // This will cause the victim to be resurrected, teleported and health set to 100% after 1 second of dieing
                     victim->m_Events.AddEvent(new pvp_island_resurrect_event(victim), victim->m_Events.CalculateTime(500));
  
@@ -257,16 +266,17 @@ class npc_teleport_pvp_island : public CreatureScript
                     if (!player || player->IsBeingTeleported() || !player->isAlive() || player->isInCombat())
                         return;
 
-		      // Prevent Group
-              if (Group* group = player->GetGroup())
-		      {
-		          if (group->GetMembersCount() > 3) 
-			          group->Disband(true);
-		      }
-		      player->SetByteFlag(UNIT_FIELD_BYTES_2, 1, UNIT_BYTE2_FLAG_PVP);
-              player->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PVP_ATTACKABLE);
+					// Prevent Group
+					if (Group* group = player->GetGroup())
+					{
+						if (group->GetMembersCount() > 3) 
+							group->Disband(true);
+					}
+					
+					player->SetByteFlag(UNIT_FIELD_BYTES_2, 1, UNIT_BYTE2_FLAG_PVP);
+					player->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PVP_ATTACKABLE);
 
-	          player->CastSpell(player, SPELL_SPIRITUAL_IMMUNITY, true);
+					player->CastSpell(player, SPELL_SPIRITUAL_IMMUNITY, true);
  
                     int i = urand(0, MAX_PLAYER_SPAWN_POINTS - 1);
                     player->TeleportTo(0, playerSpawnPoint[i].GetPositionX(), playerSpawnPoint[i].GetPositionY(), playerSpawnPoint[i].GetPositionZ(), playerSpawnPoint[i].GetOrientation());
