@@ -151,7 +151,7 @@ class pvp_island : public PlayerScript
 					// Reward System
 					if (killerGUID != victimGUID)
 					{
-						uint8 honor = (irand(40,96) * sWorld->getRate(RATE_HONOR) + 24;
+						uint8 honor = (irand(40,96) * sWorld->getRate(RATE_HONOR)) + 24;
 						killer->AddItem(29434, 1);
 						killer->ModifyHonorPoints(+honor);
 						killer->MonsterWhisper("Recive: [Badge of Justice] and Honor: %u", honor, killerGUID);
