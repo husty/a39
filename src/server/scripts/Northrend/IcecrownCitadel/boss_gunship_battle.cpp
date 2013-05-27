@@ -1140,6 +1140,8 @@ class npc_muradin_gunship : public CreatureScript
 							}
 							break;
                         case EVENT_RESPAWN_ROCKETEER:
+						if(_instance->GetBossState(DATA_GUNSHIP_EVENT) != DONE)
+						{
                             Talk(SAY_NEW_MORTAR_TEAM_SPAWNED);
                             if(RocketerCount == 2)
                             {
@@ -1153,8 +1155,11 @@ class npc_muradin_gunship : public CreatureScript
                                 skybreaker->AddNPCPassengerInInstance(NPC_GB_SKYBREAKER_MORTAR_SOLDIER, -15.61003f, 15.483f, 20.4158f, 4.69854f);
                                 skybreaker->AddNPCPassengerInInstance(NPC_GB_SKYBREAKER_MORTAR_SOLDIER, -20.9583f, 14.8875f, 20.4428f, 4.77865f);
                             }
+						}
                             break;
                         case EVENT_RESPAWN_AXES_RIFLEMEN:
+						if(_instance->GetBossState(DATA_GUNSHIP_EVENT) != DONE)
+						{
                             Talk(SAY_NEW_RIFLEMEN_SPAWNED);
                             if(RiflCount == 4)
                             {
@@ -1172,6 +1177,7 @@ class npc_muradin_gunship : public CreatureScript
                                 skybreaker->AddNPCPassengerInInstance(NPC_GB_SKYBREAKER_RIFLEMAN, -5.15231f, -22.9462f, 21.659f, 4.72416f);
                                 skybreaker->AddNPCPassengerInInstance(NPC_GB_SKYBREAKER_RIFLEMAN, 0.15231f, -22.9462f, 21.659f, 4.72416f);
                             }
+						}
                             break;
                       }
                 }
