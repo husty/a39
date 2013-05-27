@@ -610,8 +610,8 @@ class spell_mage_summon_water_elemental : public SpellScriptLoader
             {
                 Unit* caster = GetCaster();
                 // Glyph of Eternal Water
-				if (Pet* water = caster->GetPet())
-				    caster->RemovePet(water, PET_SAVE_NOT_IN_SLOT, true);
+				if (Pet* water = caster->ToPlayer()->GetPet())
+				    caster->ToPlayer()->RemovePet(water, PET_SAVE_NOT_IN_SLOT, true);
                 if (caster->HasAura(SPELL_MAGE_GLYPH_OF_ETERNAL_WATER))
                     caster->CastSpell(caster, SPELL_MAGE_SUMMON_WATER_ELEMENTAL_PERMANENT, true);
                 else
