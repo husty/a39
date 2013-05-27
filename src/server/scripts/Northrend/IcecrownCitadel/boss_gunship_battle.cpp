@@ -1591,7 +1591,7 @@ class npc_marine_or_reaver : public CreatureScript
                 events.ScheduleEvent(EVENT_EXPERIENCED, urand(19000, 21000));  // ~20 sec
                 events.ScheduleEvent(EVENT_VETERAN, urand(39000, 41000));      // ~40 sec
                 events.ScheduleEvent(EVENT_BURNING_PITCH, urand(60000, 62000));// ~61 sec
-				if (!me->IsAlive())
+				if (!me->isAlive())
                     me->RemoveFromWorld();
             }
 
@@ -1620,7 +1620,7 @@ class npc_marine_or_reaver : public CreatureScript
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
 					
-				if (!me->IsAlive())
+				if (!me->isAlive())
                     me->RemoveFromWorld();
 
                 events.Update(diff);
@@ -1807,7 +1807,7 @@ class npc_gunship_cannon : public CreatureScript
 
         struct npc_gunship_cannonAI : public ScriptedAI
         {
-            npc_gunship_cannonAI(Creature *creature) : ScriptedAI(creature) { }
+            npc_gunship_cannonAI(Creature *creature) : ScriptedAI(creature),_instance(creature->GetInstanceScript()) { }
 
             void Reset()
             {
@@ -1839,9 +1839,9 @@ class npc_gunship_cannon : public CreatureScript
 
             void UpdateAI(uint32 diff)
             {
-			    if(_instance->GetBossState(DATA_GUNSHIP_EVENT) != IN_PROGRESS)
+			    if (_instance->GetBossState(DATA_GUNSHIP_EVENT) != IN_PROGRESS)
 				   me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
-                if(me->HasAura(SPELL_BELOW_ZERO))
+                if (me->HasAura(SPELL_BELOW_ZERO))
                 {
                     me->RemoveAurasByType(SPELL_AURA_CONTROL_VEHICLE);
                     me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
