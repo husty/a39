@@ -5630,8 +5630,9 @@ bool Unit::HandleDummyAuraProc(Unit* victim, uint32 damage, AuraEffect* triggere
             }
             switch (dummySpell->Id)
             {
-                // Glyph of Polymorph
-                case 56375:
+                
+				case 56250: // Glyph of Seduction
+                case 56375: // Glyph of Polymorph
                 {
                     if (!target)
                         return false;
