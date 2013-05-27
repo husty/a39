@@ -103,7 +103,7 @@ template<class T>
 void ConfusedMovementGenerator<T>::DoReset(T* unit)
 {
     i_nextMove = 1;
-    i_nextMoveTime->Reset(0);
+    i_nextMoveTime.Reset(0);
     unit->StopMoving();
     unit->AddUnitState(UNIT_STATE_CONFUSED | UNIT_STATE_CONFUSED_MOVE);
 }
@@ -114,7 +114,7 @@ bool ConfusedMovementGenerator<T>::DoUpdate(T* unit, uint32 diff)
     if (unit->HasUnitState(UNIT_STATE_ROOT | UNIT_STATE_STUNNED | UNIT_STATE_DISTRACTED))
         return true;
 
-    if (i_nextMoveTime->Passed())
+    if (i_nextMoveTime.Passed())
     {
         // currently moving, update location
         unit->AddUnitState(UNIT_STATE_CONFUSED_MOVE);
@@ -122,14 +122,14 @@ bool ConfusedMovementGenerator<T>::DoUpdate(T* unit, uint32 diff)
         if (unit->movespline->Finalized())
         {
             i_nextMove = urand(1, MAX_CONF_WAYPOINTS);
-            i_nextMoveTime->Reset(urand(500, 1200)); // Guessed
+            i_nextMoveTime.Reset(urand(500, 1200)); // Guessed
         }
     }
     else
     {
         // waiting for next move
-        i_nextMoveTime->Update(diff);
-        if (i_nextMoveTime->Passed())
+        i_nextMoveTime.Update(diff);
+        if (i_nextMoveTime.Passed())
         {
             // start moving
             unit->AddUnitState(UNIT_STATE_CONFUSED_MOVE);
@@ -139,9 +139,9 @@ bool ConfusedMovementGenerator<T>::DoUpdate(T* unit, uint32 diff)
             float y = i_waypoints[i_nextMove][1];
             float z = i_waypoints[i_nextMove][2];
             Movement::MoveSplineInit init(unit);
-            init->MoveTo(x, y, z);
-            init->SetWalk(true);
-            init->Launch();
+            init.MoveTo(x, y, z);
+            init.SetWalk(true);
+            init.Launch();
         }
     }
 
