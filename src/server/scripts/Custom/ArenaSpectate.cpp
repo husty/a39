@@ -35,6 +35,8 @@ EndScriptData */
 #include "CreatureTextMgr.h"
 #include "Config.h"
 
+int8 UsingGossip;
+
 class arena_spectator_commands : public CommandScript
 {
     public:
@@ -70,7 +72,7 @@ class arena_spectator_commands : public CommandScript
                 return false;
             }
 
-			if (target && (target->HasAura(32728) || target->HasAura(32727))) // Check Arena Preparation thx XXsupr
+			if (target && (target->HasAura(32728) || target->HasAura(32727)) && UsingGossip == 0) // Check Arena Preparation thx XXsupr
             {
                 handler->PSendSysMessage("Cant do that. Arena didn`t started.");
                 handler->SetSentErrorMessage(true);
@@ -351,8 +353,8 @@ class npc_arena_spectator : public CreatureScript
 
         bool OnGossipHello(Player* pPlayer, Creature* pCreature)
         {
-	     pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Games: 2v2", GOSSIP_SENDER_MAIN, NPC_SPECTATOR_ACTION_LIST_TOP_GAMES);
-	     pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Games: 3v3", GOSSIP_SENDER_MAIN, NPC_SPECTATOR_ACTION_LIST_GAMES);
+	     pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Games: 3v3", GOSSIP_SENDER_MAIN, NPC_SPECTATOR_ACTION_LIST_TOP_GAMES);
+	     pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Games: 2v2", GOSSIP_SENDER_MAIN, NPC_SPECTATOR_ACTION_LIST_GAMES);
             pPlayer->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, pCreature->GetGUID());
             return true;
         }
@@ -377,9 +379,8 @@ class npc_arena_spectator : public CreatureScript
                 if (Player* target = ObjectAccessor::FindPlayer(guid))
                 {
                     ChatHandler handler(player->GetSession());
-                    std::string str = target->GetName();
-                    char* pTarget;
-                    std::strcpy (pTarget, str.c_str());
+                    char const* pTarget = target->GetName().c_str();
+					UsingGossip = 1;
                     arena_spectator_commands::HandleSpectateCommand(&handler, pTarget);
                 }
             }
@@ -424,9 +425,10 @@ class npc_arena_spectator : public CreatureScript
 
             std::string data = teamsMember[0] + "(";
             std::stringstream ss;
+			std::stringstream sstwo;
             ss << mmr;
             data += ss.str();
-            data += ") - " + teamsMember[1];
+            data += ") - " + teamsMember[1];		
             return data;
         }
 
@@ -454,7 +456,7 @@ class npc_arena_spectator : public CreatureScript
                 if (!arenas || arenas->m_Battlegrounds.empty())
                     continue;
 
-		  for (BattlegroundContainer::const_iterator itr = arenas->m_Battlegrounds.begin(); itr != arenas->m_Battlegrounds.end(); ++itr)
+		        for (BattlegroundContainer::const_iterator itr = arenas->m_Battlegrounds.begin(); itr != arenas->m_Battlegrounds.end(); ++itr)
                 {
                     Battleground* arena = itr->second;
 

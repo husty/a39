@@ -183,7 +183,8 @@ public:
 		}
 
 		void EnterCombat(Unit* who){}
-		uint32 GetData(uint32 dataId){
+		uint32 GetData(const uint32 dataId)
+		{
 			switch (dataId){
 				case 1:
 					return phase;
@@ -204,7 +205,7 @@ public:
 					return 0;		
 			}
 		}
-		void SetData(uint32 uiId, uint32 uiValue)
+		void SetData(uint32 uiId, const uint32 uiValue)
         {            
 			if(uiId == 1) // battle start 
 			{

@@ -2860,7 +2860,6 @@ void Player::SetSpectate(bool on)
 		SetGMVisible(false);
 		SetGameMaster(true);
 
-
         if (Pet* pet = GetPet())
 			 RemovePet(pet, PET_SAVE_NOT_IN_SLOT, true);
 

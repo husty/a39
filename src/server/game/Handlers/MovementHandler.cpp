@@ -413,8 +413,8 @@ void WorldSession::HandleMovementOpcodes(WorldPacket& recvData)
 			    if (plrMover->GetMapId() == 562) // Blade Edge arena 6237.797363 261.146088 2 0.7
                      plrMover->TeleportTo(562, 6237.79768f, 261.142f, 2.0f, 4.0f); 
 					 
-				if (plrMover->GetMapId() == 617) // Dalaran Arena
-                     plrMover->TeleportTo(617, 1286.14868f, 1667.32f, 41.0f, 1.6f); 
+				if (plrMover->GetMapId() == 617) // Dalaran Arena 1292.31384 790.40667 8
+                     plrMover->TeleportTo(617, 1292.34868f, 790.40f, 8.5f, 1.6f); 
 			
 			}
             else if (!(plrMover->GetBattleground() && plrMover->GetBattleground()->HandlePlayerUnderMap(_player)))
