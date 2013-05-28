@@ -49,10 +49,25 @@ class npc_change : public CreatureScript
 					    if (player->HasItemCount(19322, 10, true))
 						{
 							player->DestroyItemCount(19322, 10, true);
-							player->UnbindInstance(player->GetMapId(), player->GetDifficulty(true), true);
+							// Unbind ALL instances
+							for (uint8 i = 0; i < MAX_DIFFICULTY; ++i)
+							{
+								Player::BoundInstancesMap &binds = player->GetBoundInstances(Difficulty(i));
+								for (Player::BoundInstancesMap::iterator itr = binds.begin(); itr != binds.end();)
+								{
+									InstanceSave* save = itr->second.save;
+									if (itr->first != player->GetMapId() && (!MapId || MapId == itr->first) && (diff == -1 || diff == save->GetDifficulty()))
+									{
+										std::string timeleft = GetTimeString(save->GetResetTime() - time(NULL));
+										player->UnbindInstance(itr, Difficulty(i));
+										counter++;
+									}
+									else
+										++itr;
+								}
+							}
 							_creature->MonsterWhisper("Unbind all Instances complete!", player->GetGUID());
 							player->CLOSE_GOSSIP_MENU();
-
 						}
 						else
 						{

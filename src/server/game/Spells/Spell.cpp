@@ -2646,7 +2646,7 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 			// Binary Resistance System by Saqirmdev
 			if (unit->GetTypeId() == TYPEID_PLAYER && (m_caster->GetTypeId() == TYPEID_PLAYER || m_caster->IsControlledByPlayer() || m_caster->ToCreature()->isPet()) && m_spellInfo->AttributesCu & SPELL_ATTR0_CU_CAN_RESIST)
 			{			
-				int32 resistChance = unit->GetResistance(SpellSchoolMask(m_spellInfo->SchoolMask));
+				float resistChance = int16(unit->GetResistance(SpellSchoolMask(m_spellInfo->SchoolMask)));
 				int16 SpellPenetration = 0;
 				if (resistChance && !(m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_NORMAL))
 				{
@@ -2659,7 +2659,7 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 						resistChance = 0;
 					else
 					{
-						resistChance = int32((resistChance / 69) * 1000); // Resist Chance Formular 130 Resist -> 18,31% 
+						resistChance = float((resistChance / 66) * 1000); // Resist Chance Formular 130 Resist -> 18,31% 
 				   
 						if (resistChance > 10000) // Resist Can't be higher than 100% 
 							resistChance = 10000;

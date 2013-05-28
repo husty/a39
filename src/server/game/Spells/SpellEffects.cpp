@@ -838,12 +838,13 @@ void Spell::EffectTriggerSpell(SpellEffIndex effIndex)
 
           case 62196: // Shadow. Trigger
              m_caster->CombatStop();
-                return;
+			 m_caster->SetInCombatState(false, m_caster);
+             return;
 
           case 58984: // Shadowmeld
              m_caster->CombatStop();
-	      m_caster->SetInCombatState(false, m_caster);
-                return;
+	         m_caster->SetInCombatState(false, m_caster);
+             return;
 
             // Vanish (not exist)
             case 18461:
