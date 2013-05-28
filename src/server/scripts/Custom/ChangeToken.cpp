@@ -1,4 +1,7 @@
 #include "ScriptPCH.h"
+#include "InstanceSaveMgr.h"
+#include "InstanceScript.h"
+#include "MapManager.h"
 
 class npc_change : public CreatureScript
 {
@@ -58,7 +61,6 @@ class npc_change : public CreatureScript
 									InstanceSave* save = itr->second.save;
 									if (itr->first != player->GetMapId() && (!MapId || MapId == itr->first) && (diff == -1 || diff == save->GetDifficulty()))
 									{
-										std::string timeleft = GetTimeString(save->GetResetTime() - time(NULL));
 										player->UnbindInstance(itr, Difficulty(i));
 										counter++;
 									}

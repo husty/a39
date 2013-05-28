@@ -39,7 +39,8 @@ void TargetedMovementGeneratorMedium<T, D>::_setTargetLocation(T* owner, bool up
         return;
 
     float x, y, z;
-
+    float dist;
+	float size;
 
       if (updateDestination || !i_path)
       {
