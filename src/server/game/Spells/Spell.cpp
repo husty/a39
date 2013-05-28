@@ -2644,7 +2644,7 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
                 unit->RemoveAurasByType(SPELL_AURA_MOD_STEALTH);
 				
 			// Binary Resistance System by Saqirmdev
-			if (unit->GetTypeId() == TYPEID_PLAYER && (m_caster->GetTypeId() == TYPEID_PLAYER || m_caster->IsControlledByPlayer() || m_caster->ToCreature()->isPet()) && m_spellInfo->AttributesCu & SPELL_ATTR0_CU_CAN_RESIST)
+			if (unit->GetTypeId() == TYPEID_PLAYER && (m_caster->GetTypeId() == TYPEID_PLAYER || m_caster->ToCreature()->isPet()) && m_spellInfo->AttributesCu & SPELL_ATTR0_CU_CAN_RESIST)
 			{			
 				float resistChance = int16(unit->GetResistance(SpellSchoolMask(m_spellInfo->SchoolMask)));
 				int16 SpellPenetration = 0;
@@ -2698,7 +2698,7 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 	else if (!m_spellInfo->IsPositive())
 	{
 		// Binary Resistance System by Saqirmdev
-	    if (unit->GetTypeId() == TYPEID_PLAYER && (m_caster->GetTypeId() == TYPEID_PLAYER || m_caster->IsControlledByPlayer() || m_caster->ToCreature()->isPet()) && m_spellInfo->AttributesCu & SPELL_ATTR0_CU_CAN_RESIST)
+	    if (unit->GetTypeId() == TYPEID_PLAYER && (m_caster->GetTypeId() == TYPEID_PLAYER || m_caster->ToCreature()->isPet()) && m_spellInfo->AttributesCu & SPELL_ATTR0_CU_CAN_RESIST)
 		{			
 			int32 resistChance = unit->GetResistance(SpellSchoolMask(m_spellInfo->SchoolMask));
  			int16 SpellPenetration = 0;
