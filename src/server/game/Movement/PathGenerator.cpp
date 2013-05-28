@@ -486,7 +486,7 @@ void PathGenerator::BuildPointPath(const float *startPoint, const float *endPoin
               //  Path X,y,z 1# END 
 		        Clear();
                 _pathPoints.resize(4);
-		  _pathPoints[0] = GetStartPosition();
+		         _pathPoints[0] = GetStartPosition();
                 _pathPoints[1] = G3D::Vector3(6236.567836f, 258.339106f, 11.500018f);
                 _pathPoints[2] = G3D::Vector3(6229.818836f, 252.049106f, 11.500018f);
                 _pathPoints[3] = GetEndPosition();
@@ -526,8 +526,8 @@ void PathGenerator::BuildPointPath(const float *startPoint, const float *endPoin
                 _pathPoints[4] = GetEndPosition();
             }
       }
-       //Dalaran Sewer
-       else if (_sourceUnit->GetMapId() == 617)
+        //Dalaran Sewer
+        else if (_sourceUnit->GetMapId() == 617)
         {
             if (startEndDist < 2500.0f && startPoint[2] >= 1325.033223f && startPoint[1] >= 9.000000f)      // Canal 1#
             {
@@ -552,8 +552,8 @@ void PathGenerator::BuildPointPath(const float *startPoint, const float *endPoin
                 _pathPoints[4] = GetEndPosition();
             }
          }
-	         //Eye of The Storm
-       else if (_sourceUnit->GetMapId() == 566)
+	    //Eye of The Storm
+        else if (_sourceUnit->GetMapId() == 566)
         {
             if (startEndDist < 2500.0f && startPoint[2] <= 1850.003223f && startPoint[1] >= 1237.000000f && startPoint[0] >= 1501.420000f && startPoint[0] <= 1579.960000f)      // StartZone Horde
             {
@@ -562,8 +562,8 @@ void PathGenerator::BuildPointPath(const float *startPoint, const float *endPoin
                 _pathPoints.resize(5);
                 _pathPoints[0] = GetStartPosition();
                 _pathPoints[1] = G3D::Vector3(1847.004468f, 1540.660539f, 1243.400000f);
-	         _pathPoints[2] = G3D::Vector3(1842.883268f, 1527.123839f, 1238.410000f);
-	         _pathPoints[3] = G3D::Vector3(1839.593268f, 1519.479539f, 1229.428000f);
+	            _pathPoints[2] = G3D::Vector3(1842.883268f, 1527.123839f, 1238.410000f);
+	            _pathPoints[3] = G3D::Vector3(1839.593268f, 1519.479539f, 1229.428000f);
                 _pathPoints[4] = GetEndPosition();
             }
             if (startEndDist < 2500.0f && startPoint[2] >= 2484.003223f && startPoint[1] >= 1240.000000f && startPoint[0] >= 1567.420000f && startPoint[0] <= 1626.960000f)      // StartZone Alliance
@@ -573,12 +573,23 @@ void PathGenerator::BuildPointPath(const float *startPoint, const float *endPoin
                 _pathPoints.resize(5);
                 _pathPoints[0] = GetStartPosition();
                 _pathPoints[1] = G3D::Vector3(2485.154468f, 1596.583439f, 1244.898315f);
-	         _pathPoints[2] = G3D::Vector3(2482.733268f, 1608.305649f, 1238.092000f);
+	            _pathPoints[2] = G3D::Vector3(2482.733268f, 1608.305649f, 1238.092000f);
                 _pathPoints[3] = G3D::Vector3(2488.073268f, 1623.749539f, 1227.788000f);
                 _pathPoints[4] = GetEndPosition();
             }
          }
-
+         else if (_sourceUnit->GetMapId() == 649) // Trial of Crusader 
+         {
+            if (startPoint[0] >= 188.799f && startPoint[1] >= 300.000000f)      // StartZone Horde
+            {
+              //  Path X,y,z
+	             Clear();
+                _pathPoints.resize(3);
+                _pathPoints[0] = GetStartPosition();
+                _pathPoints[1] = G3D::Vector3(564.6054468f, 185.660539f, 395.000000f);
+                _pathPoints[2] = GetEndPosition();
+            }
+		}
     TC_LOG_DEBUG(LOG_FILTER_MAPS, "++ PathGenerator::BuildPointPath path type %d size %d poly-size %d\n", _type, pointCount, _polyLength);
 
 }
