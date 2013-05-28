@@ -2652,7 +2652,9 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 				{
 					if (m_caster->GetTypeId() == TYPEID_PLAYER)
 						SpellPenetration = float(m_caster->ToPlayer()->GetSpellPenetration(SpellSchoolMask(m_spellInfo->SchoolMask)));
-						
+					else if (m_caster->ToCreature()->isPet())
+					       SpellPenetration = float(m_caster->GetOwner()->GetSpellPenetration(SpellSchoolMask(m_spellInfo->SchoolMask)));
+
 					resistChance -= SpellPenetration;
 
 					if (SpellPenetration > resistChance)
@@ -2706,7 +2708,9 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 			{
 				if (m_caster->GetTypeId() == TYPEID_PLAYER)
                 	SpellPenetration = float(m_caster->ToPlayer()->GetSpellPenetration(SpellSchoolMask(m_spellInfo->SchoolMask)));
-					
+				else if (m_caster->ToCreature()->isPet())
+					SpellPenetration = float(m_caster->GetOwner()->GetSpellPenetration(SpellSchoolMask(m_spellInfo->SchoolMask)));
+
 				resistChance -= SpellPenetration;
 
 				if (SpellPenetration > resistChance)
@@ -2726,7 +2730,11 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 				}
 			}
 		}
-    }			
+    }
+	    // Undead Creatures should be immune to fear
+    if (unit->ToCreature() && unit->GetTypeId() == TYPEID_UNIT && m_spellInfo->Mechanic == MECHANIC_FEAR && m_spellInfo->Id != 10326)	
+	    if (unit->ToCreature()->GetCreatureType() == CREATURE_TYPE_UNDEAD)
+            return SPELL_MISS_IMMUNE;	   
 
     // Get Data Needed for Diminishing Returns, some effects may have multiple auras, so this must be done on spell hit, not aura add
     m_diminishGroup = GetDiminishingReturnsGroupForSpell(m_spellInfo, m_triggeredByAuraSpell);
