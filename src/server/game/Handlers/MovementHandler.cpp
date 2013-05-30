@@ -277,6 +277,11 @@ void WorldSession::HandleMovementOpcodes(WorldPacket& recvData)
         recvData.rfinish();                     // prevent warnings spam
         return;
     }
+	
+    // Tempfix for Drink Exploit (Thx jetwanx) 
+    if (mover->IsSitState() && movementInfo.GetMovementFlags() & (MOVEMENTFLAG_MASK_MOVING | MOVEMENTFLAG_MASK_TURNING))
+        mover->SetStandState(UNIT_STAND_STATE_STAND);
+
 
     /* handle special cases */
     if (movementInfo.flags & MOVEMENTFLAG_ONTRANSPORT)

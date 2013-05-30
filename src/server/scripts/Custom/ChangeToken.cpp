@@ -26,8 +26,11 @@ class npc_change : public CreatureScript
 				    player->ADD_GOSSIP_ITEM( 0, "4 Mark -> 5000 Honor"                                         , GOSSIP_SENDER_MAIN, 5);
 				    player->ADD_GOSSIP_ITEM( 0, "1 Mark -> 10 BoJ"                                             , GOSSIP_SENDER_MAIN, 6);
 				    player->ADD_GOSSIP_ITEM( 0, "1 Mark -> 10 Wood(GH MARK)"                                   , GOSSIP_SENDER_MAIN, 7);
-				    player->ADD_GOSSIP_ITEM( 0, "1 Mark -> 1 Metal(GH MARK)"                                   , GOSSIP_SENDER_MAIN, 7);
-				    player->ADD_GOSSIP_ITEM( 0, "100 Mark -> [MOUNT]Reins of the Raven Lord"                   , GOSSIP_SENDER_MAIN, 16);
+				    player->ADD_GOSSIP_ITEM( 0, "1 Mark -> 1 Metal(GH MARK)"                                   , GOSSIP_SENDER_MAIN, 8);
+				    player->ADD_GOSSIP_ITEM( 0, "8 Mark -> 1 EoF"                                              , GOSSIP_SENDER_MAIN, 9);
+					player->ADD_GOSSIP_ITEM( 0, "1 EoF -> 5 Mark"                                              , GOSSIP_SENDER_MAIN, 10);
+				    player->ADD_GOSSIP_ITEM( 0, "25 Mark -> [ITEM]Primordial Saronite"                         , GOSSIP_SENDER_MAIN, 11); 
+				    player->ADD_GOSSIP_ITEM( 0, "100 Mark -> [MOUNT]Reins of the Raven Lord"                   , GOSSIP_SENDER_MAIN, 16);// -5
 				    player->ADD_GOSSIP_ITEM( 0, "50 Mark -> [MOUNT]Swift Zhevra"                               , GOSSIP_SENDER_MAIN, 17);
 				    player->ADD_GOSSIP_ITEM( 0, "75 Mark -> [MOUNT]Swift Zulian Tiger"                         , GOSSIP_SENDER_MAIN, 18);
 		        }	
@@ -183,6 +186,54 @@ class npc_change : public CreatureScript
 						{
 						    player->AddItem(35691, 1);
 							player->DestroyItemCount(19322, 1, true);
+							_creature->MonsterWhisper("Chance Succesful!", player->GetGUID());
+							player->CLOSE_GOSSIP_MENU();
+
+					    }
+						else
+						{
+							_creature->MonsterWhisper("Missing Items!", player->GetGUID());
+							player->CLOSE_GOSSIP_MENU();
+
+					    }
+                        break;
+                    case 9: // Mark -> EoF
+					    if (player->HasItemCount(19322, 8, true))
+						{
+						    player->AddItem(49426, 1);
+							player->DestroyItemCount(19322, 8, true);
+							_creature->MonsterWhisper("Chance Succesful!", player->GetGUID());
+							player->CLOSE_GOSSIP_MENU();
+
+					    }
+						else
+						{
+							_creature->MonsterWhisper("Missing Items!", player->GetGUID());
+							player->CLOSE_GOSSIP_MENU();
+
+					    }
+                        break;
+                    case 10: // Mark -> EoF
+					    if (player->HasItemCount(49426, 1, true))
+						{
+						    player->AddItem(19322, 5);
+							player->DestroyItemCount(49426, 1, true);
+							_creature->MonsterWhisper("Chance Succesful!", player->GetGUID());
+							player->CLOSE_GOSSIP_MENU();
+
+					    }
+						else
+						{
+							_creature->MonsterWhisper("Missing Items!", player->GetGUID());
+							player->CLOSE_GOSSIP_MENU();
+
+					    }
+                        break;
+                    case 11: // Mark -> Primordial Saronite
+					    if (player->HasItemCount(19322, 25, true))
+						{
+						    player->AddItem(49908, 1);
+							player->DestroyItemCount(19322, 25, true);
 							_creature->MonsterWhisper("Chance Succesful!", player->GetGUID());
 							player->CLOSE_GOSSIP_MENU();
 
