@@ -2069,16 +2069,16 @@ class npc_shadowfiend : public CreatureScript
 	public:
 		npc_shadowfiend() : CreatureScript("npc_shadowfiend") { }
 
-		struct npc_shadowfiendAI : public ScriptedAI
-		{
-			npc_shadowfiendAI(Creature* creature) : ScriptedAI(creature) {}
+	struct npc_shadowfiendAI : public ScriptedAI
+	{
+		npc_shadowfiendAI(Creature* creature) : ScriptedAI(creature) {}
 
         void Reset()
         {
             if (me->isSummon())
                 if (Unit* owner = me->ToTempSummon()->GetSummoner())
                     if (Unit* pet = owner->GetGuardianPet())
-                        pet->CastSpell(pet, MANA_LEECH, true);+
+                        pet->CastSpell(pet, MANA_LEECH, true);
         }
 
         void DamageTaken(Unit* /*killer*/, uint32& damage)
@@ -2090,12 +2090,12 @@ class npc_shadowfiend : public CreatureScript
         }
 
         void UpdateAI(uint32 const /*diff*/)
-         {
+        {
             if (!UpdateVictim())
                 return;
 
             DoMeleeAttackIfReady();
-         }
+        }
     };
 
     CreatureAI* GetAI(Creature* creature) const

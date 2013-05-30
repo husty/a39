@@ -1352,16 +1352,17 @@ void Aura::HandleAuraSpecificMods(AuraApplication const* aurApp, Unit* caster, b
                     break;
                 // Ice barrier - Shattered Barrier is only casted if the auraeffect has reached 0 amount
                 if ((removeMode == AURA_REMOVE_BY_ENEMY_SPELL) &&
-                    (GetSpellProto()->SpellFamilyFlags[EFFECT_1] & 0x00000001) &&
+                    (GetSpellInfo()->SpellFamilyFlags[EFFECT_1] & 0x00000001) &&
                     (GetEffect(EFFECT_0)->GetAmount() <= 0))
                  {
-                     // Shattered Barrier
-                    if (AuraEffect * aurEff = target->GetDummyAuraEffect(SPELLFAMILY_MAGE, 2945, EFFECT_0))
-                    {
-                        int32 chance = aurEff->GetSpellProto()->procChance;
-                        if ((chance >= 100) || roll_chance_i(chance))
-                            target->CastSpell(target, 55080, true, NULL, GetEffect(EFFECT_0));
-                    }
+						// Shattered Barrier
+						if (AuraEffect * aurEff = target->GetDummyAuraEffect(SPELLFAMILY_MAGE, 2945, EFFECT_0))
+						{
+							int32 chance = aurEff->GetSpellInfo()->Effects[EFFECT_1].CalcValue(target);
+							if ((chance >= 100) || roll_chance_i(chance))
+								target->CastSpell(target, 55080, true, NULL, GetEffect(EFFECT_0));
+						}
+				 }
                 break;
             case SPELLFAMILY_WARRIOR:
                 if (!caster)

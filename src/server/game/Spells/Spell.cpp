@@ -4890,7 +4890,7 @@ SpellCastResult Spell::CheckCast(bool strict)
             return SPELL_FAILED_SPELL_UNAVAILABLE;
 	
 	// Can't casting on Spiked Target
-	if (Player *SpikedPlayer = m_caster->getVictim())
+	if (Unit *SpikedPlayer = m_caster->getVictim())
 	   if (SpikedPlayer->GetTypeId() == TYPEID_PLAYER && SpikedPlayer->HasAura(69065))
 	       return SPELL_FAILED_BAD_TARGETS;
 	      
