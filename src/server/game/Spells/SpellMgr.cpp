@@ -2850,6 +2850,8 @@ void SpellMgr::LoadSpellCustomAttr()
             case 19387: //Entrapment
             case 19184: //Entrapment
             case 52865: //CotR
+			case 47436: // Batttle Shout
+			case 47440: // Comendation Shout
                 spellInfo->AttributesEx2 |= SPELL_ATTR2_CAN_TARGET_NOT_IN_LOS;
           break;
             case 52212: // Death Knight: Death and Decay trigger spell

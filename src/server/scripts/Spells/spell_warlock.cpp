@@ -896,6 +896,7 @@ class spell_warl_seduction : public SpellScriptLoader
             return new spell_warl_seduction_SpellScript();
         }
 };
+
 void AddSC_warlock_spell_scripts()
 {
     new spell_warl_banish();

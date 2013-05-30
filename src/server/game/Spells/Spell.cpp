@@ -2653,24 +2653,23 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 					if (m_caster->GetTypeId() == TYPEID_PLAYER)
 						SpellPenetration = float(m_caster->ToPlayer()->GetSpellPenetration(SpellSchoolMask(m_spellInfo->SchoolMask)));
 					else if (m_caster->ToCreature()->isPet())
-					       SpellPenetration = float(m_caster->GetOwner()->GetSpellPenetration(SpellSchoolMask(m_spellInfo->SchoolMask)));
+					    SpellPenetration = float(m_caster->GetOwner()->GetSpellPenetration(SpellSchoolMask(m_spellInfo->SchoolMask)));
 
 					resistChance -= SpellPenetration;
 
 					if (SpellPenetration > resistChance)
-						resistChance = 0;
+						resistChance = -1;
 					else
 					{
-						resistChance = float((resistChance / 66) * 1000); // Resist Chance Formular 130 Resist -> 18,31% 
+						resistChance = int16((resistChance / 69) * 1000); // Resist Chance Formular 130 Resist -> 18,31% 
 				   
-						if (resistChance > 10000) // Resist Can't be higher than 100% 
+						if (resistChance > 10000) // Resist can't be higher than 100% 
 							resistChance = 10000;
 						else if (resistChance < 0) // Resist can't be lower than 0
-							resistChance = 0;
+							resistChance = -1;
 					
-						if (resistChance > 0) // % * 100 (25% -> 2500)
-							if (irand(0,10000) < resistChance)
-								return SPELL_MISS_RESIST;
+					    if (resistChance && resistChance > irand(0,10000))
+						    return SPELL_MISS_RESIST;
 					}
 				}
 			}			
@@ -2714,19 +2713,18 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 				resistChance -= SpellPenetration;
 
 				if (SpellPenetration > resistChance)
-					resistChance = 0;
+					resistChance = -1;
 				else
 			    {
-				    resistChance = int32((resistChance / 69) * 1000); // Resist Chance Formular 130 Resist -> 18,31% 
+				    resistChance = int16((resistChance / 69) * 1000); // Resist Chance Formular 130 Resist -> 18,31% 
 				   
 					if (resistChance > 10000) // Resist Can't be higher than 100% 
 						resistChance = 10000;
 					else if (resistChance < 0) // Resist can't be lower than 0
-						resistChance = 0;
-					
-					if (resistChance > 0) // % * 100 (25% -> 2500)
-					    if (irand(0,10000) < resistChance)
-						    return SPELL_MISS_RESIST;
+						resistChance = -1;
+				
+					if (resistChance && resistChance > irand(0,10000))
+						return SPELL_MISS_RESIST;
 				}
 			}
 		}
@@ -4886,9 +4884,16 @@ SpellCastResult Spell::CheckCast(bool strict)
             return SPELL_FAILED_ONLY_INDOORS;
     }
 
+	// Can't cast while Spectate
     if (Player *tmpPlayer = m_caster->ToPlayer())
         if (tmpPlayer->isSpectator())
             return SPELL_FAILED_SPELL_UNAVAILABLE;
+	
+	// Can't casting on Spiked Target
+	if (Player *SpikedPlayer = m_caster->getVictim())
+	   if (SpikedPlayer->GetTypeId() == TYPEID_PLAYER && SpikedPlayer->HasAura(69065))
+	       return SPELL_FAILED_BAD_TARGETS;
+	      
 
     // only check at first call, Stealth auras are already removed at second call
     // for now, ignore triggered spells

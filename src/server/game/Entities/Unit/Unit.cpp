@@ -345,8 +345,7 @@ void Unit::Update(uint32 p_time)
 
     if (CanHaveThreatList() && getThreatManager().isNeedUpdateToClient(p_time))
         SendThreatListUpdate();
-		
-
+	
     if (GetTypeId() == TYPEID_PLAYER || (ToCreature()->isPet() && IsControlledByPlayer()))
     {
         if (Player* player = ToPlayer())

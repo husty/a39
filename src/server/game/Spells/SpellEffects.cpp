@@ -873,13 +873,13 @@ void Spell::EffectTriggerSpell(SpellEffIndex effIndex)
                 return;
             }
             case 6358: // Seduction
-			{
+	     {
 			    if (!m_caster->HasAura(56250))
 				   return
-			    unitTarget->RemoveAurasByType(SPELL_AURA_PERIODIC_DAMAGE, 0, target->GetAura(32409)); // SW:D shall not be removed.
+	         unitTarget->RemoveAurasByType(SPELL_AURA_PERIODIC_DAMAGE, 0, unitTarget->GetAura(32409)); // SW:D shall not be removed.
                 unitTarget->RemoveAurasByType(SPELL_AURA_PERIODIC_DAMAGE_PERCENT);
                 unitTarget->RemoveAurasByType(SPELL_AURA_PERIODIC_LEECH);
-			}
+	      }
             // Demonic Empowerment -- succubus
             case 54437:
             {
