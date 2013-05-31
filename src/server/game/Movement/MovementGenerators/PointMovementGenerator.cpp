@@ -68,8 +68,13 @@ bool PointMovementGenerator<T>::DoUpdate(T* unit, uint32 /*diff*/)
             init.SetVelocity(speed);
         init.Launch();
     }
-	else if (id != EVENT_CHARGE_PREPATH && !unit->movespline->Finalized())
+	else if (id == EVENT_CHARGE_PREPATH && !unit->movespline->Finalized())
+	{
+	    i_recalculateSpeed = false;
+	    Movement::MoveSplineInit init(unit);
 	    init.SetVelocity(SPEED_CHARGE);
+		init.Launch();
+	}
 
     return !unit->movespline->Finalized();
 }
