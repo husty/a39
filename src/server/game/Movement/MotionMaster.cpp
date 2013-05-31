@@ -423,8 +423,8 @@ void MotionMaster::MoveCharge(float x, float y, float z, float speed, uint32 id,
     if (Impl[MOTION_SLOT_CONTROLLED] && Impl[MOTION_SLOT_CONTROLLED]->GetMovementGeneratorType() != DISTRACT_MOTION_TYPE)
         return;
 		
-	if (speed < CHARGE_SPEED)
-	    speed = CHARGE_SPEED;
+	if (speed < SPEED_CHARGE)
+	    speed = SPEED_CHARGE;
 
     if (_owner->GetTypeId() == TYPEID_PLAYER)
     {
