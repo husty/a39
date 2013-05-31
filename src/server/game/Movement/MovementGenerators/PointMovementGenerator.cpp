@@ -24,6 +24,7 @@
 #include "MoveSplineInit.h"
 #include "MoveSpline.h"
 #include "Player.h"
+#include "MotionMaster.h"
 
 //----- Point Movement Generator
 template<class T>
@@ -67,6 +68,8 @@ bool PointMovementGenerator<T>::DoUpdate(T* unit, uint32 /*diff*/)
             init.SetVelocity(speed);
         init.Launch();
     }
+	else if (id != EVENT_CHARGE_PREPATH && !unit->movespline->Finalized())
+	    init.SetVelocity(SPEED_CHARGE);
 
     return !unit->movespline->Finalized();
 }
