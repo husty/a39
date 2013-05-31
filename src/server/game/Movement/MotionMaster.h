@@ -76,8 +76,8 @@ enum RotateDirection
     ROTATE_DIRECTION_RIGHT
 };
 
-// assume it is 25 yard per 0.4 second
-#define SPEED_CHARGE    72.0f
+// assume it is 25 yard per 0.8 second
+#define SPEED_CHARGE    32.0f
 
 class MotionMaster //: private std::stack<MovementGenerator *>
 {
