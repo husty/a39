@@ -465,7 +465,8 @@ void PathGenerator::BuildPointPath(const float *startPoint, const float *endPoin
         if (Dist3DSqr(GetActualEndPosition(), GetEndPosition()) < 0.3f * Dist3DSqr(GetStartPosition(), GetEndPosition()))
         {
             SetActualEndPosition(GetEndPosition());
-            _pathPoints[_pathPoints.size()-1] = GetEndPosition();
+			BuildShortcut(); 
+            //_pathPoints[_pathPoints.size()-1] = GetEndPosition();
         }
         else
         {
@@ -486,7 +487,7 @@ void PathGenerator::BuildPointPath(const float *startPoint, const float *endPoin
               //  Path X,y,z 1# END 
 		        Clear();
                 _pathPoints.resize(4);
-		         _pathPoints[0] = GetStartPosition();
+		        _pathPoints[0] = GetStartPosition();
                 _pathPoints[1] = G3D::Vector3(6236.567836f, 258.339106f, 11.500018f);
                 _pathPoints[2] = G3D::Vector3(6229.818836f, 252.049106f, 11.500018f);
                 _pathPoints[3] = GetEndPosition();
@@ -495,11 +496,10 @@ void PathGenerator::BuildPointPath(const float *startPoint, const float *endPoin
             {
                 //  Path X,y,z 1# Start 
 		        Clear();
-				_type = PathType(PATHFIND_DEBUG | PATHFIND_DEBUG);
 				_polyLength = 4;
                 _pathPoints.resize(4);
                 _pathPoints[0] = GetStartPosition();
-	         _pathPoints[1] = G3D::Vector3(6229.818836f, 252.049106f, 11.500018f);
+	            _pathPoints[1] = G3D::Vector3(6229.818836f, 252.049106f, 11.500018f);
                 _pathPoints[2] = G3D::Vector3(6236.567836f, 258.339106f, 11.500018f);
                 _pathPoints[3] = GetEndPosition();
             }
@@ -511,7 +511,7 @@ void PathGenerator::BuildPointPath(const float *startPoint, const float *endPoin
                 _pathPoints[0] = GetStartPosition();
                 _pathPoints[1] = G3D::Vector3(6246.324219f, 271.570000f, 11.300000f);
                 _pathPoints[2] = G3D::Vector3(6242.942484f, 267.210030f, 11.280000f);
-		  _pathPoints[3] = G3D::Vector3(6241.539484f, 265.441030f, 11.280000f);
+		        _pathPoints[3] = G3D::Vector3(6241.539484f, 265.441030f, 11.280000f);
                 _pathPoints[4] = GetEndPosition();
             } 
 	      else if (startEndDist < 3000.0f && endPoint[1] >= 9.000000f && endPoint[2] >= 6242.185660f && endPoint[2] <= 6254.611660f && endPoint[0] >= 266.757917f && endPoint[0] <= 279.558794f) // northwest pillar
@@ -520,7 +520,7 @@ void PathGenerator::BuildPointPath(const float *startPoint, const float *endPoin
 		        Clear();
                 _pathPoints.resize(5);
                 _pathPoints[0] = GetStartPosition();
-		  _pathPoints[1] = G3D::Vector3(6241.539484f, 265.441030f, 11.280000f);
+		        _pathPoints[1] = G3D::Vector3(6241.539484f, 265.441030f, 11.280000f);
                 _pathPoints[2] = G3D::Vector3(6242.942484f, 267.210030f, 11.280000f);
                 _pathPoints[3] = G3D::Vector3(6246.324219f, 271.570000f, 11.300000f);
                 _pathPoints[4] = GetEndPosition();

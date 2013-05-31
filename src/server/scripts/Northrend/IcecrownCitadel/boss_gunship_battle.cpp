@@ -950,13 +950,13 @@ class npc_muradin_gunship : public CreatureScript
                         ++RocketerDieCount; 
                         if(RocketerDieCount == RocketerCount)
 							if(_instance->GetBossState(DATA_GUNSHIP_EVENT) != DONE)
-                            events.ScheduleEvent(EVENT_RESPAWN_ROCKETEER, 60000);
+                            events.ScheduleEvent(EVENT_RESPAWN_ROCKETEER, 45000);
                         break;
                     case ACTION_AXES_RIFL_DIE:
                         ++RiflDieCount;
                         if(RiflDieCount == RiflCount)
 							if(_instance->GetBossState(DATA_GUNSHIP_EVENT) != DONE)
-                            events.ScheduleEvent(EVENT_RESPAWN_AXES_RIFLEMEN, 60000);
+                            events.ScheduleEvent(EVENT_RESPAWN_AXES_RIFLEMEN, 45000);
                         break;
                 }
             }

@@ -33,7 +33,7 @@ class Unit;
 #define MAX_POINT_PATH_LENGTH   82
 
 #define SMOOTH_PATH_STEP_SIZE   4.0f
-#define SMOOTH_PATH_SLOP        0.3f
+#define SMOOTH_PATH_SLOP        0.4f
 
 #define VERTEX_SIZE       3
 #define INVALID_POLYREF   0
@@ -47,7 +47,6 @@ enum PathType
     PATHFIND_NOPATH         = 0x08,   // no valid path at all or error in generating one
     PATHFIND_NOT_USING_PATH = 0x10,   // used when we are either flying/swiming or on map w/o mmaps
     PATHFIND_SHORT          = 0x20,   // path is longer or equal to its limited path length
-	PATHFIND_DEBUG          = 0x40,   // path is longer or equal to its limited path length
 };
 
 class PathGenerator
