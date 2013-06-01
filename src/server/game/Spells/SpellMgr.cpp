@@ -3281,7 +3281,7 @@ void SpellMgr::LoadDbcDataCorrections()
                 spellInfo->Stances = 1 << (FORM_TREE - 1);
                 break;
 	     case 49575: // Deathgrip Speed Hackfix
-	         spellInfo->EffectMiscValueB[0] = 70;
+	         spellInfo->EffectMiscValueB[0] = 50;
 		   break;
             case 51466: // Elemental Oath (Rank 1)
             case 51470: // Elemental Oath (Rank 2)

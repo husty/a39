@@ -72,13 +72,6 @@ class arena_spectator_commands : public CommandScript
                 return false;
             }
 
-			if (target && (target->HasAura(32728) || target->HasAura(32727)) && UsingGossip == 0) // Check Arena Preparation thx XXsupr
-            {
-                handler->PSendSysMessage("Cant do that. Arena didn`t started.");
-                handler->SetSentErrorMessage(true);
-                return false;
-            }
-
             if (player->GetPet())
             {
                 handler->PSendSysMessage("You must hide your pet.");
