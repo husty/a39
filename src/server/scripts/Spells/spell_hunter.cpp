@@ -354,7 +354,7 @@ public:
         PrepareSpellScript(spell_hun_masters_call_SpellScript)
         bool Validate(SpellEntry const * spellEntry)
         {
-             if (!sSpellStore.LookupEntry(HUNTER_SPELL_MASTERS_CALL_TRIGGERED))
+             if (!sSpellStore.LookupEntry(SPELL_HUNTER_MASTERS_CALL_TRIGGERED))
                  return false;
             return true;
         }
@@ -380,7 +380,7 @@ public:
 
             if (Pet *pet = caster->ToPlayer()->GetPet())
                 if (pet->isAlive())
-                    caster->CastSpell(pet, HUNTER_SPELL_MASTERS_CALL_TRIGGERED, true);
+                    caster->CastSpell(pet, SPELl_HUNTER_MASTERS_CALL_TRIGGERED, true);
         }
 
         void Register()
