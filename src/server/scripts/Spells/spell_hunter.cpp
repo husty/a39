@@ -380,7 +380,7 @@ public:
 
             if (Pet *pet = caster->ToPlayer()->GetPet())
                 if (pet->isAlive())
-                    caster->CastSpell(pet, SPELl_HUNTER_MASTERS_CALL_TRIGGERED, true);
+                    caster->CastSpell(pet, SPELL_HUNTER_MASTERS_CALL_TRIGGERED, true);
         }
 
         void Register()
