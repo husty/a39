@@ -599,6 +599,6 @@ void CharacterDatabaseConnection::DoPrepareStatements()
     PrepareStatement(CHAR_DEL_CHAR_PET_BY_SLOT, "DELETE FROM character_pet WHERE owner = ? AND (slot = ? OR slot > ?)", CONNECTION_ASYNC);
 	
 	// Armory Data
-	PrepareStatement(CHAR_DEL_ARMORY_DATA, "DELETE FROM armory_character_stats WHERE guid = '%u'", CONNECTION_ASYNC);
-	PrepareStatement(CHAR_DEL_ARMORY_FEED, "DELETE FROM character_feed_log WHERE guid = '%u'", CONNECTION_ASYNC);
+	PrepareStatement(CHAR_DEL_ARMORY_DATA, "DELETE FROM armory_character_stats WHERE guid = ?", CONNECTION_ASYNC);
+	PrepareStatement(CHAR_DEL_ARMORY_FEED, "DELETE FROM character_feed_log WHERE guid = ?", CONNECTION_ASYNC);
 }
