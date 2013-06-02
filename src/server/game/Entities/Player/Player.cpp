@@ -5122,8 +5122,13 @@ void Player::DeleteFromDB(uint64 playerguid, uint32 accountId, bool updateRealmC
             stmt->setUInt32(0, guid);
             trans->Append(stmt);
 			
-            trans->Append("DELETE FROM armory_character_stats WHERE guid = '%u'", guid);
-            trans->Append("DELETE FROM character_feed_log WHERE guid = '%u'", guid);
+			stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_ARMORY_FEED);
+			stmt->setUInt32(0, guid);
+            trans->Append(stmt);
+			
+			stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_ARMORY_DATA);
+			stmt->setUInt32(0, guid);
+            trans->Append(stmt);
 
             CharacterDatabase.CommitTransaction(trans);
             break;

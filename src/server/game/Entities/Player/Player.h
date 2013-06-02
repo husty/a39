@@ -1059,7 +1059,7 @@ private:
     bool _isPvP;
 };
 
-+/* World of Warcraft Armory */
+/* World of Warcraft Armory */
 struct WowarmoryFeedEntry {
     uint32 guid;         // Player GUID
     time_t date;         // Log date
@@ -1067,8 +1067,8 @@ struct WowarmoryFeedEntry {
     uint32 data;         // TYPE_ITEM_FEED: item_entry, TYPE_BOSS_FEED: creature_entry
     uint32 item_guid;    // Can be 0
     uint32 item_quality; // Can be 0
-    uint8  difficulty;   // Can be 0
-    int    counter;      // Can be 0
+    uint8 difficulty;   // Can be 0
+    int counter;      // Can be 0
 };
 
 typedef std::vector<WowarmoryFeedEntry> WowarmoryFeeds;

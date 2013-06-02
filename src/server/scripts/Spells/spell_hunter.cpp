@@ -346,59 +346,53 @@ class spell_hun_last_stand_pet : public SpellScriptLoader
 // 53271 - Masters Call
 class spell_hun_masters_call : public SpellScriptLoader
 {
-    public:
-        spell_hun_masters_call() : SpellScriptLoader("spell_hun_masters_call") { }
+public:
+    spell_hun_masters_call() : SpellScriptLoader("spell_hun_masters_call") { }
 
-        class spell_hun_masters_call_SpellScript : public SpellScript
+    class spell_hun_masters_call_SpellScript : public SpellScript
+    {
+        PrepareSpellScript(spell_hun_masters_call_SpellScript)
+        bool Validate(SpellEntry const * spellEntry)
         {
-            PrepareSpellScript(spell_hun_masters_call_SpellScript);
-
-            bool Validate(SpellInfo const* spellInfo)
-            {
-                if (!sSpellMgr->GetSpellInfo(SPELL_HUNTER_MASTERS_CALL_TRIGGERED) || !sSpellMgr->GetSpellInfo(spellInfo->Effects[EFFECT_0].CalcValue()) || !sSpellMgr->GetSpellInfo(spellInfo->Effects[EFFECT_1].CalcValue()))
-                    return false;
-                return true;
-            }
-
-            void HandleDummy(SpellEffIndex /*effIndex*/)
-            {
-                if (Unit* ally = GetHitUnit())
-                    if (Player* caster = GetCaster()->ToPlayer())
-					{
-					  caster->CastSpell(caster, SPELL_HUNTER_MASTERS_CALL_TRIGGERED, true);
-                        if (Pet* target = caster->GetPet())
-                        {
-						    if (target->isAlive())
-							{
-								TriggerCastFlags castMask = TriggerCastFlags(TRIGGERED_FULL_MASK & ~TRIGGERED_IGNORE_CASTER_AURASTATE);
-								target->CastSpell(ally, GetEffectValue(), castMask);
-								target->CastSpell(ally, GetSpellInfo()->Effects[EFFECT_0].CalcValue(), castMask);
-							}
-                        }
-					}
-            }
-
-            void HandleScriptEffect(SpellEffIndex /*effIndex*/)
-            {
-                if (Unit* target = GetHitUnit())
-                {
-                    // Cannot be processed while pet is dead
-                    TriggerCastFlags castMask = TriggerCastFlags(TRIGGERED_FULL_MASK & ~TRIGGERED_IGNORE_CASTER_AURASTATE);
-                    target->CastSpell(target, SPELL_HUNTER_MASTERS_CALL_TRIGGERED, castMask);
-                }
-            }
-
-            void Register()
-            {
-                OnEffectHitTarget += SpellEffectFn(spell_hun_masters_call_SpellScript::HandleDummy, EFFECT_0, SPELL_EFFECT_DUMMY);
-                OnEffectHitTarget += SpellEffectFn(spell_hun_masters_call_SpellScript::HandleScriptEffect, EFFECT_1, SPELL_EFFECT_SCRIPT_EFFECT);
-            }
-        };
-
-        SpellScript* GetSpellScript() const
-        {
-            return new spell_hun_masters_call_SpellScript();
+             if (!sSpellStore.LookupEntry(HUNTER_SPELL_MASTERS_CALL_TRIGGERED))
+                 return false;
+            return true;
         }
+
+        void HandleDummy(SpellEffIndex effIndex)
+        {
+            Unit *caster = GetCaster();
+            Unit *unitTarget = GetHitUnit();
+
+            if (caster->GetTypeId() != TYPEID_PLAYER || !unitTarget)
+                return;
+
+            if (Pet *pet = caster->ToPlayer()->GetPet())
+                if (pet->isAlive())
+                    pet->CastSpell(unitTarget, GetSpellInfo()->Effects[effIndex].CalcValue(), true);
+        }
+
+        void HandleScriptEffect(SpellEffIndex /*effIndex*/)
+        {
+            Unit* caster = GetCaster();
+            if (caster->GetTypeId() != TYPEID_PLAYER)
+                return;
+
+            if (Pet *pet = caster->ToPlayer()->GetPet())
+                if (pet->isAlive())
+                    caster->CastSpell(pet, HUNTER_SPELL_MASTERS_CALL_TRIGGERED, true);
+        }
+
+        void Register()
+        {
+            OnEffectHitTarget += SpellEffectFn(spell_hun_masters_call_SpellScript::HandleDummy, EFFECT_0, SPELL_EFFECT_DUMMY);
+        }
+    };
+
+    SpellScript* GetSpellScript() const
+    {
+        return new spell_hun_masters_call_SpellScript();
+    }
 };
 
 // 34477 - Misdirection
