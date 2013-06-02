@@ -23,7 +23,7 @@ class npc_change : public CreatureScript
 				    player->ADD_GOSSIP_ITEM( 0, "10 Mark -> 25 Arena Pointu"                                   , GOSSIP_SENDER_MAIN, 2);
 				    player->ADD_GOSSIP_ITEM( 0, "10 BOJ -> 1 Mark"                                             , GOSSIP_SENDER_MAIN, 3);
 				    player->ADD_GOSSIP_ITEM( 0, "2 Mark -> 1 EoT"                                              , GOSSIP_SENDER_MAIN, 4);
-				    player->ADD_GOSSIP_ITEM( 0, "4 Mark -> 5000 Honor"                                         , GOSSIP_SENDER_MAIN, 5);
+				    player->ADD_GOSSIP_ITEM( 0, "2 Mark -> 5000 Honor"                                         , GOSSIP_SENDER_MAIN, 5);
 				    player->ADD_GOSSIP_ITEM( 0, "1 Mark -> 10 BoJ"                                             , GOSSIP_SENDER_MAIN, 6);
 				    player->ADD_GOSSIP_ITEM( 0, "1 Mark -> 10 Wood(GH MARK)"                                   , GOSSIP_SENDER_MAIN, 7);
 				    player->ADD_GOSSIP_ITEM( 0, "1 Mark -> 1 Metal(GH MARK)"                                   , GOSSIP_SENDER_MAIN, 8);
@@ -130,11 +130,11 @@ class npc_change : public CreatureScript
                         break;
 
                     case 5:
-					    if (player->HasItemCount(19322, 4, true))
+					    if (player->HasItemCount(19322, 2, true))
 						{
 
 							player->ModifyHonorPoints(+5000);							
-							player->DestroyItemCount(19322, 4, true);
+							player->DestroyItemCount(19322, 2, true);
 							_creature->MonsterWhisper("Chance Succesful!", player->GetGUID());
 							player->CLOSE_GOSSIP_MENU();
 

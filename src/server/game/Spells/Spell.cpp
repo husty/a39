@@ -2648,7 +2648,7 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 			{			
 				float resistChance = int16(unit->GetResistance(SpellSchoolMask(m_spellInfo->SchoolMask)));
 				int16 SpellPenetration = 0;
-				if (resistChance && !(m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_NORMAL))
+				if (resistChance && !(m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_NORMAL) && !(m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_HOLY))
 				{
 					if (m_caster->GetTypeId() == TYPEID_PLAYER)
 						SpellPenetration = float(m_caster->ToPlayer()->GetSpellPenetration(SpellSchoolMask(m_spellInfo->SchoolMask)));
@@ -2703,7 +2703,7 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 		{			
 			int32 resistChance = unit->GetResistance(SpellSchoolMask(m_spellInfo->SchoolMask));
  			int16 SpellPenetration = 0;
-			if (resistChance && !(m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_NORMAL))
+			if (resistChance && !(m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_NORMAL) && !(m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_HOLY))
 			{
 				if (m_caster->GetTypeId() == TYPEID_PLAYER)
                 	SpellPenetration = float(m_caster->ToPlayer()->GetSpellPenetration(SpellSchoolMask(m_spellInfo->SchoolMask)));
