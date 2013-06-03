@@ -390,8 +390,9 @@ public:
             Unit* caster = GetCaster();
             if (caster->GetTypeId() != TYPEID_PLAYER)
                 return;
-
-            caster->CastSpell(pet, SPELL_HUNTER_MASTERS_CALL_TRIGGERED, true);
+				
+            if (Pet *pet = caster->ToPlayer()->GetPet())
+                caster->CastSpell(pet, SPELL_HUNTER_MASTERS_CALL_TRIGGERED, true);
         }
 
         void Register()
