@@ -330,8 +330,7 @@ void BattlegroundWS::EventPlayerCapturedFlag(Player* Source)
         SendMessageToAll(LANG_BG_WS_CAPTURED_AF, CHAT_MSG_BG_SYSTEM_HORDE, Source);
 
     UpdateFlagState(Source->GetBGTeam(), 1);                  // flag state none
-    UpdateTeamScore(Source->GetTeamId());
-    UpdateTeamScore(Source->GetBGTeam());
+    UpdateTeamScore(Source->GetTeamId(Source->GetBGTeam()));
     // only flag capture should be updated
     UpdatePlayerScore(Source, SCORE_FLAG_CAPTURES, 1);      // +1 flag captures
 
@@ -607,10 +606,11 @@ void BattlegroundWS::UpdateFlagState(uint32 team, uint32 value)
 
 void BattlegroundWS::UpdateTeamScore(uint32 team)
 {
+
     if (team == TEAM_ALLIANCE)
-        UpdateWorldState(BG_WS_FLAG_CAPTURES_ALLIANCE, GetTeamScore(team));
+        UpdateWorldState(BG_WS_FLAG_CAPTURES_ALLIANCE, GetTeamScore(TEAM_ALLIANCE));
     else
-        UpdateWorldState(BG_WS_FLAG_CAPTURES_HORDE, GetTeamScore(team));
+        UpdateWorldState(BG_WS_FLAG_CAPTURES_HORDE, GetTeamScore(TEAM_HORDE));
 }
 
 void BattlegroundWS::HandleAreaTrigger(Player* player, uint32 trigger)

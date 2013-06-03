@@ -358,6 +358,20 @@ public:
                  return false;
             return true;
         }
+		
+        SpellCastResult CheckCast()
+        {
+            Unit* caster = GetCaster();
+			if (Pet *pet = caster->ToPlayer()->GetPet())
+			{
+				if (!pet->isAlive())
+				    return SPELL_FAILED_BAD_TARGETS;
+			}
+			else 
+				return SPELL_FAILED_BAD_TARGETS; 
+
+            return SPELL_CAST_OK;
+        }
 
         void HandleDummy(SpellEffIndex effIndex)
         {
@@ -368,8 +382,7 @@ public:
                 return;
 
             if (Pet *pet = caster->ToPlayer()->GetPet())
-                if (pet->isAlive())
-                    pet->CastSpell(unitTarget, GetSpellInfo()->Effects[effIndex].CalcValue(), true);
+                pet->CastSpell(unitTarget, GetSpellInfo()->Effects[effIndex].CalcValue(), true);
         }
 
         void HandleScriptEffect(SpellEffIndex /*effIndex*/)
@@ -378,14 +391,13 @@ public:
             if (caster->GetTypeId() != TYPEID_PLAYER)
                 return;
 
-            if (Pet *pet = caster->ToPlayer()->GetPet())
-                if (pet->isAlive())
-                    caster->CastSpell(pet, SPELL_HUNTER_MASTERS_CALL_TRIGGERED, true);
+            caster->CastSpell(pet, SPELL_HUNTER_MASTERS_CALL_TRIGGERED, true);
         }
 
         void Register()
         {
-            OnEffectHitTarget += SpellEffectFn(spell_hun_masters_call_SpellScript::HandleDummy, EFFECT_0, SPELL_EFFECT_DUMMY);
+			OnCheckCast += SpellCheckCastFn(spell_hun_masters_call_SpellScript::CheckCast);
+			OnEffectHitTarget += SpellEffectFn(spell_hun_masters_call_SpellScript::HandleDummy, EFFECT_0, SPELL_EFFECT_DUMMY);
         }
     };
 
