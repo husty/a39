@@ -833,18 +833,34 @@ void Spell::EffectTriggerSpell(SpellEffIndex effIndex)
             }
 
           case 35009: // Invisible
-		   m_caster->CombatStop();
-		      return;
+		  {
+				m_caster->CombatStop();
+				m_caster->SetInCombatState(false, m_caster);
+				break;
+		  }
 
           case 62196: // Shadow. Trigger
              m_caster->CombatStop();
 			 m_caster->SetInCombatState(false, m_caster);
-             return;
+		   break;
 
           case 58984: // Shadowmeld
-             m_caster->CombatStop();
-	         m_caster->SetInCombatState(false, m_caster);
-             return;
+		  {		m_caster->CombatStop();
+				m_caster->SetInCombatState(false, m_caster);
+				m_caster->InterruptSpell(CURRENT_AUTOREPEAT_SPELL); // break Auto Shot and autohit
+				unitTarget->InterruptSpell(CURRENT_CHANNELED_SPELL);  // break channeled spells
+				m_caster->AttackStop();
+				m_caster->CombatStop();
+				break;
+		  }
+		  case 1857: // Vanish
+		  {
+		        m_caster->InterruptSpell(CURRENT_AUTOREPEAT_SPELL); // break Auto Shot and autohit
+                unitTarget->InterruptSpell(CURRENT_CHANNELED_SPELL);  // break channeled spells
+				m_caster->AttackStop();
+                m_caster->CombatStop();
+		        break;
+		  }
 
             // Vanish (not exist)
             case 18461:
