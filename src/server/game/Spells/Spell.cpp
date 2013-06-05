@@ -5705,7 +5705,7 @@ SpellCastResult Spell::CheckPetCast(Unit* target)
 uint32 Spell::GetCCDelay(SpellInfo const* _spell)
 {
     AuraType auraWithCCD[] = {
-		SPELL_AURA_MOD_STUN,
+        SPELL_AURA_MOD_STUN,
 		SPELL_AURA_MOD_CONFUSE,
 		SPELL_AURA_MOD_FEAR,
 		SPELL_AURA_MOD_DISARM,
@@ -5728,7 +5728,13 @@ uint32 Spell::GetCCDelay(SpellInfo const* _spell)
             if (_spell->SpellFamilyFlags[0] & 0x8 ||      // Frozen trap
 				_spell->Id == 57879 || _spell->Id == 49886 ||                 // Snake Trap
                 _spell->SpellFamilyFlags[2] & 0x00024000) // Explosive and Immolation Trap
-                return 140;
+                return 0;
+			// Freezing Arrow
+			if (_spell->Id == 60210)
+			    return 0;
+			// Freezing Traps
+			if (_spell->Id == 3355 || _spell->Id == 14308 || _spell->Id == 14309 || _spell->Id == 31932 || _spell->Id == 43448 || _spell->Id == 43415 || _spell->Id == 55041)
+			    return 0;
             // Entrapment
             if (_spell->SpellIconID == 20)
                 return 0;
