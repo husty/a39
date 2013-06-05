@@ -5718,23 +5718,13 @@ uint32 Spell::GetCCDelay(SpellInfo const* _spell)
     const uint32 delayForInstantSpellsShort = 50;
 
 	for (uint8 i = 0; i < CCDArraySize; ++i)
-       if (_spell->HasAura(auraWithCCD[i]))
+       if (_spell->HasAura(auraWithCCD[i]) && 
+	   !(_spell->Id == 3355 || _spell->Id == 14308 || _spell->Id == 14309 || _spell->Id == 31932 || _spell->Id == 43448 || _spell->Id == 43415 || _spell->Id == 55041 || _spell->Id == 60210)) // Freezing Traps Delay bug
            return delayForInstantSpells;
 
     switch(_spell->SpellFamilyName)
     {
         case SPELLFAMILY_HUNTER:
-            // Traps
-            if (_spell->SpellFamilyFlags[0] & 0x8 ||      // Frozen trap
-				_spell->Id == 57879 || _spell->Id == 49886 ||                 // Snake Trap
-                _spell->SpellFamilyFlags[2] & 0x00024000) // Explosive and Immolation Trap
-                return 0;
-			// Freezing Arrow
-			if (_spell->Id == 60210)
-			    return 0;
-			// Freezing Traps
-			if (_spell->Id == 3355 || _spell->Id == 14308 || _spell->Id == 14309 || _spell->Id == 31932 || _spell->Id == 43448 || _spell->Id == 43415 || _spell->Id == 55041)
-			    return 0;
             // Entrapment
             if (_spell->SpellIconID == 20)
                 return 0;
