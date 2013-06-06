@@ -2661,7 +2661,7 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 						resistChance = -1;
 					else
 					{
-						resistChance = int16((resistChance / 69) * 1000); // Resist Chance Formular 130 Resist -> 18,31% 
+						resistChance = int16((resistChance / 80) * 1000); // Resist Chance Formular 130 Resist -> 14,31% 
 				   
 						if (resistChance > 10000) // Resist can't be higher than 100% 
 							resistChance = 10000;
@@ -2716,7 +2716,7 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 					resistChance = -1;
 				else
 			    {
-				    resistChance = int16((resistChance / 69) * 1000); // Resist Chance Formular 130 Resist -> 18,31% 
+				    resistChance = int16((resistChance / 80) * 1000); // Resist Chance Formular 130 Resist -> 14,31% 
 				   
 					if (resistChance > 10000) // Resist Can't be higher than 100% 
 						resistChance = 10000;

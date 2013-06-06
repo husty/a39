@@ -2941,7 +2941,7 @@ void Player::SetGameMaster(bool on)
 {
     if (on)
     {
-        m_ExtraFlags |= PLAYER_EXTRA_GM_ON;
+        m_ExtraFlags |= PLAYER_EXTRA_GM_ON
         setFaction(35);
         SetFlag(PLAYER_FLAGS, PLAYER_FLAGS_GM);
         SetFlag(UNIT_FIELD_FLAGS_2, UNIT_FLAG2_ALLOW_CHEAT_SPELLS);
