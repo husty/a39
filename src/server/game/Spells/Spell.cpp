@@ -2644,11 +2644,11 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
                 unit->RemoveAurasByType(SPELL_AURA_MOD_STEALTH);
 				
 			// Binary Resistance System by Saqirmdev
-			if (unit->GetTypeId() == TYPEID_PLAYER && (m_caster->GetTypeId() == TYPEID_PLAYER || m_caster->ToCreature()->isPet()) && m_spellInfo->AttributesCu & SPELL_ATTR0_CU_CAN_RESIST)
+			if (unit->GetTypeId() == TYPEID_PLAYER && (m_caster->GetTypeId() == TYPEID_PLAYER || m_caster->ToCreature()->isPet()) && !((m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_NORMAL) || (m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_HOLY)))
 			{			
-				float resistChance = int16(unit->GetResistance(SpellSchoolMask(m_spellInfo->SchoolMask)));
+				int32 resistChance = unit->GetResistance(SpellSchoolMask(m_spellInfo->SchoolMask));
 				int16 SpellPenetration = 0;
-				if (resistChance && !(m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_NORMAL) && !(m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_HOLY))
+				if (resistChance &&  m_spellInfo->AttributesCu & SPELL_ATTR0_CU_CAN_RESIST)
 				{
 					if (m_caster->GetTypeId() == TYPEID_PLAYER)
 						SpellPenetration = float(m_caster->ToPlayer()->GetSpellPenetration(SpellSchoolMask(m_spellInfo->SchoolMask)));
@@ -2699,11 +2699,11 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 	else if (!m_spellInfo->IsPositive())
 	{
 		// Binary Resistance System by Saqirmdev
-	    if (unit->GetTypeId() == TYPEID_PLAYER && (m_caster->GetTypeId() == TYPEID_PLAYER || m_caster->ToCreature()->isPet()) && m_spellInfo->AttributesCu & SPELL_ATTR0_CU_CAN_RESIST)
+	    if (unit->GetTypeId() == TYPEID_PLAYER && (m_caster->GetTypeId() == TYPEID_PLAYER || m_caster->ToCreature()->isPet()) && !((m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_NORMAL) || (m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_HOLY)))
 		{			
 			int32 resistChance = unit->GetResistance(SpellSchoolMask(m_spellInfo->SchoolMask));
  			int16 SpellPenetration = 0;
-			if (resistChance && !(m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_NORMAL) && !(m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_HOLY))
+			if (resistChance &&  m_spellInfo->AttributesCu & SPELL_ATTR0_CU_CAN_RESIST)
 			{
 				if (m_caster->GetTypeId() == TYPEID_PLAYER)
                 	SpellPenetration = float(m_caster->ToPlayer()->GetSpellPenetration(SpellSchoolMask(m_spellInfo->SchoolMask)));
@@ -5718,7 +5718,7 @@ uint32 Spell::GetCCDelay(SpellInfo const* _spell)
     const uint32 delayForInstantSpellsShort = 50;
 	
 	if (_spell->Id == 3355 || _spell->Id == 14308 || _spell->Id == 14309 || _spell->Id == 31932 || _spell->Id == 43448 || _spell->Id == 43415 || _spell->Id == 55041 || _spell->Id == 60210)
-        return; 
+        return 0; 
 
     switch(_spell->SpellFamilyName)
     {
