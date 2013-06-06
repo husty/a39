@@ -352,9 +352,10 @@ public:
     class spell_hun_masters_call_SpellScript : public SpellScript
     {
         PrepareSpellScript(spell_hun_masters_call_SpellScript)
-        bool Validate(SpellEntry const * spellEntry)
+		
+        bool Validate(SpellInfo const* /*spellInfo*/)
         {
-             if (!sSpellStore.LookupEntry(SPELL_HUNTER_MASTERS_CALL_TRIGGERED))
+             if (!sSpellMgr->GetSpellInfo(SPELL_HUNTER_MASTERS_CALL_TRIGGERED))
                  return false;
             return true;
         }

@@ -2855,7 +2855,6 @@ void Player::SetSpectate(bool on)
         SetSpeed(MOVE_RUN, 5.0);
         spectatorFlag = true;
 
-        m_ExtraFlags |= PLAYER_EXTRA_GM_ON;
         setFaction(35);
 		SetGMVisible(false);
 		SetGameMaster(true);
@@ -2887,7 +2886,6 @@ void Player::SetSpectate(bool on)
 
         SetPhaseMask(newPhase, false);
 
-        m_ExtraFlags &= ~ PLAYER_EXTRA_GM_ON;
         setFactionForRace(getRace());
         RemoveFlag(PLAYER_FLAGS, PLAYER_FLAGS_GM);
         RemoveFlag(UNIT_FIELD_FLAGS_2, UNIT_FLAG2_ALLOW_CHEAT_SPELLS);
