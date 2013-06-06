@@ -3570,6 +3570,36 @@ class spell_gen_orc_disguise : public SpellScriptLoader
         }
 };
 
+class spell_stealth_trigger : public SpellScriptLoader
+{
+    public:
+        spell_stealth_trigger() : SpellScriptLoader("spell_stealth_trigger") { }
+
+        class spell_stealth_trigger_SpellScript : public SpellScript
+        {
+            PrepareSpellScript(spell_stealth_trigger_SpellScript);
+
+            void HandleDummy(SpellEffIndex effIndex)
+            {
+                Unit* caster = GetCaster();
+				caster->InterruptSpell(CURRENT_AUTOREPEAT_SPELL); // break Auto Shot and autohit	
+				caster->AttackStop();
+		  		caster->CombatStop();
+				caster->SetInCombatState(false, caster);
+            }
+
+            void Register()
+            {
+				OnEffectHitTarget += SpellEffectFn(spell_stealth_trigger_SpellScript::HandleDummy, EFFECT_0, SPELL_EFFECT_DUMMY);
+            }
+        };
+
+        SpellScript* GetSpellScript() const
+        {
+            return new spell_stealth_trigger_SpellScript();
+        }
+};
+
 void AddSC_generic_spell_scripts()
 {
     new spell_gen_absorb0_hitlimit1();
@@ -3650,4 +3680,5 @@ void AddSC_generic_spell_scripts()
     new spell_gen_replenishment();
     new spell_gen_aura_service_uniform();
     new spell_gen_orc_disguise();
+	new spell_stealth_trigger();
 }
