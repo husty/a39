@@ -5715,14 +5715,17 @@ uint32 Spell::GetCCDelay(SpellInfo const* _spell)
 	uint8 CCDArraySize = 6;
 
     const uint32 delayForInstantSpells = 124;
-    const uint32 delayForInstantSpellsShort = 50;
-	
-	if (_spell->Id == 3355 || _spell->Id == 14308 || _spell->Id == 14309 || _spell->Id == 31932 || _spell->Id == 43448 || _spell->Id == 43415 || _spell->Id == 55041 || _spell->Id == 60210)
-        return 0; 
+    const uint32 delayForInstantSpellsShort = 50; 
 
     switch(_spell->SpellFamilyName)
     {
         case SPELLFAMILY_HUNTER:
+			// Hunter Traps 
+			if (_spell->Id == 3355 || _spell->Id == 14308 || 
+			_spell->Id == 14309 || _spell->Id == 31932 ||
+			_spell->Id == 43448 || _spell->Id == 43415 || 
+			_spell->Id == 55041 || _spell->Id == 60210)
+               return 0;
             // Entrapment
             if (_spell->SpellIconID == 20)
                 return 0;
@@ -5789,7 +5792,7 @@ uint32 Spell::GetCCDelay(SpellInfo const* _spell)
                 return 0;
             break;
     }
-	
+		
 	for (uint8 i = 0; i < CCDArraySize; ++i)
        if (_spell->HasAura(auraWithCCD[i])) // Freezing Traps Delay bug
            return delayForInstantSpells;
