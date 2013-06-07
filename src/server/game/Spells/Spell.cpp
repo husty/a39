@@ -2730,11 +2730,11 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 		}
     }
 	
-        // Grounding Totem Try fix
-		if (!(m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_NORMAL) && !m_spellInfo->IsPositive() && unit->isAlive())
-		    if (Totem *totem = unit->ToTotem())
-				if (totem->GetTotemType() == TOTEM_PASSIVE && totem->GetEntry() == 5925)
-					totem->setDeathState(JUST_DIED);
+    // Grounding Totem Try fix
+	/*if (!(m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_NORMAL) && !m_spellInfo->IsPositive() && unit->isAlive())
+		if (Totem *totem = unit->ToTotem())
+			if (totem->GetTotemType() == TOTEM_PASSIVE && totem->GetEntry() == 5925)
+				totem->setDeathState(JUST_DIED);*/
 
     // Get Data Needed for Diminishing Returns, some effects may have multiple auras, so this must be done on spell hit, not aura add
     m_diminishGroup = GetDiminishingReturnsGroupForSpell(m_spellInfo, m_triggeredByAuraSpell);
@@ -6743,7 +6743,7 @@ bool Spell::CheckEffectTarget(Unit const* target, uint32 eff) const
     {
         case SPELL_EFFECT_RESURRECT_NEW:
             // player far away, maybe his corpse near?
-            if (target != m_caster && !target->IsWithinLOSInMap(m_caster))
+            if (target != m_caster && !target->IsWithinLOSInMap(m_caster) && !target->HasAura(8178))
             {
                 if (!m_targets.GetCorpseTargetGUID())
                     return false;
