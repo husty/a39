@@ -141,7 +141,7 @@ public:
 
     struct npc_guru_announcerAI : public ScriptedAI
     {
-        npc_guru_announcerAI(Creature *c) : ScriptedAI(c){}
+        npc_guru_announcerAI(Creature *c) : ScriptedAI(c) { }
 
 		uint32 timer;
 		uint32 path_count;
@@ -162,7 +162,8 @@ public:
 		bool done_5vx;
 		bool done_7vx;
 
-		void Reset(){
+		void Reset()
+		{
 			timer = 0;	
 			path_count = 1;
 			path = 0;
@@ -182,32 +183,8 @@ public:
 
 		}
 
-		void EnterCombat(Unit* who)
-		{
-			uint32 GetData(const uint32 dataId)
-			{
-				switch (dataId)
-				{
-					case 1:
-						return phase;
-						break;
-					case GURU_ACTION_2VX:
-						return done_2vx;
-						break;
-					case GURU_ACTION_3VX:
-						return done_3vx;
-						break;
-					case GURU_ACTION_5VX:
-						return done_5vx;
-						break;
-					case GURU_ACTION_7VX:
-						return done_7vx;
-						break;
-					default:
-						return 0;		
-				}
-			}
-		}
+		void EnterCombat(Unit* who)		{	}
+		
 		void SetData(uint32 uiId, const uint32 uiValue)
         {            
 			if(uiId == 1) // battle start 

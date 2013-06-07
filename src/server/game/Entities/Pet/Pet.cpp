@@ -405,9 +405,6 @@ void Pet::SavePetToDB(PetSaveMode mode)
     _SaveSpells(trans);
     _SaveSpellCooldowns(trans);
     CharacterDatabase.CommitTransaction(trans);
-	
-	if (petlevel != owner->getLevel())
-	    SetLevel(owner->getLevel());
 
     // current/stable/not_in_slot
     if (mode >= PET_SAVE_AS_CURRENT)
