@@ -323,6 +323,7 @@ void Battlefield::StartBattle()
     InvitePlayersInQueueToWar();
 
     DoPlaySoundToAll(BF_START);
+	sWorld->SendWorldText(0, "Wintergrasp Battlefield Start!");
 
     OnBattleStart();
 }
@@ -340,10 +341,16 @@ void Battlefield::EndBattle(bool endByTimer)
         SetDefenderTeam(GetAttackerTeam());
 
     if (GetDefenderTeam() == TEAM_ALLIANCE)
+	{
         DoPlaySoundToAll(BF_ALLIANCE_WINS);
+	    sWorld->SendWorldText(0, "Wintergrasp Battlefield End! Alliance Won!");
+	}
     else
+	{
         DoPlaySoundToAll(BF_HORDE_WINS);
-
+	    sWorld->SendWorldText(0, "Wintergrasp Battlefield End! Horde Won!");
+	}
+	
     OnBattleEnd(endByTimer);
 
     // Reset battlefield timer

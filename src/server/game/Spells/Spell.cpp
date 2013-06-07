@@ -2729,10 +2729,12 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 			}
 		}
     }
-	    // Undead Creatures should be immune to fear
-    if (unit->ToCreature() && unit->GetTypeId() == TYPEID_UNIT && m_spellInfo->Mechanic == MECHANIC_FEAR && m_spellInfo->Id != 10326)	
-	    if (unit->ToCreature()->GetCreatureType() == CREATURE_TYPE_UNDEAD)
-            return SPELL_MISS_IMMUNE;	   
+	
+        // Grounding Totem Try fix
+		if (!(m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_NORMAL) && !m_spellInfo->IsPositive() && unit->isAlive())
+		    if (Totem *totem = unit->ToTotem())
+				if (totem->GetTotemType() == TOTEM_PASSIVE && totem->GetEntry() == 5925)
+					totem->setDeathState(JUST_DIED);
 
     // Get Data Needed for Diminishing Returns, some effects may have multiple auras, so this must be done on spell hit, not aura add
     m_diminishGroup = GetDiminishingReturnsGroupForSpell(m_spellInfo, m_triggeredByAuraSpell);
