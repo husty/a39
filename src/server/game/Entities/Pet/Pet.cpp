@@ -405,6 +405,9 @@ void Pet::SavePetToDB(PetSaveMode mode)
     _SaveSpells(trans);
     _SaveSpellCooldowns(trans);
     CharacterDatabase.CommitTransaction(trans);
+	
+	if (petlevel != owner->getLevel())
+	    SetLevel(owner->getLevel());
 
     // current/stable/not_in_slot
     if (mode >= PET_SAVE_AS_CURRENT)
@@ -713,7 +716,7 @@ void Pet::GivePetXP(uint32 xp)
 
     uint8 maxlevel = std::min((uint8)sWorld->getIntConfig(CONFIG_MAX_PLAYER_LEVEL), GetOwner()->getLevel());
     uint8 petlevel = getLevel();
-
+	
     // If pet is detected to be at, or above(?) the players level, don't hand out XP
     if (petlevel >= maxlevel)
        return;
@@ -2038,10 +2041,8 @@ void Pet::SynchronizeLevelWithOwner()
             break;
         // can't be greater owner level
         case HUNTER_PET:
-            if (getLevel() > owner->getLevel())
+            if (getLevel() != owner->getLevel())
                 GivePetLevel(owner->getLevel());
-            /*else if (getLevel() + 5 < owner->getLevel())
-                GivePetLevel(owner->getLevel() - 5); // NO! for instant servers*/
             break;
         default:
             break;
