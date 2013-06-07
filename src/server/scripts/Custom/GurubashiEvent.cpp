@@ -182,34 +182,38 @@ public:
 
 		}
 
-		void EnterCombat(Unit* who){}
-		uint32 GetData(const uint32 dataId)
+		void EnterCombat(Unit* who)
 		{
-			switch (dataId){
-				case 1:
-					return phase;
-					break;
-				case GURU_ACTION_2VX:
-					return done_2vx;
-					break;
-				case GURU_ACTION_3VX:
-					return done_3vx;
-					break;
-				case GURU_ACTION_5VX:
-					return done_5vx;
-					break;
-				case GURU_ACTION_7VX:
-					return done_7vx;
-					break;
-				default:
-					return 0;		
+			uint32 GetData(const uint32 dataId)
+			{
+				switch (dataId)
+				{
+					case 1:
+						return phase;
+						break;
+					case GURU_ACTION_2VX:
+						return done_2vx;
+						break;
+					case GURU_ACTION_3VX:
+						return done_3vx;
+						break;
+					case GURU_ACTION_5VX:
+						return done_5vx;
+						break;
+					case GURU_ACTION_7VX:
+						return done_7vx;
+						break;
+					default:
+						return 0;		
+				}
 			}
 		}
 		void SetData(uint32 uiId, const uint32 uiValue)
         {            
 			if(uiId == 1) // battle start 
 			{
-				switch (uiValue){
+				switch (uiValue)
+				{
 					case GURU_ACTION_GO_DOWN:
 						me->SetWalk(true);
 						active = true;
@@ -271,8 +275,9 @@ public:
 
 
 			if (timer <= diff && active)
-                {
-					switch (nextAction){					
+            {
+					switch (nextAction)
+					{					
 						case GURU_GOTO_START_POSITION:
 							me->RemoveFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
 							me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
@@ -392,7 +397,7 @@ public:
 							break;
 					}
 					
-                }
+            }
                 else
                     timer -= diff;
 

@@ -207,6 +207,9 @@ bool Pet::LoadPetFromDB(Player* owner, uint32 petEntry, uint32 petnumber, bool c
     uint32 petlevel = fields[4].GetUInt16();
     SetUInt32Value(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_NONE);
     SetName(fields[8].GetString());
+	
+	if (petlevel != owner->getLevel())
+	    SetLevel(owner->getLevel());
 
     switch (getPetType())
     {
@@ -653,7 +656,7 @@ void Creature::Regenerate(Powers power)
         case POWER_ENERGY:
         {
             // For deathknight's ghoul.
-            addvalue = 20;
+            addvalue = 25;
             break;
         }
         default:
