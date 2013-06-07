@@ -1,4 +1,4 @@
-DELETE FROM `gameobject_template` WHERE entry=42000;
+DELETE FROM `gameobject_template` WHERE entry=42000;
 INSERT INTO `gameobject_template` VALUES (42000, 10, 327, 'Arena Crystal', 'PVP', '', '', 0, 0, 1.5, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', 'FastArenaCrystal', 12340);
 
 DELETE FROM `gameobject` WHERE  `id`=42000;

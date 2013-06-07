@@ -1,4 +1,4 @@
-SET @GMlevel : = 0; 
+SET @GMlevel = 0; 
 
 REPLACE INTO `command` VALUES ('utility', @GMlevel, 'Syntax: .utility');
 REPLACE INTO `command` VALUES ('utility changerace', @GMlevel, 'Syntax: .utility changerace');
