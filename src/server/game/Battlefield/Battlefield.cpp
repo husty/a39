@@ -324,8 +324,8 @@ void Battlefield::StartBattle()
     InvitePlayersInQueueToWar();
 
     DoPlaySoundToAll(BF_START);
-	std::string msg = 'Wintergrasp Battle start!';
-	sWorld->SendWorldText(LANG_AUTO_BROADCAST, msg.c_str());
+	/*std::string msg = 'Wintergrasp Battle start!';
+	sWorld->SendWorldText(LANG_AUTO_BROADCAST, msg.c_str());*/
 
     OnBattleStart();
 }
@@ -345,14 +345,14 @@ void Battlefield::EndBattle(bool endByTimer)
     if (GetDefenderTeam() == TEAM_ALLIANCE)
 	{
         DoPlaySoundToAll(BF_ALLIANCE_WINS);
-		std::string msg = 'Wintergrasp Battlefield End! Alliance Won!';
-	    sWorld->SendWorldText(LANG_AUTO_BROADCAST, msg.c_str());
+		/*std::string msg = 'Wintergrasp Battlefield End! Alliance Won!';
+	    sWorld->SendWorldText(LANG_AUTO_BROADCAST, msg.c_str());*/
 	}
     else
 	{
         DoPlaySoundToAll(BF_HORDE_WINS);
-		std::string msg = 'Wintergrasp Battlefield End! Horde Won!';
-	    sWorld->SendWorldText(LANG_AUTO_BROADCAST, msg.c_str());
+		/*std::string msg = 'Wintergrasp Battlefield End! Horde Won!';
+	    sWorld->SendWorldText(LANG_AUTO_BROADCAST, msg.c_str());*/
 	}
 	
     OnBattleEnd(endByTimer);
