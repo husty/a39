@@ -24,11 +24,8 @@
 #include "MoveSplineInit.h"
 #include "MoveSpline.h"
 #include "Player.h"
-<<<<<<< HEAD
 #include "MotionMaster.h"
-=======
 #include "CreatureGroups.h"
->>>>>>> 88bbff2236d105bd17d7bc67bd915159c3e9a054
 
 //----- Point Movement Generator
 template<class T>

@@ -16083,8 +16083,9 @@ void Unit::RemoveCharmedBy(Unit* charmer)
 }
 
 void Unit::RestoreFaction()
-{
-    if (GetTypeId() == TYPEID_PLAYER && !IsBattleground())
+{	
+    Map* map = GetMap();
+    if (GetTypeId() == TYPEID_PLAYER && !map->IsBattleground())
         ToPlayer()->setFactionForRace(getRace());
     else
     {
@@ -16103,13 +16104,15 @@ void Unit::RestoreFaction()
             setFaction((faction && faction->friendlyMask & 0x004) ? cinfo->faction_H : cinfo->faction_A);
         }
     }
-	
-	if (GetTypeId() == TYPEID_PLAYER && IsBattleground() && !isArena())
-    {
-	    if (GetBGTeam() && GetBGTeam() == ALLIANCE)
-	        ToPlayer()->setFaction(1);
-        else if (GetBGTeam() && GetBGTeam() == HORDE)
-	        ToPlayer()->setFaction(2);
+	if (Battleground* bg = ToPlayer()->GetBattleground())
+	{
+		if (GetTypeId() == TYPEID_PLAYER && map->IsBattleground() && !bg->isArena())
+		{
+			if (ToPlayer()->GetBGTeam() && ToPlayer()->GetBGTeam() == ALLIANCE)
+				ToPlayer()->setFaction(1);
+			else if (ToPlayer()->GetBGTeam() && ToPlayer()->GetBGTeam() == HORDE)
+				ToPlayer()->setFaction(2);
+		}
 	}
 }
 
