@@ -16084,7 +16084,7 @@ void Unit::RemoveCharmedBy(Unit* charmer)
 
 void Unit::RestoreFaction()
 {	
-    if (GetTypeId() == TYPEID_PLAYER && !map->IsBattleground())
+    if (GetTypeId() == TYPEID_PLAYER)
         ToPlayer()->setFactionForRace(getRace());
     else
     {
