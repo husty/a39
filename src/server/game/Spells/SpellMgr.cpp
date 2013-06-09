@@ -3108,6 +3108,10 @@ void SpellMgr::LoadDbcDataCorrections()
                 spellInfo->EffectRadiusIndex[0] = EFFECT_RADIUS_10_YARDS; // 10yds
 			    spellInfo->EffectRadiusIndex[1] = EFFECT_RADIUS_10_YARDS; // 10yds
                 break;
+			case 68645: // Rocket Pack (Problem with Range)
+			    spellInfo->EffectRadiusIndex[0] = EFFECT_RADIUS_200_YARDS; // 200yards 
+				spellInfo->rangeIndex = 13; // 200yd
+				break;
             case 42818: // Headless Horseman - Wisp Flight Port
             case 42821: // Headless Horseman - Wisp Flight Missile
                 spellInfo->rangeIndex = 6; // 100 yards
