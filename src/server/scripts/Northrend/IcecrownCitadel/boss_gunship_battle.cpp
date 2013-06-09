@@ -1876,6 +1876,8 @@ class npc_gunship_cannon : public CreatureScript
                 }
             }
 
+			private:
+			    InstanceScript* _instance;
         };
 
         CreatureAI* GetAI(Creature* pCreature) const
@@ -2203,7 +2205,7 @@ class npc_saurfang_gunship : public CreatureScript
                         break;
                      case ACTION_ROCK_DIE:
                         ++RocketerDieCount;
-						 if (_instance->GetBossState(DATA_GUNSHIP_EVENT) == IN_PROGRES
+						 if (_instance->GetBossState(DATA_GUNSHIP_EVENT) == IN_PROGRESS)
                             events.ScheduleEvent(EVENT_RESPAWN_ROCKETEER, 60000);
                          break;
                      case ACTION_AXES_RIFL_DIE:
