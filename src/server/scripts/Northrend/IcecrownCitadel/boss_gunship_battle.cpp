@@ -824,7 +824,7 @@ class npc_muradin_gunship : public CreatureScript
             {
                 if (_instance->GetBossState(DATA_GUNSHIP_EVENT) == IN_PROGRESS)
                     return;
-                me->SetReactState(REACT_PASSIVE);
+                me->SetReactState(REACT_AGGRESSIVE);
                 me->setFaction(1802);
                 events.Reset();
                 map = me->GetMap();
@@ -855,14 +855,6 @@ class npc_muradin_gunship : public CreatureScript
                     for (Map::PlayerList::const_iterator itr = players.begin(); itr != players.end(); ++itr)
                         if (Player* player = itr->getSource())
                             player->GetSession()->SendPacket(data);
-            }
-
-            bool CanAIAttack(Unit const* target) const
-            {
-                if (target->GetEntry() == NPC_GB_KORKRON_SERGANTE || target->GetEntry() == NPC_GB_KORKRON_REAVERS)
-                    return true;
-
-                return false;
             }
 
             void DoAction(int32 action)
@@ -962,19 +954,14 @@ class npc_muradin_gunship : public CreatureScript
                 }
             }
 
-            void DamageTaken(Unit* /*attacker*/, uint32& damage)
-            {
-                if (_instance->GetData(DATA_TEAM_IN_INSTANCE) == HORDE && me->GetHealthPct() < 2.0f )
-                {
-                   damage = 0;
-                }
-                
-                if (_instance->GetData(DATA_TEAM_IN_INSTANCE) == ALLIANCE && me->GetHealthPct() < 2.0f )
-                {
-                   damage = 0;
-                   me->AI()->DoAction(ACTION_FAIL);
-                }
+            void DamageTaken(Unit* attacker, uint32 /*damage*/)
+            {    
+                if (me && _instance && _instance->GetData(DATA_TEAM_IN_INSTANCE) == HORDE && me->GetHealthPct() < 5.0f)
+                    me->AI()->DoAction(ACTION_FAIL);
+				else if (me && _instance && _instance->GetData(DATA_TEAM_IN_INSTANCE) == ALLIANCE && me->GetHealthPct() < 5.0f)
+				    me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
             }
+        
 
             void MovementInform(uint32 type, uint32 pointId)
             {
@@ -2084,7 +2071,7 @@ class npc_saurfang_gunship : public CreatureScript
             {
                 if (_instance->GetBossState(DATA_GUNSHIP_EVENT) == IN_PROGRESS)
                     return;
-                me->SetReactState(REACT_PASSIVE);
+                me->SetReactState(REACT_AGGRESSIVE);
                 me->setFaction(1801);
                 events.Reset();
                 map = me->GetMap();
@@ -2116,13 +2103,6 @@ class npc_saurfang_gunship : public CreatureScript
                             player->GetSession()->SendPacket(data);
             }
 
-            bool CanAIAttack(Unit const* target) const
-            {
-                if (target->GetEntry() == NPC_GB_SKYBREAKER_SERGANTE || target->GetEntry() == NPC_GB_SKYBREAKER_MARINE)
-                    return true;
-
-                return false;
-            }
 
             void DoAction(int32 action)
             {
@@ -2220,18 +2200,12 @@ class npc_saurfang_gunship : public CreatureScript
                  }
             }
 
-            void DamageTaken(Unit* /*attacker*/, uint32& damage)
-            {
-                if (_instance->GetData(DATA_TEAM_IN_INSTANCE) == ALLIANCE && me->GetHealthPct() < 2.0f )
-                {
-                    damage = 0;
-                }
-                
-                if (_instance->GetData(DATA_TEAM_IN_INSTANCE) == HORDE && me->GetHealthPct() < 2.0f )
-                {
-                    damage = 0;
+            void DamageTaken(Unit* attacker, uint32 /*damage*/)
+            {    
+                if (me && _instance && _instance->GetData(DATA_TEAM_IN_INSTANCE) == HORDE && me->GetHealthPct() < 5.0f)
                     me->AI()->DoAction(ACTION_FAIL);
-                }
+				else if (me && _instance && _instance->GetData(DATA_TEAM_IN_INSTANCE) == ALLIANCE && me->GetHealthPct() < 5.0f)
+				    me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
             }
 
             void MovementInform(uint32 type, uint32 pointId)
