@@ -2973,17 +2973,6 @@ public:
     };
 };
 
-
-/*######
-# npc_shadowfiend
-######*/
-enum Shadowfiend
-{
-    MANA_LEECH                       = 28305,
-    GLYPH_OF_SHADOWFIEND_MANA        = 58227,
-    GLYPH_OF_SHADOWFIEND             = 58228
-};
-
 void AddSC_npcs_special()
 {
     new npc_air_force_bots();

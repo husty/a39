@@ -30,6 +30,7 @@
 #include "CellImpl.h"
 #include "CreatureTextMgr.h"
 #include "GroupMgr.h"
+#include "Language.h"
 
 Battlefield::Battlefield()
 {
@@ -323,7 +324,8 @@ void Battlefield::StartBattle()
     InvitePlayersInQueueToWar();
 
     DoPlaySoundToAll(BF_START);
-	sWorld->SendWorldText(LANG_AUTO_BROADCAST, "Wintergrasp Battlefield Start!");
+	std::string msg = 'Wintergrasp Battle start!';
+	sWorld->SendWorldText(LANG_AUTO_BROADCAST, msg.c_str());
 
     OnBattleStart();
 }
@@ -343,12 +345,14 @@ void Battlefield::EndBattle(bool endByTimer)
     if (GetDefenderTeam() == TEAM_ALLIANCE)
 	{
         DoPlaySoundToAll(BF_ALLIANCE_WINS);
-	    sWorld->SendWorldText(LANG_AUTO_BROADCAST, "Wintergrasp Battlefield End! Alliance Won!");
+		std::string msg = 'Wintergrasp Battlefield End! Alliance Won!';
+	    sWorld->SendWorldText(LANG_AUTO_BROADCAST, msg.c_str());
 	}
     else
 	{
         DoPlaySoundToAll(BF_HORDE_WINS);
-	    sWorld->SendWorldText(LANG_AUTO_BROADCAST, "Wintergrasp Battlefield End! Horde Won!");
+		std::string msg = 'Wintergrasp Battlefield End! Horde Won!';
+	    sWorld->SendWorldText(LANG_AUTO_BROADCAST, msg.c_str());
 	}
 	
     OnBattleEnd(endByTimer);
