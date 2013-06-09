@@ -949,13 +949,15 @@ class npc_muradin_gunship : public CreatureScript
                         break;
                     case ACTION_ROCK_DIE:
                         ++RocketerDieCount; 
-					     if(_instance->GetBossState(DATA_GUNSHIP_EVENT) != DONE)
-                            events.ScheduleEvent(EVENT_RESPAWN_ROCKETEER, 60000);
+						if (RocketerDieCount == RocketerCount)
+							if (_instance->GetBossState(DATA_GUNSHIP_EVENT) != DONE)
+								events.ScheduleEvent(EVENT_RESPAWN_ROCKETEER, 60000);
                         break;
                     case ACTION_AXES_RIFL_DIE:
                         ++RiflDieCount;
-						if (_instance->GetBossState(DATA_GUNSHIP_EVENT) != DONE)
-                            events.ScheduleEvent(EVENT_RESPAWN_AXES_RIFLEMEN, 60000);
+						if (RiflDieCount == RiflCount)
+							if (_instance->GetBossState(DATA_GUNSHIP_EVENT) != DONE)
+								events.ScheduleEvent(EVENT_RESPAWN_AXES_RIFLEMEN, 60000);
                         break;
                 }
             }
@@ -1824,8 +1826,10 @@ class npc_gunship_cannon : public CreatureScript
 
             void Reset()
             {
+				me->AddExtraUnitMovementFlag(MOVEMENTFLAG2_NO_STRAFE);
+				me->AddExtraUnitMovementFlag(MOVEMENTFLAG_LEFT);
+				me->AddExtraUnitMovementFlag(MOVEMENTFLAG_RIGHT);
                 me->SetReactState(REACT_PASSIVE);
-	            me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
                 me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);
                 DoCast(me, SPELL_HEAT_DRAIN, true);
             }
@@ -1863,8 +1867,6 @@ class npc_gunship_cannon : public CreatureScript
                 }
                 else
 				{
-					if (_instance->GetBossState(DATA_GUNSHIP_EVENT) == IN_PROGRESS)
-						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
 					me->RemoveExtraUnitMovementFlag(MOVEMENTFLAG_STRAFE_LEFT);
 					me->RemoveExtraUnitMovementFlag(MOVEMENTFLAG_STRAFE_RIGHT);
 					me->RemoveExtraUnitMovementFlag(MOVEMENTFLAG2_INTERPOLATED_TURNING);
@@ -2205,13 +2207,15 @@ class npc_saurfang_gunship : public CreatureScript
                         break;
                      case ACTION_ROCK_DIE:
                         ++RocketerDieCount;
-						 if (_instance->GetBossState(DATA_GUNSHIP_EVENT) == IN_PROGRESS)
-                            events.ScheduleEvent(EVENT_RESPAWN_ROCKETEER, 60000);
+						if(RocketerDieCount == RocketerCount)
+							if (_instance->GetBossState(DATA_GUNSHIP_EVENT) == IN_PROGRESS)
+								events.ScheduleEvent(EVENT_RESPAWN_ROCKETEER, 60000);
                          break;
                      case ACTION_AXES_RIFL_DIE:
                         ++AxesDieCount;
-						if (_instance->GetBossState(DATA_GUNSHIP_EVENT) == IN_PROGRESS)
-                             events.ScheduleEvent(EVENT_RESPAWN_AXES_RIFLEMEN, 60000);
+						if(AxesDieCount == AxesCount)
+							if (_instance->GetBossState(DATA_GUNSHIP_EVENT) == IN_PROGRESS)
+								events.ScheduleEvent(EVENT_RESPAWN_AXES_RIFLEMEN, 60000);
                          break;
                  }
             }
