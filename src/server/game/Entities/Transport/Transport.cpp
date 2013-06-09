@@ -861,7 +861,6 @@ void Transport::UpdatePassengerPositions()
     }
 }
 
-<<<<<<< HEAD
 // gunship Data
 void Transport::UpdatePlayerPositions()
 {
@@ -882,10 +881,7 @@ void Transport::UpdatePlayerPositions()
     }
 }
 
-void Transport::CalculatePassengerPosition(float& x, float& y, float& z, float& o) const
-=======
 void Transport::CalculatePassengerPosition(float& x, float& y, float& z, float* o /*= NULL*/) const
->>>>>>> 88bbff2236d105bd17d7bc67bd915159c3e9a054
 {
     float inx = x, iny = y, inz = z;
     if (o)
@@ -905,12 +901,6 @@ void Transport::CalculatePassengerOffset(float& x, float& y, float& z, float* o 
     y -= GetPositionY();    // y = searchedY * std::cos(o) + searchedX * std::sin(o)
     x -= GetPositionX();    // x = searchedX * std::cos(o) + searchedY * std::sin(o + pi)
     float inx = x, iny = y;
-<<<<<<< HEAD
-    y = (iny - inx * tan(GetOrientation())) / (cos(GetOrientation()) + std::sin(GetOrientation()) * tan(GetOrientation()));
-    x = (inx + iny * tan(GetOrientation())) / (cos(GetOrientation()) + std::sin(GetOrientation()) * tan(GetOrientation()));
-}
-=======
     y = (iny - inx * std::tan(GetOrientation())) / (std::cos(GetOrientation()) + std::sin(GetOrientation()) * std::tan(GetOrientation()));
     x = (inx + iny * std::tan(GetOrientation())) / (std::cos(GetOrientation()) + std::sin(GetOrientation()) * std::tan(GetOrientation()));
 }
->>>>>>> 88bbff2236d105bd17d7bc67bd915159c3e9a054
