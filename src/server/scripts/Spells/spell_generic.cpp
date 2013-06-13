@@ -3570,6 +3570,7 @@ class spell_gen_orc_disguise : public SpellScriptLoader
         }
 };
 
+<<<<<<< HEAD
 class spell_stealth_trigger : public SpellScriptLoader
 {
     public:
@@ -3586,10 +3587,38 @@ class spell_stealth_trigger : public SpellScriptLoader
 				caster->AttackStop();
 		  		caster->CombatStop();
 				caster->SetInCombatState(false, caster);
+=======
+enum WhisperGulchYoggSaronWhisper
+{
+    SPELL_YOGG_SARON_WHISPER_DUMMY = 29072
+};
+
+class spell_gen_whisper_gulch_yogg_saron_whisper : public SpellScriptLoader
+{
+    public:
+        spell_gen_whisper_gulch_yogg_saron_whisper() : SpellScriptLoader("spell_gen_whisper_gulch_yogg_saron_whisper") { }
+
+        class spell_gen_whisper_gulch_yogg_saron_whisper_AuraScript : public AuraScript
+        {
+            PrepareAuraScript(spell_gen_whisper_gulch_yogg_saron_whisper_AuraScript);
+
+            bool Validate(SpellInfo const* /*spellInfo*/)
+            {
+                if (!sSpellMgr->GetSpellInfo(SPELL_YOGG_SARON_WHISPER_DUMMY))
+                    return false;
+                return true;
+            }
+
+            void HandleEffectPeriodic(AuraEffect const* /*aurEff*/)
+            {
+                PreventDefaultAction();
+                GetTarget()->CastSpell((Unit*)NULL, SPELL_YOGG_SARON_WHISPER_DUMMY, true);
+>>>>>>> ca100a30f05cf72b6851e6ab1f6e82f9a35939c8
             }
 
             void Register()
             {
+<<<<<<< HEAD
 				OnEffectHitTarget += SpellEffectFn(spell_stealth_trigger_SpellScript::HandleDummy, EFFECT_0, SPELL_EFFECT_DUMMY);
             }
         };
@@ -3597,6 +3626,15 @@ class spell_stealth_trigger : public SpellScriptLoader
         SpellScript* GetSpellScript() const
         {
             return new spell_stealth_trigger_SpellScript();
+=======
+                OnEffectPeriodic += AuraEffectPeriodicFn(spell_gen_whisper_gulch_yogg_saron_whisper_AuraScript::HandleEffectPeriodic, EFFECT_0, SPELL_AURA_PERIODIC_DUMMY);
+            }
+        };
+
+        AuraScript* GetAuraScript() const
+        {
+            return new spell_gen_whisper_gulch_yogg_saron_whisper_AuraScript();
+>>>>>>> ca100a30f05cf72b6851e6ab1f6e82f9a35939c8
         }
 };
 
@@ -3680,5 +3718,9 @@ void AddSC_generic_spell_scripts()
     new spell_gen_replenishment();
     new spell_gen_aura_service_uniform();
     new spell_gen_orc_disguise();
+<<<<<<< HEAD
 	new spell_stealth_trigger();
+=======
+    new spell_gen_whisper_gulch_yogg_saron_whisper();
+>>>>>>> ca100a30f05cf72b6851e6ab1f6e82f9a35939c8
 }
