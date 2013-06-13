@@ -2663,7 +2663,7 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
                 unit->RemoveAurasByType(SPELL_AURA_MOD_STEALTH);
 				
 			// Binary Resistance System by Saqirmdev
-			if (unit->GetTypeId() == TYPEID_PLAYER && (m_caster->GetTypeId() == TYPEID_PLAYER || m_caster->ToCreature()->isPet()) && !((m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_NORMAL) || (m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_HOLY)))
+			if (unit->GetTypeId() == TYPEID_PLAYER && (m_caster->GetTypeId() == TYPEID_PLAYER || m_caster->ToCreature()->IsPet()) && !((m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_NORMAL) || (m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_HOLY)))
 			{			
 				int32 resistChance = unit->GetResistance(SpellSchoolMask(m_spellInfo->SchoolMask));
 				int16 SpellPenetration = 0;
@@ -2671,7 +2671,7 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 				{
 					if (m_caster->GetTypeId() == TYPEID_PLAYER)
 						SpellPenetration = float(m_caster->ToPlayer()->GetSpellPenetration(SpellSchoolMask(m_spellInfo->SchoolMask)));
-					else if (m_caster->ToCreature()->isPet())
+					else if (m_caster->ToCreature()->IsPet())
 					    SpellPenetration = float(m_caster->GetOwner()->GetSpellPenetration(SpellSchoolMask(m_spellInfo->SchoolMask)));
 
 					resistChance -= SpellPenetration;
@@ -2718,7 +2718,7 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 	else if (!m_spellInfo->IsPositive())
 	{
 		// Binary Resistance System by Saqirmdev
-	    if (unit->GetTypeId() == TYPEID_PLAYER && (m_caster->GetTypeId() == TYPEID_PLAYER || m_caster->ToCreature()->isPet()) && !((m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_NORMAL) || (m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_HOLY)))
+	    if (unit->GetTypeId() == TYPEID_PLAYER && (m_caster->GetTypeId() == TYPEID_PLAYER || m_caster->ToCreature()->IsPet()) && !((m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_NORMAL) || (m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_HOLY)))
 		{			
 			int32 resistChance = unit->GetResistance(SpellSchoolMask(m_spellInfo->SchoolMask));
  			int16 SpellPenetration = 0;
@@ -2726,7 +2726,7 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 			{
 				if (m_caster->GetTypeId() == TYPEID_PLAYER)
                 	SpellPenetration = float(m_caster->ToPlayer()->GetSpellPenetration(SpellSchoolMask(m_spellInfo->SchoolMask)));
-				else if (m_caster->ToCreature()->isPet())
+				else if (m_caster->ToCreature()->IsPet())
 					SpellPenetration = float(m_caster->GetOwner()->GetSpellPenetration(SpellSchoolMask(m_spellInfo->SchoolMask)));
 
 				resistChance -= SpellPenetration;
@@ -4901,11 +4901,11 @@ SpellCastResult Spell::CheckCast(bool strict)
 
 	// Can't cast while Spectate
     if (Player *tmpPlayer = m_caster->ToPlayer())
-        if (tmpPlayer->isSpectator())
+        if (tmpPlayer->IsSpectator())
             return SPELL_FAILED_SPELL_UNAVAILABLE;
 	
 	// Can't casting on Spiked Target
-	if (Unit *SpikedPlayer = m_caster->getVictim())
+	if (Unit *SpikedPlayer = m_caster->GetVictim())
 	   if (SpikedPlayer->GetTypeId() == TYPEID_PLAYER && SpikedPlayer->HasAura(69065))
 	       return SPELL_FAILED_BAD_TARGETS;
 	      

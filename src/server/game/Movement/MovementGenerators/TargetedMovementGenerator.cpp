@@ -46,7 +46,7 @@ void TargetedMovementGeneratorMedium<T, D>::_setTargetLocation(T* owner, bool up
       {
         if (!i_offset && !updateDestination)
         {
-		    if (owner->isPet() && i_target->GetTypeId() == TYPEID_PLAYER)
+		    if (owner->IsPet() && i_target->GetTypeId() == TYPEID_PLAYER)
             {
                 dist = i_target->GetCombatReach();
                 size = i_target->GetCombatReach() - i_target->GetObjectSize() - 1.0f;
@@ -168,7 +168,7 @@ bool TargetedMovementGeneratorMedium<T, D>::DoUpdate(T* owner, uint32 time_diff)
         float allowed_dist = owner->GetCombatReach() + sWorld->getRate(RATE_TARGET_POS_RECALCULATION_RANGE);
         G3D::Vector3 dest = owner->movespline->FinalDestination();
 
-		if (owner->isPet() && i_target->GetTypeId() == TYPEID_PLAYER)
+		if (owner->IsPet() && i_target->GetTypeId() == TYPEID_PLAYER)
 		{
 		    allowed_dist = (i_target->GetCombatReach() - i_target->GetObjectSize()) - 1.0f;
 			if (allowed_dist < 0)

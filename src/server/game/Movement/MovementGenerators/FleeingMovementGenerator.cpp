@@ -319,8 +319,8 @@ void FleeingMovementGenerator<Creature>::_Init(Creature* owner)
         return;
  
     //owner->SetTargetGuid(ObjectGuid());
-    is_water_ok = owner->canSwim();
-    is_land_ok  = owner->canWalk();
+    is_water_ok = owner->CanSwim();
+    is_land_ok  = owner->CanWalk();
 }
  
 template<>
@@ -359,6 +359,7 @@ bool FleeingMovementGenerator<T>::DoUpdate(T* owner, uint32 time_diff)
 {
     if (!owner || !owner->IsAlive())
         return false;
+		
     if (owner->HasUnitState(UNIT_STATE_ROOT | UNIT_STATE_STUNNED))
     {
         owner->ClearUnitState(UNIT_STATE_FLEEING_MOVE);

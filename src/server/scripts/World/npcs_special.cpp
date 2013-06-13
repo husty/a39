@@ -2075,30 +2075,18 @@ class npc_shadowfiend : public CreatureScript
 
         void Reset()
         {
-            if (me->isSummon())
+            if (me->IsSummon())
                 if (Unit* owner = me->ToTempSummon()->GetSummoner())
                     if (Unit* pet = owner->GetGuardianPet())
                         pet->CastSpell(pet, MANA_LEECH, true);
         }
-
-<<<<<<< HEAD
         void DamageTaken(Unit* /*killer*/, uint32& damage)
         {
-            if (me->isSummon())
+            if (me->IsSummon())
                 if (Unit* owner = me->ToTempSummon()->GetSummoner())
                     if (owner->HasAura(GLYPH_OF_SHADOWFIEND) && damage >= me->GetHealth())
                         owner->CastSpell(owner, GLYPH_OF_SHADOWFIEND_MANA, true);
         }
-=======
-            void JustDied(Unit* /*killer*/)
-            {
-                if (me->IsSummon())
-                    if (Unit* owner = me->ToTempSummon()->GetSummoner())
-                        if (owner->HasAura(GLYPH_OF_SHADOWFIEND))
-                            owner->CastSpell(owner, GLYPH_OF_SHADOWFIEND_MANA, true);
-            }
-        };
->>>>>>> ca100a30f05cf72b6851e6ab1f6e82f9a35939c8
 
         void UpdateAI(uint32 const /*diff*/)
         {

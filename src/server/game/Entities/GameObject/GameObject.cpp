@@ -475,7 +475,7 @@ void GameObject::Update(uint32 diff)
                     {
                         if (Player* tmpPlayer = ok->ToPlayer())
 						{
-                            if (tmpPlayer->isSpectator())
+                            if (tmpPlayer->IsSpectator())
                                 return;
                         }
 
@@ -1689,7 +1689,7 @@ void GameObject::CastSpell(Unit* target, uint32 spellId)
 {
     if (target)
         if (Player *tmpPlayer = target->ToPlayer())
-            if (tmpPlayer->isSpectator())
+            if (tmpPlayer->IsSpectator())
                 return;
 
     SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(spellId);

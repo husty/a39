@@ -139,7 +139,7 @@ class arena_spectator_commands : public CommandScript
                 for (Battleground::BattlegroundPlayerMap::const_iterator itr = bGround->GetPlayers().begin(); itr != bGround->GetPlayers().end(); ++itr)
                     if (Player* tmpPlayer = ObjectAccessor::FindPlayer(itr->first))
                     {
-                        if (tmpPlayer->isSpectator())
+                        if (tmpPlayer->IsSpectator())
                             continue;
 
                         uint32 tmpID = tmpPlayer->GetArenaTeamId(slot);
@@ -276,7 +276,7 @@ class arena_spectator_commands : public CommandScript
             for (Battleground::BattlegroundPlayerMap::const_iterator itr = bGround->GetPlayers().begin(); itr != bGround->GetPlayers().end(); ++itr)
                 if (Player* tmpPlayer = ObjectAccessor::FindPlayer(itr->first))
                 {
-                    if (tmpPlayer->isSpectator())
+                    if (tmpPlayer->IsSpectator())
                         continue;
 
                     uint32 tmpID = bGround->GetPlayerTeam(tmpPlayer->GetGUID());
@@ -405,7 +405,7 @@ class npc_arena_spectator : public CreatureScript
             for (Battleground::BattlegroundPlayerMap::const_iterator itr = team->GetPlayers().begin(); itr != team->GetPlayers().end(); ++itr)
                 if (Player* player = ObjectAccessor::FindPlayer(itr->first))
                 {
-                    if (player->isSpectator())
+                    if (player->IsSpectator())
                         continue;
 
                     uint32 team = itr->second.Team;

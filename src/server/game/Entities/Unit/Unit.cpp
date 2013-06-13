@@ -1612,12 +1612,12 @@ uint32 Unit::GetSpellPenetration(SpellSchoolMask schoolMask) const
         }
     }
 
-    if (source && !isTotem())
+    if (source && !IsTotem())
         spellPenetration += source->ToPlayer()->GetSpellPenetrationItemMod();
     else
         source = this;
 
-    spellPenetration += -source->GetTotalAuraModifierByMiscMask(SPELL_AURA_MOD_TARGET_RESISTANCE, schoolMask);
+    //spellPenetration += -source->GetTotalAuraModifierByMiscMask(SPELL_AURA_MOD_TARGET_RESISTANCE, schoolMask);
 
     return uint32(std::max<int32>(spellPenetration, 0));
 }

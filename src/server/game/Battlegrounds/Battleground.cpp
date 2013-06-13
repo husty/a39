@@ -1293,7 +1293,7 @@ void Battleground::EventPlayerLoggedOut(Player* player)
     m_Players[guid].OfflineRemoveTime = sWorld->GetGameTime() + MAX_OFFLINE_TIME;
     if (GetStatus() == STATUS_IN_PROGRESS)
     {
-        if (!player->isSpectator())
+        if (!player->IsSpectator())
          {
             // drop flag and handle other cleanups
             RemovePlayer(player, guid, GetPlayerTeam(guid));
@@ -1305,7 +1305,7 @@ void Battleground::EventPlayerLoggedOut(Player* player)
         }
     }
 
-    if (!player->isSpectator())
+    if (!player->IsSpectator())
         player->LeaveBattleground();
     else
     {
@@ -1987,7 +1987,7 @@ uint8 Battleground::ClickFastStart(Player *player, GameObject *go)
         return 0;
 
     std::set<uint64>::iterator pIt = m_playersWantsFastStart.find(player->GetGUID());
-    if (pIt != m_playersWantsFastStart.end() || GetStartDelayTime() < BG_START_DELAY_15S || player->isSpectator())
+    if (pIt != m_playersWantsFastStart.end() || GetStartDelayTime() < BG_START_DELAY_15S || player->IsSpectator())
         return m_playersWantsFastStart.size();
 
     m_playersWantsFastStart.insert(player->GetGUID());
