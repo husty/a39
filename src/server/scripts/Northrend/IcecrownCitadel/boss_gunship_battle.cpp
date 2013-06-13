@@ -977,8 +977,8 @@ class npc_muradin_gunship : public CreatureScript
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
 					
-				if (me && me->GetVictim() && (me->GetDistance(me->GetVictim()) > 15.0f || me->GetPositionY() > 2024.1f || me->GetVictim()->GetPositionY() > 2024.1f))
-				    EnterEvadeMode();
+				//if (me && me->GetVictim() && (me->GetDistance(me->GetVictim()) > 15.0f || me->GetPositionY() > 2024.1f || me->GetVictim()->GetPositionY() > 2024.1f))
+				//    EnterEvadeMode();
                 
                 if (!HealthAbovePct(75))
                 {
@@ -2224,6 +2224,9 @@ class npc_saurfang_gunship : public CreatureScript
             {
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
+					
+				if (me && me->GetVictim() && (me->GetDistance(me->GetVictim()) > 15.0f || me->GetPositionY() > 2024.1f || me->GetVictim()->GetPositionY() > 2024.1f))
+				    EnterEvadeMode();
                     
                 if(_instance->GetBossState(DATA_GUNSHIP_EVENT) == IN_PROGRESS)
                 {
