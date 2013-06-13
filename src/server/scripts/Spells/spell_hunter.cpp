@@ -365,7 +365,7 @@ public:
             Unit* caster = GetCaster();
 			if (Pet *pet = caster->ToPlayer()->GetPet())
 			{
-				if (!pet->isAlive())
+				if (!pet->IsAlive())
 				    return SPELL_FAILED_BAD_TARGETS;
 			}
 			else 

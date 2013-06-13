@@ -10,7 +10,7 @@ class npc_change : public CreatureScript
 
 	       bool OnGossipHello(Player *player, Creature *_creature)
            {
-		        if (player->isInCombat()) 
+		        if (player->IsInCombat()) 
                 {		
 				     /// @todo check Combat
                     _creature->MonsterWhisper("You are in Combat", player->GetGUID());

@@ -434,7 +434,7 @@ public:
     {
 		Group* group = player->GetGroup();
 
-		if(player->isInCombat())
+		if(player->IsInCombat())
         {
             _creature->MonsterWhisper("You are in a combat!", player->GetGUID());
 			return true;

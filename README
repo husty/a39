@@ -10,7 +10,6 @@ We are using Mmaps with custom Implentements:
 -Gurubashi EventScript
 -npc Supporter
 -Teleporter (C++)
--Challenge CommandScript
 -CC delay
 -InstantCast (Arena/Bg  start) 
 -SpellFixes 
@@ -18,8 +17,10 @@ We are using Mmaps with custom Implentements:
 -Custom Arena Rating Cost Script
 -Crossfraction BGs
 -Arena Spectator
+-PvP Island Scripted
+-Improvements in Pathfinding
 ============================================
-Future: Duel Script (Improvements), Phase Duel Script, Isle of Quel Dalas Script (FFa Arena)
+Future: Challenge CommandScript, Phase Duel Script,
 
 Developers:
 =====================================
@@ -33,10 +34,8 @@ Thanks:
 
 
 
-<<<<<<< HEAD
 Copyright (C) TrinityCore (http://www.trinitycore.org)
 
-=======
 TrinityCore is a MMORPG Framework based mostly on C++. It is completely 
 open source, and is community supported. It is derived
 from MaNGOS, the Massive Network Game Object Server, and is based on the
@@ -82,9 +81,7 @@ CMake ≥ 2.8.0 (max 2.8.9 under linux)
 OpenSSL ≥ 0.9.8o
 GCC ≥ 4.3 (Linux only)
 MS Visual Studio ≥ 9 (2008) (Windows only)
-<<<<<<< HEAD
->>>>>>> 88bbff2236d105bd17d7bc67bd915159c3e9a054
-=======
+
 A bit of brain, wiki can become outdated with the release of new TDB versions
 if wiki refers to TDB 50 and you see TDB 52 get the higher number.
 Some reading skills, search forum, read http://www.trinitycore.org/f/topic/1518-
@@ -92,4 +89,3 @@ and http://www.trinitycore.org/f/topic/37- before posting a bug report or ask fo
 help on forum. 
 Search for existing bug reports before post your bug report, don't post multiple
 bugs on a single ticket.
->>>>>>> ca100a30f05cf72b6851e6ab1f6e82f9a35939c8

@@ -1161,7 +1161,7 @@ class Player : public Unit, public GridObject<Player>
         bool isSpectateCanceled() { return spectateCanceled; }
         void CancelSpectate()     { spectateCanceled = true; }
         Unit* getSpectateFrom()   { return spectateFrom; }
-		bool isSpectator() const  { return spectatorFlag; }
+		bool IsSpectator() const  { return spectatorFlag; }
         void SetSpectate(bool on);
 
         void GiveXP(uint32 xp, Unit* victim, float group_rate=1.0f);

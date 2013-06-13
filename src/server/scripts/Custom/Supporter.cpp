@@ -81,7 +81,7 @@ public:
 	};
 
 	void addMainMenu(Player* player, Creature* creature){
-		if (player->isInCombat())
+		if (player->IsInCombat())
         {
             player->CLOSE_GOSSIP_MENU();
             creature->MonsterWhisper("Jsi v combatu, vrat se pozdeji!", player->GetGUID());

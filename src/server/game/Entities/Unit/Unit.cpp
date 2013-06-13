@@ -303,7 +303,7 @@ Unit::~Unit()
     if (!m_sharedVision.empty())
     {
         for (SharedVisionList::iterator itr = m_sharedVision.begin(); itr != m_sharedVision.end(); ++itr)
-            if ((*itr)->isSpectator() && (*itr)->getSpectateFrom())
+            if ((*itr)->IsSpectator() && (*itr)->getSpectateFrom())
             {
                 (*itr)->SetViewpoint((*itr)->getSpectateFrom(), false);
                 if (m_sharedVision.empty())
@@ -346,14 +346,14 @@ void Unit::Update(uint32 p_time)
     if (CanHaveThreatList() && getThreatManager().isNeedUpdateToClient(p_time))
         SendThreatListUpdate();
 	
-    if (GetTypeId() == TYPEID_PLAYER || (ToCreature()->isPet() && IsControlledByPlayer()))
+    if (GetTypeId() == TYPEID_PLAYER || (ToCreature()->IsPet() && IsControlledByPlayer()))
     {
         if (Player* player = ToPlayer())
         {
             Pet* pet = player->GetPet();
 
         	// Player must have combat when pet isInCombat
-			if (pet && pet->isInCombat())
+			if (pet && pet->IsInCombat())
 			{
 					CombatStart(player); // if Player is in combat, owner get combat.. 
                    	SetInCombatState(true, player);
@@ -3514,12 +3514,7 @@ void Unit::_UnapplyAura(AuraApplicationMap::iterator &i, AuraRemoveMode removeMo
     ASSERT(!aurApp->GetEffectMask());
 
     // Remove totem at next update if totem loses its aura
-<<<<<<< HEAD
-    if (aurApp->GetRemoveMode() == AURA_REMOVE_BY_EXPIRE && GetTypeId() == TYPEID_UNIT && ToCreature()->isTotem())
-=======
-    if (aurApp->GetRemoveMode() == AURA_REMOVE_BY_EXPIRE && GetTypeId() == TYPEID_UNIT && ToCreature()->IsTotem()&& ToTotem()->GetSummonerGUID() == aura->GetCasterGUID())
-    {
->>>>>>> ca100a30f05cf72b6851e6ab1f6e82f9a35939c8
+    if (aurApp->GetRemoveMode() == AURA_REMOVE_BY_EXPIRE && GetTypeId() == TYPEID_UNIT && ToCreature()->IsTotem())
         if (ToTotem()->GetSpell() == aura->GetId() && ToTotem()->GetTotemType() == TOTEM_PASSIVE)
             ToTotem()->setDeathState(JUST_DIED);
     

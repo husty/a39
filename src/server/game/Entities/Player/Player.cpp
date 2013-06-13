@@ -1886,12 +1886,7 @@ void Player::setDeathState(DeathState s)
     if (s == JUST_DIED && cur && ressSpellId)
         SetUInt32Value(PLAYER_SELF_RES_SPELL, ressSpellId);
 
-<<<<<<< HEAD
-
-    if (isAlive() && !cur)
-=======
     if (IsAlive() && !cur)
->>>>>>> ca100a30f05cf72b6851e6ab1f6e82f9a35939c8
         //clear aura case after resurrection by another way (spells will be applied before next death)
         SetUInt32Value(PLAYER_SELF_RES_SPELL, 0);
 }
@@ -2369,7 +2364,7 @@ bool Player::TeleportToBGEntryPoint()
     Battleground *oldBg = GetBattleground();
     bool result = TeleportTo(m_bgData.joinPos);
 
-    if (isSpectator() && result)
+    if (IsSpectator() && result)
     {
         SetSpectate(false);
         if (oldBg)
@@ -2913,7 +2908,7 @@ void Player::SetSpectate(bool on)
 
 bool Player::HaveSpectators()
 {
-    if (isSpectator())
+    if (IsSpectator())
         return false;
 
     if (Battleground *bg = GetBattleground())
@@ -5660,12 +5655,8 @@ void Player::RepopAtGraveyard()
 
     AreaTableEntry const* zone = GetAreaEntryByAreaID(GetAreaId());
 
-<<<<<<< HEAD
-    if (((!isAlive() && zone && zone->flags & AREA_FLAG_NEED_FLY) || GetTransport() || GetPositionZ() < -500.0f || GetAreaId() == 1336) && GetAreaId() != 297) 
-=======
+    if (((!IsAlive() && zone && zone->flags & AREA_FLAG_NEED_FLY) || GetTransport() || GetPositionZ() < -500.0f || GetAreaId() == 1336) && GetAreaId() != 297) 
     // Such zones are considered unreachable as a ghost and the player must be automatically revived
-    if ((!IsAlive() && zone && zone->flags & AREA_FLAG_NEED_FLY) || GetTransport() || GetPositionZ() < -500.0f)
->>>>>>> ca100a30f05cf72b6851e6ab1f6e82f9a35939c8
     {
         ResurrectPlayer(0.5f);
         SpawnCorpseBones();
@@ -17130,7 +17121,7 @@ bool Player::LoadFromDB(uint32 guid, SQLQueryHolder *holder)
         TC_LOG_ERROR(LOG_FILTER_PLAYER, "Player (GUID: %u) has wrong gender (%hu), can't be loaded.", guid, Gender);
         return false;
     }
-	if (!ToPlayer()->GetSession()->HasPermission(RBAC_PERM_USE_START_GM_LEVEL) && ToPlayer()->isGameMaster())
+	if (!ToPlayer()->GetSession()->HasPermission(RBAC_PERM_USE_START_GM_LEVEL) && ToPlayer()->IsGameMaster())
     {
         if (Player* player = ToPlayer())
         {
@@ -22329,7 +22320,7 @@ bool Player::IsVisibleGloballyFor(Player const* u) const
     if (!IsVisible())
         return false;
 
-    if (isSpectator())
+    if (IsSpectator())
       return false;
 
     // non-gm stealth/invisibility not hide from global player lists
@@ -23093,7 +23084,7 @@ void Player::SendAurasForTarget(Unit* target)
     }
 
 	    if (Player *stream = target->ToPlayer())
-        if (stream->HaveSpectators() && isSpectator())
+        if (stream->HaveSpectators() && IsSpectator())
         {
             for (Unit::VisibleAuraMap::const_iterator itr = visibleAuras->begin(); itr != visibleAuras->end(); ++itr)
             {
@@ -24251,7 +24242,7 @@ void Player::SetViewpoint(WorldObject* target, bool apply)
     if (apply)
     {
         //remove Viewpoint if already have
-        if (isSpectator() && spectateFrom)
+        if (IsSpectator() && spectateFrom)
         {
             SetViewpoint(spectateFrom, false);
             spectateFrom = NULL;
@@ -24270,7 +24261,7 @@ void Player::SetViewpoint(WorldObject* target, bool apply)
 
         if (target->isType(TYPEMASK_UNIT) && !GetVehicle())     
 		{
-            if (isSpectator())
+            if (IsSpectator())
                 spectateFrom = (Unit*)target;
 
             ((Unit*)target)->AddPlayerToVision(this);
@@ -24289,7 +24280,7 @@ void Player::SetViewpoint(WorldObject* target, bool apply)
         if (target->isType(TYPEMASK_UNIT) && !GetVehicle())
             ((Unit*)target)->RemovePlayerFromVision(this);
 
-        if (isSpectator())
+        if (IsSpectator())
             spectateFrom = NULL;
 
         //must immediately set seer back otherwise may crash

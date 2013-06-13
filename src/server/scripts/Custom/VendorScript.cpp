@@ -28,7 +28,7 @@ public:
 
     bool OnGossipHello(Player *player, Creature *_creature)
     {
-        if (player->isInCombat())
+        if (player->IsInCombat())
         {
             player->CLOSE_GOSSIP_MENU();
             _creature->MonsterWhisper("Jsi v combatu, vrat se pozdeji!", player->GetGUID());

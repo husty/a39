@@ -263,7 +263,7 @@ class npc_teleport_pvp_island : public CreatureScript
             {
                 if (Player* player = me->SelectNearestPlayer(1.0f))
                 {
-                    if (!player || player->IsBeingTeleported() || !player->isAlive() || player->isInCombat())
+                    if (!player || player->IsBeingTeleported() || !player->IsAlive() || player->IsInCombat())
                         return;
 
 					// Prevent Group
@@ -290,44 +290,6 @@ class npc_teleport_pvp_island : public CreatureScript
         }
 };
  
-/*class spell_spiritual_immunity : public SpellScriptLoader
-{
-    public:
-        spell_spiritual_immunity() : SpellScriptLoader("spell_spiritual_immunity") { }
- 
-        class spell_spiritual_immunity_AuraScript : public AuraScript
-        {
-            PrepareAuraScript(spell_spiritual_immunity_AuraScript);
- 
-            // cheap hax to make it have update calls
-            void CalcPeriodic(AuraEffect const* /*effect*//*, bool& isPeriodic, int32& amplitude)
-            {
-                isPeriodic = true;
-                amplitude = 1 * IN_MILLISECONDS;
-            }
- 
-            void OnPeriodicTick(AuraEffect const* /*effect*//*)
-            {
-                if (GetTarget()->GetTypeId() != TYPEID_PLAYER)
-                    return;
- 
-                if (GetTarget()->GetAreaId() != AREA_WILD_SHORE)
-                    GetTarget()->RemoveAurasDueToSpell(SPELL_SPIRITUAL_IMMUNITY);
-            }
- 
-            void Register()
-            {
-                DoEffectCalcPeriodic += AuraEffectCalcPeriodicFn(spell_spiritual_immunity_AuraScript::CalcPeriodic, EFFECT_0, SPELL_AURA_SCHOOL_IMMUNITY);
-                OnEffectPeriodic += AuraEffectPeriodicFn(spell_spiritual_immunity_AuraScript::OnPeriodicTick, EFFECT_0, SPELL_AURA_SCHOOL_IMMUNITY);
-            }
-        };
- 
-        AuraScript* GetAuraScript() const
-        {
-            return new spell_spiritual_immunity_AuraScript();
-        }
-};*/
- 
 void AddSC_vitality_pvp_island()
 {
     new pvp_island();
@@ -336,5 +298,4 @@ void AddSC_vitality_pvp_island()
     new go_powerup_food();
     new go_powerup_ancient();
     new npc_teleport_pvp_island();
-    //new spell_spiritual_immunity();
 }
