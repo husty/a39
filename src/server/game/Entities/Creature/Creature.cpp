@@ -825,7 +825,7 @@ void Creature::InitializeReactState()
 
 bool Creature::isCanTrainingOf(Player* player, bool msg) const
 {
-    if (!isTrainer())
+    if (!IsTrainer())
         return false;
 
     TrainerSpellData const* trainer_spells = GetTrainerSpells();
