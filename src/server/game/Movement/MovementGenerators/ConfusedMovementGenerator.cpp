@@ -79,12 +79,9 @@ void ConfusedMovementGenerator<T>::DoInitialize(T* unit)
         i_waypoints[idx][1] = wanderY;
         i_waypoints[idx][2] = z;
     }
-<<<<<<< HEAD
 	
     if (!unit->IsAlive() || unit->IsStopped())
         return;
-=======
->>>>>>> parent of 1a470da... Merge with Trinity
 
     unit->StopMoving();
     unit->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_CONFUSED);
@@ -110,13 +107,10 @@ void ConfusedMovementGenerator<T>::DoReset(T* unit)
 {
     i_nextMove = 1;
     i_nextMoveTime.Reset(0);
-<<<<<<< HEAD
 
     if (!unit->IsAlive() || unit->IsStopped())
         return;
 
-=======
->>>>>>> parent of 1a470da... Merge with Trinity
     unit->StopMoving();
     unit->AddUnitState(UNIT_STATE_CONFUSED | UNIT_STATE_CONFUSED_MOVE);
 }
@@ -175,8 +169,8 @@ void ConfusedMovementGenerator<Creature>::DoFinalize(Creature* unit)
     unit->StopMoving();
     unit->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_CONFUSED);
     unit->ClearUnitState(UNIT_STATE_CONFUSED | UNIT_STATE_CONFUSED_MOVE);
-    if (unit->getVictim())
-        unit->SetTarget(unit->getVictim()->GetGUID());
+    if (unit->GetVictim())
+        unit->SetTarget(unit->GetVictim()->GetGUID());
 }
 
 template void ConfusedMovementGenerator<Player>::DoInitialize(Player* player);
