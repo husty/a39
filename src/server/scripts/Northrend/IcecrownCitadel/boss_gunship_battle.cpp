@@ -2219,15 +2219,26 @@ class npc_saurfang_gunship : public CreatureScript
                 if (pointId = 1)
                     me->DespawnOrUnsummon(1000);
             }
+			
 
             void UpdateAI(uint32 diff)
             {
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
 					
-				if (me && me->GetVictim() && (me->GetDistance(me->GetVictim()) > 15.0f || me->GetPositionY() > 2024.1f || me->GetVictim()->GetPositionY() > 2024.1f))
-				    EnterEvadeMode();
-                    
+				if (me && me->GetVictim() && (me->GetDistance(me->GetVictim()) > 15.0f || me->GetPositionY() > 2124.1f || me->GetVictim()->GetPositionY() > 2124.1f))
+				{
+					me->AttackStop();
+					me->GetCharmInfo()->SetIsCommandAttack(false);
+					me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);
+				}
+				else
+					if (me && me->GetVictim())
+					{
+						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);
+						me->AttackStart(me->GetVictim());
+                    }
+				    
                 if(_instance->GetBossState(DATA_GUNSHIP_EVENT) == IN_PROGRESS)
                 {
                     if (!HealthAbovePct(75))
