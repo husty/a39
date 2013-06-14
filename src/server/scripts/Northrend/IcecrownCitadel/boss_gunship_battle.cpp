@@ -2234,10 +2234,7 @@ class npc_saurfang_gunship : public CreatureScript
 				}
 				else
 					if (me && me->GetVictim())
-					{
 						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);
-						me->AttackStart(me->GetVictim());
-                    }
 				    
                 if(_instance->GetBossState(DATA_GUNSHIP_EVENT) == IN_PROGRESS)
                 {

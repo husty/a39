@@ -598,8 +598,7 @@ void BattlegroundWS::RemovePlayer(Player* player, uint64 guid, uint32 /*team*/)
 
 void BattlegroundWS::UpdateFlagState(uint32 team, uint32 value)
 {
-	Player* source = GetSource();
-    if (team == ALLIANCE || (source && source->GetBGTeam() == ALLIANCE))
+    if (team == ALLIANCE)
         UpdateWorldState(BG_WS_FLAG_STATE_ALLIANCE, value);
     else
         UpdateWorldState(BG_WS_FLAG_STATE_HORDE, value);
@@ -607,8 +606,7 @@ void BattlegroundWS::UpdateFlagState(uint32 team, uint32 value)
 
 void BattlegroundWS::UpdateTeamScore(uint32 team)
 {
-    Player* source = GetSource();
-    if (team == TEAM_ALLIANCE || (source && source->GetBGTeam() == ALLIANCE))
+    if (team == TEAM_ALLIANCE)
         UpdateWorldState(BG_WS_FLAG_CAPTURES_ALLIANCE, GetTeamScore(TEAM_ALLIANCE));
     else
         UpdateWorldState(BG_WS_FLAG_CAPTURES_HORDE, GetTeamScore(TEAM_HORDE));
