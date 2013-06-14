@@ -694,6 +694,7 @@ class npc_venture_co_straggler : public CreatureScript
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> parent of 436fd04... Revert
@@ -967,6 +968,8 @@ class npc_lake_frog : public CreatureScript
 };
 
 >>>>>>> parent of 436fd04... Revert
+=======
+>>>>>>> parent of 00647c4... Merge with TrinityCore
 void AddSC_grizzly_hills()
 {
     new npc_emily();
