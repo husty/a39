@@ -131,6 +131,10 @@ void WorldSession::SendTrainerList(uint64 guid, const std::string& strTitle)
     // remove fake death
     if (GetPlayer()->HasUnitState(UNIT_STATE_DIED))
         GetPlayer()->RemoveAurasByType(SPELL_AURA_FEIGN_DEATH);
+		
+   // trainer list loaded at check;
+    if (!unit->isCanTrainingOf(_player, true))
+        return;
 
     CreatureTemplate const* ci = unit->GetCreatureTemplate();
 
@@ -249,6 +253,9 @@ void WorldSession::HandleTrainerBuySpellOpcode(WorldPacket& recvData)
     // remove fake death
     if (GetPlayer()->HasUnitState(UNIT_STATE_DIED))
         GetPlayer()->RemoveAurasByType(SPELL_AURA_FEIGN_DEATH);
+		
+    if (!unit->isCanTrainingOf(_player, true))
+        return;
 
     // check present spell in trainer spell list
     TrainerSpellData const* trainer_spells = unit->GetTrainerSpells();

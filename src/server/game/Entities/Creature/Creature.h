@@ -486,7 +486,9 @@ class Creature : public Unit, public GridObject<Creature>, public MapCreature
         void InitializeReactState();
 
         /// @todo Rename these properly
+        bool isCanTrainingOf(Player* player, bool msg) const;
         bool isCanInteractWithBattleMaster(Player* player, bool msg) const;
+        bool isCanTrainingAndResetTalentsOf(Player* player) const;
         bool CanCreatureAttack(Unit const* victim, bool force = true) const;
         bool IsImmunedToSpell(SpellInfo const* spellInfo) const;                     // override Unit::IsImmunedToSpell
         bool IsImmunedToSpellEffect(SpellInfo const* spellInfo, uint32 index) const; // override Unit::IsImmunedToSpellEffect
