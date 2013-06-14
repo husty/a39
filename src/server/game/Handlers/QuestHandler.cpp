@@ -163,7 +163,7 @@ void WorldSession::HandleQuestgiverAcceptQuestOpcode(WorldPacket& recvData)
                 {
                     for (GroupReference* itr = group->GetFirstMember(); itr != NULL; itr = itr->next())
                     {
-                        Player* player = itr->GetSource();
+                        Player* player = itr->getSource();
 
                         if (!player || player == _player)     // not self
                             continue;
@@ -522,9 +522,6 @@ void WorldSession::HandleQuestgiverCompleteQuest(WorldPacket& recvData)
             else                                            // no items required
                 _player->PlayerTalkClass->SendQuestGiverOfferReward(quest, guid, true);
         }
-
-        if (Creature* creature = object->ToCreature())
-            sScriptMgr->OnQuestComplete(_player, creature, quest);
     }
 }
 
@@ -546,7 +543,7 @@ void WorldSession::HandlePushQuestToParty(WorldPacket& recvPacket)
         {
             for (GroupReference* itr = group->GetFirstMember(); itr != NULL; itr = itr->next())
             {
-                Player* player = itr->GetSource();
+                Player* player = itr->getSource();
 
                 if (!player || player == _player)         // skip self
                     continue;

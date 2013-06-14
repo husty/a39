@@ -832,7 +832,7 @@ class spell_item_unsated_craving : public SpellScriptLoader
                     return false;
 
                 Unit* target = procInfo.GetActionTarget();
-                if (!target || target->GetTypeId() != TYPEID_UNIT || target->GetCreatureType() == CREATURE_TYPE_CRITTER || (target->GetEntry() != NPC_SINDRAGOSA && target->IsSummon()))
+                if (!target || target->GetTypeId() != TYPEID_UNIT || target->GetCreatureType() == CREATURE_TYPE_CRITTER || (target->GetEntry() != NPC_SINDRAGOSA && target->isSummon()))
                     return false;
 
                 return true;
@@ -915,7 +915,7 @@ class spell_item_shadowmourne : public SpellScriptLoader
             {
                 if (GetTarget()->HasAura(SPELL_SHADOWMOURNE_CHAOS_BANE_BUFF)) // cant collect shards while under effect of Chaos Bane buff
                     return false;
-                return eventInfo.GetProcTarget() && eventInfo.GetProcTarget()->IsAlive();
+                return eventInfo.GetProcTarget() && eventInfo.GetProcTarget()->isAlive();
             }
 
             void HandleProc(AuraEffect const* aurEff, ProcEventInfo& eventInfo)
@@ -1640,7 +1640,7 @@ class spell_item_crystal_prison_dummy_dnd : public SpellScriptLoader
             void HandleDummy(SpellEffIndex /* effIndex */)
             {
                 if (Creature* target = GetHitCreature())
-                    if (target->isDead() && !target->IsPet())
+                    if (target->isDead() && !target->isPet())
                     {
                         GetCaster()->SummonGameObject(OBJECT_IMPRISONED_DOOMGUARD, target->GetPositionX(), target->GetPositionY(), target->GetPositionZ(), target->GetOrientation(), 0, 0, 0, 0, uint32(target->GetRespawnTime()-time(NULL)));
                         target->DespawnOrUnsummon();

@@ -3570,6 +3570,7 @@ class spell_gen_orc_disguise : public SpellScriptLoader
         }
 };
 
+<<<<<<< HEAD
 enum WhisperGulchYoggSaronWhisper
 {
     SPELL_YOGG_SARON_WHISPER_DUMMY = 29072,
@@ -3597,10 +3598,29 @@ class spell_gen_whisper_gulch_yogg_saron_whisper : public SpellScriptLoader
                 PreventDefaultAction();
                 if (Unit* caster = GetCaster())
                     caster->CastSpell(caster->FindNearestCreature(CREATURE_UNKNOWN_VOICE,100), SPELL_YOGG_SARON_WHISPER_DUMMY, true);
+=======
+class spell_stealth_trigger : public SpellScriptLoader
+{
+    public:
+        spell_stealth_trigger() : SpellScriptLoader("spell_stealth_trigger") { }
+
+        class spell_stealth_trigger_SpellScript : public SpellScript
+        {
+            PrepareSpellScript(spell_stealth_trigger_SpellScript);
+
+            void HandleDummy(SpellEffIndex effIndex)
+            {
+                Unit* caster = GetCaster();
+				caster->InterruptSpell(CURRENT_AUTOREPEAT_SPELL); // break Auto Shot and autohit	
+				caster->AttackStop();
+		  		caster->CombatStop();
+				caster->SetInCombatState(false, caster);
+>>>>>>> parent of 1a470da... Merge with Trinity
             }
 
             void Register()
             {
+<<<<<<< HEAD
                 OnEffectPeriodic += AuraEffectPeriodicFn(spell_gen_whisper_gulch_yogg_saron_whisper_AuraScript::HandleEffectPeriodic, EFFECT_0, SPELL_AURA_PERIODIC_DUMMY);
             }
         };
@@ -3608,6 +3628,15 @@ class spell_gen_whisper_gulch_yogg_saron_whisper : public SpellScriptLoader
         AuraScript* GetAuraScript() const
         {
             return new spell_gen_whisper_gulch_yogg_saron_whisper_AuraScript();
+=======
+				OnEffectHitTarget += SpellEffectFn(spell_stealth_trigger_SpellScript::HandleDummy, EFFECT_0, SPELL_EFFECT_DUMMY);
+            }
+        };
+
+        SpellScript* GetSpellScript() const
+        {
+            return new spell_stealth_trigger_SpellScript();
+>>>>>>> parent of 1a470da... Merge with Trinity
         }
 };
 
@@ -3691,5 +3720,9 @@ void AddSC_generic_spell_scripts()
     new spell_gen_replenishment();
     new spell_gen_aura_service_uniform();
     new spell_gen_orc_disguise();
+<<<<<<< HEAD
     new spell_gen_whisper_gulch_yogg_saron_whisper();
+=======
+	new spell_stealth_trigger();
+>>>>>>> parent of 1a470da... Merge with Trinity
 }

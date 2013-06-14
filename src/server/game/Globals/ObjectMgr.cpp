@@ -193,7 +193,7 @@ bool SpellClickInfo::IsFitToRequirements(Unit const* clicker, Unit const* clicke
 
     Unit const* summoner = NULL;
     // Check summoners for party
-    if (clickee->IsSummon())
+    if (clickee->isSummon())
         summoner = clickee->ToTempSummon()->GetSummoner();
     if (!summoner)
         summoner = clickee;

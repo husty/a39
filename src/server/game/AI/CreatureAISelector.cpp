@@ -33,7 +33,7 @@ namespace FactorySelector
         const CreatureAICreator* ai_factory = NULL;
         CreatureAIRegistry& ai_registry(*CreatureAIRepository::instance());
 
-        if (creature->IsPet())
+        if (creature->isPet())
             ai_factory = ai_registry.GetRegistryItem("PetAI");
 
         //scriptname in db
@@ -55,13 +55,13 @@ namespace FactorySelector
                 ai_factory = ai_registry.GetRegistryItem("PetAI");
             else if (creature->HasFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_SPELLCLICK))
                 ai_factory = ai_registry.GetRegistryItem("NullCreatureAI");
-            else if (creature->IsGuard())
+            else if (creature->isGuard())
                 ai_factory = ai_registry.GetRegistryItem("GuardAI");
             else if (creature->HasUnitTypeMask(UNIT_MASK_CONTROLABLE_GUARDIAN))
                 ai_factory = ai_registry.GetRegistryItem("PetAI");
-            else if (creature->IsTotem())
+            else if (creature->isTotem())
                 ai_factory = ai_registry.GetRegistryItem("TotemAI");
-            else if (creature->IsTrigger())
+            else if (creature->isTrigger())
             {
                 if (creature->m_spells[0])
                     ai_factory = ai_registry.GetRegistryItem("TriggerAI");

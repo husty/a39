@@ -305,7 +305,7 @@ public:
                         RaidWiped = true;
                         for (Map::PlayerList::const_iterator i = PlayerList.begin(); i != PlayerList.end(); ++i)
                         {
-                            if (i->GetSource()->IsAlive() && !i->GetSource()->IsGameMaster())
+                            if (i->getSource()->isAlive() && !i->getSource()->isGameMaster())
                             {
                                 RaidWiped = false;
                                 break;
@@ -370,7 +370,7 @@ public:
             {
                 player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, OZ_GOSSIP1, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
 
-                if (player->IsGameMaster())
+                if (player->isGameMaster())
                 {
                     player->ADD_GOSSIP_ITEM(GOSSIP_ICON_DOT, OZ_GM_GOSSIP1, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 3);
                     player->ADD_GOSSIP_ITEM(GOSSIP_ICON_DOT, OZ_GM_GOSSIP2, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 4);
@@ -598,10 +598,10 @@ public:
                     InstanceMap::PlayerList const &PlayerList = map->GetPlayers();
                     for (InstanceMap::PlayerList::const_iterator i = PlayerList.begin(); i != PlayerList.end(); ++i)
                     {
-                        if (i->GetSource()->IsAlive())
+                        if (i->getSource()->isAlive())
                         {
-                            if (i->GetSource()->GetQuestStatus(9645) == QUEST_STATUS_INCOMPLETE)
-                                i->GetSource()->CompleteQuest(9645);
+                            if (i->getSource()->GetQuestStatus(9645) == QUEST_STATUS_INCOMPLETE)
+                                i->getSource()->CompleteQuest(9645);
                         }
                     }
                 }

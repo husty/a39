@@ -202,7 +202,7 @@ public:
 
     bool OnGossipHello(Player* player, Creature* creature)
     {
-        if (creature->IsQuestGiver())
+        if (creature->isQuestGiver())
             player->PrepareQuestMenu(creature->GetGUID());
 
         if (player->GetQuestStatus(QUEST_BITTER_DEPARTURE) == QUEST_STATUS_INCOMPLETE)
@@ -252,15 +252,15 @@ public:
     bool OnGossipHello(Player* player, Creature* creature)
     {
         //Quest Menu
-        if (creature->IsQuestGiver())
+        if (creature->isQuestGiver())
             player->PrepareQuestMenu(creature->GetGUID());
 
         //Trainer Menu
-        if ( creature->IsTrainer() )
+        if ( creature->isTrainer() )
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TRAINER, GOSSIP_TEXT_TRAIN, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_TRAIN);
 
         //Vendor Menu
-        if ( creature->IsVendor() )
+        if ( creature->isVendor() )
             if (player->HasSpell(SPELL_MECHANO_HOG) || player->HasSpell(SPELL_MEKGINEERS_CHOPPER))
                 player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, GOSSIP_TEXT_BROWSE_GOODS, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_TRADE);
 

@@ -123,8 +123,8 @@ public:
                 Map::PlayerList const &players = me->GetMap()->GetPlayers();
                 for (Map::PlayerList::const_iterator i = players.begin(); i != players.end(); ++i)
                 {
-                    Player* player = i->GetSource();
-                    if (!player || !player->IsAlive())
+                    Player* player = i->getSource();
+                    if (!player || !player->isAlive())
                         continue;
                     // Summon clone
                     if (Unit* summon = me->SummonCreature(MOB_TWISTED_VISAGE, me->GetPositionX(), me->GetPositionY(), me->GetPositionZ(), me->GetOrientation(), TEMPSUMMON_CORPSE_DESPAWN, 0))
@@ -144,7 +144,7 @@ public:
             Map::PlayerList const &players = me->GetMap()->GetPlayers();
             for (Map::PlayerList::const_iterator i = players.begin(); i != players.end(); ++i)
             {
-                Player* player = i->GetSource();
+                Player* player = i->getSource();
                 player->RemoveAurasDueToSpell(GetSpellForPhaseMask(player->GetPhaseMask()));
             }
         }
@@ -245,7 +245,7 @@ public:
             {
                 for (Map::PlayerList::const_iterator i = PlayerList.begin(); i != PlayerList.end(); ++i)
                 {
-                    if (Player* player = i->GetSource())
+                    if (Player* player = i->getSource())
                     {
                         if (player->HasAura(spell))
                         {
@@ -277,13 +277,13 @@ public:
 
             if (uiMindFlayTimer <= diff)
             {
-                DoCast(me->GetVictim(), SPELL_MIND_FLAY);
+                DoCast(me->getVictim(), SPELL_MIND_FLAY);
                 uiMindFlayTimer = 20*IN_MILLISECONDS;
             } else uiMindFlayTimer -= diff;
 
             if (uiShadowBoltVolleyTimer <= diff)
             {
-                DoCast(me->GetVictim(), SPELL_SHADOW_BOLT_VOLLEY);
+                DoCast(me->getVictim(), SPELL_SHADOW_BOLT_VOLLEY);
                 uiShadowBoltVolleyTimer = 5*IN_MILLISECONDS;
             } else uiShadowBoltVolleyTimer -= diff;
 

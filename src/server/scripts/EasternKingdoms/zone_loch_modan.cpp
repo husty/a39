@@ -88,7 +88,7 @@ public:
 
     bool OnGossipHello(Player* player, Creature* creature)
     {
-        if (creature->IsQuestGiver())
+        if (creature->isQuestGiver())
             player->PrepareQuestMenu(creature->GetGUID());
 
         if (!player->GetQuestRewardStatus(3181) == 1)

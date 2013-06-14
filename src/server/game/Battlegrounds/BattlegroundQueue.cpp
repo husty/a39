@@ -171,7 +171,7 @@ GroupQueueInfo* BattlegroundQueue::AddGroup(Player* leader, Group* grp, Battlegr
     {
         for (GroupReference* itr = grp->GetFirstMember(); itr != NULL; itr = itr->next())
         {
-            Player* member = itr->GetSource();
+            Player* member = itr->getSource();
             if (!member)
                 continue;   // this should never happen
             PlayerQueueInfo& pl_info = m_QueuedPlayers[member->GetGUID()];

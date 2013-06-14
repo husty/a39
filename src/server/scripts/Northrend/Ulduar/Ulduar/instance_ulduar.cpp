@@ -232,7 +232,7 @@ class instance_ulduar : public InstanceMapScript
                 {
                     Map::PlayerList const& Players = instance->GetPlayers();
                     if (!Players.isEmpty())
-                        if (Player* player = Players.begin()->GetSource())
+                        if (Player* player = Players.begin()->getSource())
                             TeamInInstance = player->GetTeam();
                 }
 
@@ -621,19 +621,19 @@ class instance_ulduar : public InstanceMapScript
                 switch (eventId)
                 {
                     case EVENT_TOWER_OF_STORM_DESTROYED:
-                        if (FlameLeviathan && FlameLeviathan->IsAlive())
+                        if (FlameLeviathan && FlameLeviathan->isAlive())
                             FlameLeviathan->AI()->DoAction(ACTION_TOWER_OF_STORM_DESTROYED);
                         break;
                     case EVENT_TOWER_OF_FROST_DESTROYED:
-                        if (FlameLeviathan && FlameLeviathan->IsAlive())
+                        if (FlameLeviathan && FlameLeviathan->isAlive())
                             FlameLeviathan->AI()->DoAction(ACTION_TOWER_OF_FROST_DESTROYED);
                         break;
                     case EVENT_TOWER_OF_FLAMES_DESTROYED:
-                        if (FlameLeviathan && FlameLeviathan->IsAlive())
+                        if (FlameLeviathan && FlameLeviathan->isAlive())
                             FlameLeviathan->AI()->DoAction(ACTION_TOWER_OF_FLAMES_DESTROYED);
                         break;
                     case EVENT_TOWER_OF_LIFE_DESTROYED:
-                        if (FlameLeviathan && FlameLeviathan->IsAlive())
+                        if (FlameLeviathan && FlameLeviathan->isAlive())
                             FlameLeviathan->AI()->DoAction(ACTION_TOWER_OF_LIFE_DESTROYED);
                         break;
                     case EVENT_ACTIVATE_SANITY_WELL:
@@ -724,7 +724,7 @@ class instance_ulduar : public InstanceMapScript
                             // get item level (recheck weapons)
                             Map::PlayerList const& players = instance->GetPlayers();
                             for (Map::PlayerList::const_iterator itr = players.begin(); itr != players.end(); ++itr)
-                                if (Player* player = itr->GetSource())
+                                if (Player* player = itr->getSource())
                                     for (uint8 slot = EQUIPMENT_SLOT_MAINHAND; slot <= EQUIPMENT_SLOT_RANGED; ++slot)
                                         if (Item* item = player->GetItemByPos(INVENTORY_SLOT_BAG_0, slot))
                                             if (item->GetTemplate()->ItemLevel > _maxWeaponItemLevel)
@@ -736,7 +736,7 @@ class instance_ulduar : public InstanceMapScript
                             Map::PlayerList const& players = instance->GetPlayers();
                             for (Map::PlayerList::const_iterator itr = players.begin(); itr != players.end(); ++itr)
                             {
-                                if (Player* player = itr->GetSource())
+                                if (Player* player = itr->getSource())
                                 {
                                     for (uint8 slot = EQUIPMENT_SLOT_START; slot < EQUIPMENT_SLOT_END; ++slot)
                                     {

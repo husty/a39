@@ -62,13 +62,13 @@ public:
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, localizedEntry, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF+HALLOWEEN_EVENTID);
         }
 
-        if (creature->IsQuestGiver())
+        if (creature->isQuestGiver())
             player->PrepareQuestMenu(creature->GetGUID());
 
-        if (creature->IsVendor())
+        if (creature->isVendor())
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, GOSSIP_TEXT_BROWSE_GOODS, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_TRADE);
 
-        if (creature->IsInnkeeper())
+        if (creature->isInnkeeper())
         {
             const char* localizedEntry;
             switch (player->GetSession()->GetSessionDbcLocale())

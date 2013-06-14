@@ -130,7 +130,7 @@ public:
             {
                 for (Map::PlayerList::const_iterator itr = players.begin(); itr != players.end(); ++itr)
                 {
-                    Player* player = itr->GetSource();
+                    Player* player = itr->getSource();
                     if (player && !player->HasAura(45839, 0))
                             return player;
                 }

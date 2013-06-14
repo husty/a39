@@ -394,12 +394,12 @@ public:
 
             for (Map::PlayerList::const_iterator i = PlList.begin(); i != PlList.end(); ++i)
             {
-                if (Player* player = i->GetSource())
+                if (Player* player = i->getSource())
                 {
-                    if (player->IsGameMaster())
+                    if (player->isGameMaster())
                         continue;
 
-                    if (player->IsAlive())
+                    if (player->isAlive())
                     {
                         temp->SetHomePosition(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ(), me->GetOrientation());
                         temp->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);

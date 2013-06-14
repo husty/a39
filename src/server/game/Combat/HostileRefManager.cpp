@@ -40,8 +40,8 @@ void HostileRefManager::threatAssist(Unit* victim, float baseThreat, SpellInfo c
     threat /= getSize();
     while (ref)
     {
-        if (ThreatCalcHelper::isValidProcess(victim, ref->GetSource()->GetOwner(), threatSpell))
-            ref->GetSource()->doAddThreat(victim, threat);
+        if (ThreatCalcHelper::isValidProcess(victim, ref->getSource()->getOwner(), threatSpell))
+            ref->getSource()->doAddThreat(victim, threat);
 
         ref = ref->next();
     }
@@ -130,7 +130,7 @@ void HostileRefManager::deleteReferencesForFaction(uint32 faction)
     while (ref)
     {
         HostileReference* nextRef = ref->next();
-        if (ref->GetSource()->GetOwner()->GetFactionTemplateEntry()->faction == faction)
+        if (ref->getSource()->getOwner()->getFactionTemplateEntry()->faction == faction)
         {
             ref->removeReference();
             delete ref;
@@ -148,7 +148,7 @@ void HostileRefManager::deleteReference(Unit* creature)
     while (ref)
     {
         HostileReference* nextRef = ref->next();
-        if (ref->GetSource()->GetOwner() == creature)
+        if (ref->getSource()->getOwner() == creature)
         {
             ref->removeReference();
             delete ref;
@@ -167,7 +167,7 @@ void HostileRefManager::setOnlineOfflineState(Unit* creature, bool isOnline)
     while (ref)
     {
         HostileReference* nextRef = ref->next();
-        if (ref->GetSource()->GetOwner() == creature)
+        if (ref->getSource()->getOwner() == creature)
         {
             ref->setOnlineOfflineState(isOnline);
             break;
@@ -184,7 +184,7 @@ void HostileRefManager::UpdateVisibility()
     while (ref)
     {
         HostileReference* nextRef = ref->next();
-        if (!ref->GetSource()->GetOwner()->CanSeeOrDetect(GetOwner()))
+        if (!ref->getSource()->getOwner()->canSeeOrDetect(getOwner()))
         {
             nextRef = ref->next();
             ref->removeReference();

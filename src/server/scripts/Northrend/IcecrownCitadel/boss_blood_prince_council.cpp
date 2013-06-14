@@ -901,7 +901,7 @@ class boss_prince_valanar_icc : public CreatureScript
                         break;
                 }
                 summons.Summon(summon);
-                if (me->IsInCombat())
+                if (me->isInCombat())
                     DoZoneInCombat(summon);
             }
 
@@ -1341,7 +1341,7 @@ class npc_dark_nucleus : public CreatureScript
                 if (_targetAuraCheck <= diff)
                 {
                     _targetAuraCheck = 1000;
-                    if (Unit* victim = me->GetVictim())
+                    if (Unit* victim = me->getVictim())
                     {
                         if (me->GetDistance(victim) < 15.0f &&
                             !victim->HasAura(SPELL_SHADOW_RESONANCE_RESIST, me->GetGUID()))
@@ -1350,7 +1350,7 @@ class npc_dark_nucleus : public CreatureScript
                             me->ClearUnitState(UNIT_STATE_CASTING);
                         }
                         else
-                            MoveInLineOfSight(me->GetVictim());
+                            MoveInLineOfSight(me->getVictim());
                     }
                 }
                 else

@@ -357,7 +357,7 @@ void WorldSession::HandleMovementOpcodes(WorldPacket& recvData)
     }
 
     // fall damage generation (ignore in flight case that can be triggered also at lags in moment teleportation to another map).
-    if (opcode == MSG_MOVE_FALL_LAND && plrMover && !plrMover->IsInFlight())
+    if (opcode == MSG_MOVE_FALL_LAND && plrMover && !plrMover->isInFlight())
         plrMover->HandleFall(movementInfo);
 
     if (plrMover && ((movementInfo.flags & MOVEMENTFLAG_SWIMMING) != 0) != plrMover->IsInWater())
@@ -425,13 +425,13 @@ void WorldSession::HandleMovementOpcodes(WorldPacket& recvData)
                 // NOTE: this is actually called many times while falling
                 // even after the player has been teleported away
                 /// @todo discard movement packets after the player is rooted
-                if (plrMover->IsAlive())
+                if (plrMover->isAlive())
                 {
                     plrMover->EnvironmentalDamage(DAMAGE_FALL_TO_VOID, GetPlayer()->GetMaxHealth());
                     // player can be alive if GM/etc
                     // change the death state to CORPSE to prevent the death timer from
                     // starting in the next player update
-                    if (!plrMover->IsAlive())
+                    if (!plrMover->isAlive())
                         plrMover->KillPlayer();
                 }
             }
@@ -617,7 +617,7 @@ void WorldSession::HandleMoveWaterWalkAck(WorldPacket& recvData)
 
 void WorldSession::HandleSummonResponseOpcode(WorldPacket& recvData)
 {
-    if (!_player->IsAlive() || _player->IsInCombat())
+    if (!_player->isAlive() || _player->isInCombat())
         return;
 
     uint64 summoner_guid;

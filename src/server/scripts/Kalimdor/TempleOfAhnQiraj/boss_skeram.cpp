@@ -72,7 +72,7 @@ class boss_skeram : public CreatureScript
             void EnterEvadeMode()
             {
                 ScriptedAI::EnterEvadeMode();
-                if (me->IsSummon())
+                if (me->isSummon())
                     ((TempSummon*)me)->UnSummon();
             }
 
@@ -115,7 +115,7 @@ class boss_skeram : public CreatureScript
 
             void JustDied(Unit* /*killer*/)
             {
-                if (!me->IsSummon())
+                if (!me->isSummon())
                     Talk(SAY_DEATH);
                 else
                     me->RemoveCorpse();
@@ -168,7 +168,7 @@ class boss_skeram : public CreatureScript
                     }
                 }
 
-                if (!me->IsSummon() && me->GetHealthPct() < _hpct)
+                if (!me->isSummon() && me->GetHealthPct() < _hpct)
                 {
                     DoCast(me, SPELL_SUMMON_IMAGES);
                     Talk(SAY_SPLIT);
@@ -177,7 +177,7 @@ class boss_skeram : public CreatureScript
                     events.RescheduleEvent(EVENT_BLINK, 2000);
                 }
 
-                if (me->IsWithinMeleeRange(me->GetVictim()))
+                if (me->IsWithinMeleeRange(me->getVictim()))
                 {
                     events.RescheduleEvent(EVENT_EARTH_SHOCK, 2000);
                     DoMeleeAttackIfReady();
@@ -201,7 +201,7 @@ class PlayerOrPetCheck
         bool operator()(WorldObject* object) const
         {
             if (object->GetTypeId() != TYPEID_PLAYER)
-                if (!object->ToCreature()->IsPet())
+                if (!object->ToCreature()->isPet())
                     return true;
 
             return false;

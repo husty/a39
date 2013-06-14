@@ -116,7 +116,7 @@ public:
             {
                 for (Map::PlayerList::const_iterator itr = players.begin(); itr != players.end(); ++itr)
                 {
-                    if (Player* player = itr->GetSource())
+                    if (Player* player = itr->getSource())
                     return player;
                 }
             }

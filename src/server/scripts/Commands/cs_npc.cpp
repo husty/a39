@@ -326,7 +326,7 @@ public:
         {
             creature->SetDefaultMovementType(WAYPOINT_MOTION_TYPE);
             creature->GetMotionMaster()->Initialize();
-            if (creature->IsAlive())                            // dead creature will reset movement generator at respawn
+            if (creature->isAlive())                            // dead creature will reset movement generator at respawn
             {
                 creature->setDeathState(JUST_DIED);
                 creature->Respawn(true);
@@ -400,7 +400,7 @@ public:
             return false;
         }
 
-        if (creature->IsPet())
+        if (creature->isPet())
         {
             if (((Pet*)creature)->getPetType() == HUNTER_PET)
             {
@@ -441,7 +441,7 @@ public:
         else
             unit = handler->getSelectedCreature();
 
-        if (!unit || unit->IsPet() || unit->IsTotem())
+        if (!unit || unit->isPet() || unit->isTotem())
         {
             handler->SendSysMessage(LANG_SELECT_CREATURE);
             handler->SetSentErrorMessage(true);
@@ -465,7 +465,7 @@ public:
             return false;
 
         Creature* vendor = handler->getSelectedCreature();
-        if (!vendor || !vendor->IsVendor())
+        if (!vendor || !vendor->isVendor())
         {
             handler->SendSysMessage(LANG_COMMAND_VENDORSELECTION);
             handler->SetSentErrorMessage(true);
@@ -781,7 +781,7 @@ public:
             }
             creature->SetPosition(x, y, z, o);
             creature->GetMotionMaster()->Initialize();
-            if (creature->IsAlive())                            // dead creature will reset movement generator at respawn
+            if (creature->isAlive())                            // dead creature will reset movement generator at respawn
             {
                 creature->setDeathState(JUST_DIED);
                 creature->Respawn();
@@ -841,7 +841,7 @@ public:
 
         Creature* creature = handler->getSelectedCreature();
 
-        if (!creature || creature->IsPet())
+        if (!creature || creature->isPet())
         {
             handler->SendSysMessage(LANG_SELECT_CREATURE);
             handler->SetSentErrorMessage(true);
@@ -925,7 +925,7 @@ public:
         {
             type_str = guid_str;
             creature = handler->getSelectedCreature();
-            if (!creature || creature->IsPet())
+            if (!creature || creature->isPet())
                 return false;
             lowguid = creature->GetDBTableGUIDLow();
         }
@@ -983,7 +983,7 @@ public:
 
             creature->SetDefaultMovementType(move_type);
             creature->GetMotionMaster()->Initialize();
-            if (creature->IsAlive())                            // dead creature will reset movement generator at respawn
+            if (creature->isAlive())                            // dead creature will reset movement generator at respawn
             {
                 creature->setDeathState(JUST_DIED);
                 creature->Respawn();
@@ -1027,7 +1027,7 @@ public:
 
         creature->SetPhaseMask(phasemask, true);
 
-        if (!creature->IsPet())
+        if (!creature->isPet())
             creature->SaveToDB();
 
         return true;
@@ -1061,7 +1061,7 @@ public:
         creature->SetRespawnRadius((float)option);
         creature->SetDefaultMovementType(mtype);
         creature->GetMotionMaster()->Initialize();
-        if (creature->IsAlive())                                // dead creature will reset movement generator at respawn
+        if (creature->isAlive())                                // dead creature will reset movement generator at respawn
         {
             creature->setDeathState(JUST_DIED);
             creature->Respawn();
@@ -1277,7 +1277,7 @@ public:
     static bool HandleNpcTameCommand(ChatHandler* handler, char const* /*args*/)
     {
         Creature* creatureTarget = handler->getSelectedCreature();
-        if (!creatureTarget || creatureTarget->IsPet())
+        if (!creatureTarget || creatureTarget->isPet())
         {
             handler->PSendSysMessage (LANG_SELECT_CREATURE);
             handler->SetSentErrorMessage (true);
@@ -1295,7 +1295,7 @@ public:
 
         CreatureTemplate const* cInfo = creatureTarget->GetCreatureTemplate();
 
-        if (!cInfo->IsTameable (player->CanTameExoticPets()))
+        if (!cInfo->isTameable (player->CanTameExoticPets()))
         {
             handler->PSendSysMessage (LANG_CREATURE_NON_TAMEABLE, cInfo->Entry);
             handler->SetSentErrorMessage (true);

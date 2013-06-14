@@ -82,7 +82,7 @@ public:
     {
         npc_blackfathom_deeps_eventAI(Creature* creature) : ScriptedAI(creature)
         {
-            if (creature->IsSummon())
+            if (creature->isSummon())
             {
                 creature->SetHomePosition(HomePosition);
                 AttackPlayer();
@@ -117,12 +117,12 @@ public:
 
             for (Map::PlayerList::const_iterator i = PlList.begin(); i != PlList.end(); ++i)
             {
-                if (Player* player = i->GetSource())
+                if (Player* player = i->getSource())
                 {
-                    if (player->IsGameMaster())
+                    if (player->isGameMaster())
                         continue;
 
-                    if (player->IsAlive())
+                    if (player->isAlive())
                     {
                         me->SetInCombatWith(player);
                         player->SetInCombatWith(me);
@@ -183,7 +183,7 @@ public:
 
         void JustDied(Unit* /*killer*/)
         {
-            if (me->IsSummon()) //we are not a normal spawn.
+            if (me->isSummon()) //we are not a normal spawn.
                 if (instance)
                     instance->SetData(DATA_EVENT, instance->GetData(DATA_EVENT) + 1);
         }

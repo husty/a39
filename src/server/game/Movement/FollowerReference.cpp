@@ -32,5 +32,5 @@ void FollowerReference::targetObjectDestroyLink()
 
 void FollowerReference::sourceObjectDestroyLink()
 {
-    GetSource()->stopFollowing();
+    getSource()->stopFollowing();
 }

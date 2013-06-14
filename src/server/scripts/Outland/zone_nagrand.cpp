@@ -123,7 +123,7 @@ public:
 
     bool OnGossipHello(Player* player, Creature* creature)
     {
-        if (creature->IsQuestGiver())
+        if (creature->isQuestGiver())
             player->PrepareQuestMenu(creature->GetGUID());
 
         if (player->GetQuestStatus(10044) == QUEST_STATUS_INCOMPLETE)
@@ -254,7 +254,7 @@ public:
             if (summoned->GetEntry() == NPC_MURK_BRUTE)
                 summoned->AI()->Talk(SAY_MAG_NO_ESCAPE);
 
-            if (summoned->IsTotem())
+            if (summoned->isTotem())
                 return;
 
             summoned->SetWalk(false);
@@ -277,12 +277,12 @@ public:
         void UpdateAI(uint32 uiDiff)
         {
             npc_escortAI::UpdateAI(uiDiff);
-            if (!me->GetVictim())
+            if (!me->getVictim())
                 return;
 
             if (m_uiChainLightningTimer <= uiDiff)
             {
-                DoCast(me->GetVictim(), SPELL_CHAIN_LIGHTNING);
+                DoCast(me->getVictim(), SPELL_CHAIN_LIGHTNING);
                 m_uiChainLightningTimer = urand(7000, 14000);
             }
             else
@@ -301,7 +301,7 @@ public:
 
             if (m_uiFrostShockTimer <= uiDiff)
             {
-                DoCast(me->GetVictim(), SPELL_FROST_SHOCK);
+                DoCast(me->getVictim(), SPELL_FROST_SHOCK);
                 m_uiFrostShockTimer = urand(7500, 15000);
             }
             else
@@ -599,7 +599,7 @@ public:
                 Talk(SAY_KUR_NO_ESCAPE);
 
             // This function is for when we summoned enemies to fight - so that does NOT mean we should make our totem count in this!
-            if (summoned->IsTotem())
+            if (summoned->isTotem())
                 return;
 
             summoned->SetWalk(false);
@@ -636,7 +636,7 @@ public:
 
             if (ChainLightningTimer <= diff)
             {
-                DoCast(me->GetVictim(), SPELL_KUR_CHAIN_LIGHTNING);
+                DoCast(me->getVictim(), SPELL_KUR_CHAIN_LIGHTNING);
                 ChainLightningTimer = urand(7000, 14000);
             } else ChainLightningTimer -= diff;
 
@@ -651,7 +651,7 @@ public:
 
             if (FrostShockTimer <= diff)
             {
-                DoCast(me->GetVictim(), SPELL_KUR_FROST_SHOCK);
+                DoCast(me->getVictim(), SPELL_KUR_FROST_SHOCK);
                 FrostShockTimer = urand(7500, 15000);
             } else FrostShockTimer -= diff;
 

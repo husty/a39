@@ -91,7 +91,7 @@ public:
 
     bool OnGossipHello(Player* player, Creature* creature)
     {
-        if (creature->IsQuestGiver())
+        if (creature->isQuestGiver())
             player->PrepareQuestMenu(creature->GetGUID());
 
         player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, GOSSIP_ITEM_KAEL_1, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF);
@@ -146,7 +146,7 @@ public:
 
             for (Map::PlayerList::const_iterator i = lList.begin(); i != lList.end(); ++i)
             {
-                if (Player* player = i->GetSource())
+                if (Player* player = i->getSource())
                 {
                     if (spell && spell->Effects[0].MiscValue)
                         player->KilledMonsterCredit(spell->Effects[0].MiscValue, 0);

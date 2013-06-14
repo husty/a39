@@ -162,7 +162,7 @@ public:
                     eckTheFerociousGUID = creature->GetGUID();
                     break;
                 case CREATURE_RUIN_DWELLER:
-                    if (creature->IsAlive())
+                    if (creature->isAlive())
                         DwellerGUIDs.insert(creature->GetGUID());
                     break;
             }

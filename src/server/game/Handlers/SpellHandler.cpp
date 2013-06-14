@@ -130,7 +130,7 @@ void WorldSession::HandleUseItemOpcode(WorldPacket& recvPacket)
         return;
     }
 
-    if (pUser->IsInCombat())
+    if (pUser->isInCombat())
     {
         for (int i = 0; i < MAX_ITEM_PROTO_SPELLS; ++i)
         {
@@ -465,7 +465,7 @@ void WorldSession::HandlePetCancelAuraOpcode(WorldPacket& recvPacket)
         return;
     }
 
-    if (!pet->IsAlive())
+    if (!pet->isAlive())
     {
         pet->SendPetActionFeedback(FEEDBACK_PET_DEAD);
         return;
@@ -518,7 +518,7 @@ void WorldSession::HandleTotemDestroyed(WorldPacket& recvPacket)
 
     Creature* totem = GetPlayer()->GetMap()->GetCreature(_player->m_SummonSlot[slotId]);
 
-    if (totem && totem->IsTotem())
+    if (totem && totem->isTotem())
         totem->ToTotem()->UnSummon();
 }
 

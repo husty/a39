@@ -1277,7 +1277,7 @@ class spell_deathbringer_boiling_blood : public SpellScriptLoader
 
             void FilterTargets(std::list<WorldObject*>& targets)
             {
-                targets.remove(GetCaster()->GetVictim());
+                targets.remove(GetCaster()->getVictim());
                 if (targets.empty())
                     return;
 

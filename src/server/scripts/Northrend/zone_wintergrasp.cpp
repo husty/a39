@@ -117,10 +117,10 @@ class npc_wg_demolisher_engineer : public CreatureScript
 
         bool OnGossipHello(Player* player, Creature* creature)
         {
-            if (creature->IsQuestGiver())
+            if (creature->isQuestGiver())
                 player->PrepareQuestMenu(creature->GetGUID());
 
-            if (CanBuild(creature))
+            if (canBuild(creature))
             {
                 if (player->HasAura(SPELL_CORPORAL))
                     player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, GOSSIP_HELLO_DEMO1, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF);
@@ -142,7 +142,7 @@ class npc_wg_demolisher_engineer : public CreatureScript
         {
             player->CLOSE_GOSSIP_MENU();
 
-            if (CanBuild(creature))
+            if (canBuild(creature))
             {
                 switch (action - GOSSIP_ACTION_INFO_DEF)
                 {
@@ -163,7 +163,7 @@ class npc_wg_demolisher_engineer : public CreatureScript
         }
 
     private:
-        bool CanBuild(Creature* creature)
+        bool canBuild(Creature* creature)
         {
             Battlefield* wintergrasp = sBattlefieldMgr->GetBattlefieldByBattleId(BATTLEFIELD_BATTLEID_WG);
             if (!wintergrasp)
@@ -188,7 +188,7 @@ class npc_wg_spirit_guide : public CreatureScript
 
         bool OnGossipHello(Player* player, Creature* creature)
         {
-            if (creature->IsQuestGiver())
+            if (creature->isQuestGiver())
                 player->PrepareQuestMenu(creature->GetGUID());
 
             Battlefield* wintergrasp = sBattlefieldMgr->GetBattlefieldByBattleId(BATTLEFIELD_BATTLEID_WG);
@@ -244,7 +244,7 @@ class npc_wg_queue : public CreatureScript
 
         bool OnGossipHello(Player* player, Creature* creature)
         {
-            if (creature->IsQuestGiver())
+            if (creature->isQuestGiver())
                 player->PrepareQuestMenu(creature->GetGUID());
 
             Battlefield* wintergrasp = sBattlefieldMgr->GetBattlefieldByBattleId(BATTLEFIELD_BATTLEID_WG);
@@ -334,14 +334,14 @@ class npc_wg_quest_giver : public CreatureScript
 
         bool OnGossipHello(Player* player, Creature* creature)
         {
-            if (creature->IsQuestGiver())
+            if (creature->isQuestGiver())
                 player->PrepareQuestMenu(creature->GetGUID());
 
             Battlefield* wintergrasp = sBattlefieldMgr->GetBattlefieldByBattleId(BATTLEFIELD_BATTLEID_WG);
             if (!wintergrasp)
                 return true;
 
-            if (creature->IsQuestGiver())
+            if (creature->isQuestGiver())
             {
                 QuestRelationBounds objectQR = sObjectMgr->GetCreatureQuestRelationBounds(creature->GetEntry());
                 QuestRelationBounds objectQIR = sObjectMgr->GetCreatureQuestInvolvedRelationBounds(creature->GetEntry());

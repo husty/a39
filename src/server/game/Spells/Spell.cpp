@@ -650,7 +650,7 @@ void Spell::InitExplicitTargets(SpellCastTargets const& targets)
             }
             // try to use attacked unit as a target
             else if ((m_caster->GetTypeId() == TYPEID_UNIT) && neededTargets & (TARGET_FLAG_UNIT_ENEMY | TARGET_FLAG_UNIT))
-                unit = m_caster->GetVictim();
+                unit = m_caster->getVictim();
 
             // didn't find anything - let's use self as target
             if (!unit && neededTargets & (TARGET_FLAG_UNIT_RAID | TARGET_FLAG_UNIT_PARTY | TARGET_FLAG_UNIT_ALLY))
@@ -1170,7 +1170,7 @@ void Spell::SelectImplicitAreaTargets(SpellEffIndex effIndex, SpellImplicitTarge
                         case TYPEID_PLAYER:
                         {
                             Unit* unitTarget = (*itr)->ToUnit();
-                            if (unitTarget->IsAlive() || !playerCaster->isHonorOrXPTarget(unitTarget)
+                            if (unitTarget->isAlive() || !playerCaster->isHonorOrXPTarget(unitTarget)
                                 || ((unitTarget->GetCreatureTypeMask() & (1 << (CREATURE_TYPE_HUMANOID-1))) == 0)
                                 || (unitTarget->GetDisplayId() != unitTarget->GetNativeDisplayId()))
                                 break;
@@ -1415,26 +1415,7 @@ void Spell::SelectImplicitCasterDestTargets(SpellEffIndex effIndex, SpellImplici
              float x, y, z, angle;
              angle = (float)rand_norm() * static_cast<float>(M_PI * 35.0f / 180.0f) - static_cast<float>(M_PI * 17.5f / 180.0f);
              m_caster->GetClosePoint(x, y, z, DEFAULT_WORLD_OBJECT_SIZE, dis, angle);
-
-             float ground = z;
-             float liquidLevel = m_caster->GetMap()->GetWaterOrGroundLevel(x, y, z, &ground);
-             if (liquidLevel <= ground) // When there is no liquid Map::GetWaterOrGroundLevel returns ground level
-             {
-                 SendCastResult(SPELL_FAILED_NOT_HERE);
-                 SendChannelUpdate(0);
-                 finish(false);
-                 return;
-             }
-
-             if (ground + 0.75 > liquidLevel)
-             {
-                 SendCastResult(SPELL_FAILED_TOO_SHALLOW);
-                 SendChannelUpdate(0);
-                 finish(false);
-                 return;
-             }
-
-             m_targets.SetDst(x, y, liquidLevel, m_caster->GetOrientation());
+             m_targets.SetDst(x, y, z, m_caster->GetOrientation());
              return;
         }
         default:
@@ -1550,7 +1531,7 @@ void Spell::SelectImplicitCasterObjectTargets(SpellEffIndex effIndex, SpellImpli
             target = m_caster->GetGuardianPet();
             break;
         case TARGET_UNIT_SUMMONER:
-            if (m_caster->IsSummon())
+            if (m_caster->isSummon())
                 target = m_caster->ToTempSummon()->GetSummoner();
             break;
         case TARGET_UNIT_VEHICLE:
@@ -2122,7 +2103,7 @@ void Spell::prepareDataForTriggerSystem(AuraEffect const* /*triggeredByAura*/)
             m_procEx |= PROC_EX_INTERNAL_TRIGGERED;
     }
     // Totem casts require spellfamilymask defined in spell_proc_event to proc
-    if (m_originalCaster && m_caster != m_originalCaster && m_caster->GetTypeId() == TYPEID_UNIT && m_caster->ToCreature()->IsTotem() && m_caster->IsControlledByPlayer())
+    if (m_originalCaster && m_caster != m_originalCaster && m_caster->GetTypeId() == TYPEID_UNIT && m_caster->ToCreature()->isTotem() && m_caster->IsControlledByPlayer())
         m_procEx |= PROC_EX_INTERNAL_REQ_FAMILY;
 }
 
@@ -2179,7 +2160,7 @@ void Spell::AddUnitTarget(Unit* target, uint32 effectMask, bool checkIfValid /*=
     targetInfo.targetGUID = targetGUID;                         // Store target GUID
     targetInfo.effectMask = effectMask;                         // Store all effects not immune
     targetInfo.processed  = false;                              // Effects not apply on target
-    targetInfo.alive      = target->IsAlive();
+    targetInfo.alive      = target->isAlive();
     targetInfo.damage     = 0;
     targetInfo.crit       = false;
     targetInfo.scaleAura  = false;
@@ -2373,7 +2354,7 @@ void Spell::DoAllEffectOnTarget(TargetInfo* target)
         return;
     }
 
-    if (unit->IsAlive() != target->alive)
+    if (unit->isAlive() != target->alive)
         return;
 
     if (getState() == SPELL_STATE_DELAYED && !m_spellInfo->IsPositive() && (getMSTime() - target->timeDelay) <= unit->m_lastSanctuaryTime)
@@ -2579,7 +2560,7 @@ void Spell::DoAllEffectOnTarget(TargetInfo* target)
 
             // cast at creature (or GO) quest objectives update at successful cast finished (+channel finished)
             // ignore pets or autorepeat/melee casts for speed (not exist quest for spells (hm...)
-            if (m_originalCaster && m_originalCaster->IsControlledByPlayer() && !spellHitTarget->ToCreature()->IsPet() && !IsAutoRepeat() && !IsNextMeleeSwingSpell() && !IsChannelActive())
+            if (m_originalCaster && m_originalCaster->IsControlledByPlayer() && !spellHitTarget->ToCreature()->isPet() && !IsAutoRepeat() && !IsNextMeleeSwingSpell() && !IsChannelActive())
                 if (Player* p = m_originalCaster->GetCharmerOrOwnerPlayerOrPlayerItself())
                     p->CastedCreatureOrGO(spellHitTarget->GetEntry(), spellHitTarget->GetGUID(), m_spellInfo->Id);
         }
@@ -2708,7 +2689,7 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
                 if (m_caster->GetTypeId() == TYPEID_PLAYER)
                     m_caster->ToPlayer()->UpdatePvP(true);
             }
-            if (unit->IsInCombat() && !(m_spellInfo->AttributesEx3 & SPELL_ATTR3_NO_INITIAL_AGGRO))
+            if (unit->isInCombat() && !(m_spellInfo->AttributesEx3 & SPELL_ATTR3_NO_INITIAL_AGGRO))
             {
                 m_caster->SetInCombatState(unit->GetCombatTimer() > 0, unit);
                 unit->getHostileRefManager().threatAssist(m_caster, 0.0f);
@@ -3302,7 +3283,7 @@ void Spell::cast(bool skipCheck)
         // This prevents spells such as Hunter's Mark from triggering pet attack
         if (this->GetSpellInfo()->DmgClass != SPELL_DAMAGE_CLASS_NONE)
             if (Pet* playerPet = playerCaster->GetPet())
-                if (playerPet->IsAlive() && playerPet->isControlled() && (m_targets.GetTargetMask() & TARGET_FLAG_UNIT))
+                if (playerPet->isAlive() && playerPet->isControlled() && (m_targets.GetTargetMask() & TARGET_FLAG_UNIT))
                     playerPet->AI()->OwnerAttacked(m_targets.GetObjectTarget()->ToUnit());
     }
 
@@ -3655,7 +3636,7 @@ void Spell::_handle_finish_phase()
     }
 
     if (m_caster->m_extraAttacks && GetSpellInfo()->HasEffect(SPELL_EFFECT_ADD_EXTRA_ATTACKS))
-        m_caster->HandleProcExtraAttackFor(m_caster->GetVictim());
+        m_caster->HandleProcExtraAttackFor(m_caster->getVictim());
 
     /// @todo trigger proc phase finish here
 }
@@ -3819,7 +3800,7 @@ void Spell::finish(bool ok)
     if (!ok)
         return;
 
-    if (m_caster->GetTypeId() == TYPEID_UNIT && m_caster->ToCreature()->IsSummon())
+    if (m_caster->GetTypeId() == TYPEID_UNIT && m_caster->ToCreature()->isSummon())
     {
         // Unsummon statue
         uint32 spell = m_caster->GetUInt32Value(UNIT_CREATED_BY_SPELL);
@@ -4013,7 +3994,7 @@ void Spell::SendSpellStart()
     if (m_spellInfo->Attributes & SPELL_ATTR0_REQ_AMMO)
         castFlags |= CAST_FLAG_AMMO;
     if ((m_caster->GetTypeId() == TYPEID_PLAYER ||
-        (m_caster->GetTypeId() == TYPEID_UNIT && m_caster->ToCreature()->IsPet()))
+        (m_caster->GetTypeId() == TYPEID_UNIT && m_caster->ToCreature()->isPet()))
          && m_spellInfo->PowerType != POWER_HEALTH)
         castFlags |= CAST_FLAG_POWER_LEFT_SELF;
 
@@ -4067,7 +4048,7 @@ void Spell::SendSpellGo()
         castFlags |= CAST_FLAG_AMMO;                        // arrows/bullets visual
 
     if ((m_caster->GetTypeId() == TYPEID_PLAYER ||
-        (m_caster->GetTypeId() == TYPEID_UNIT && m_caster->ToCreature()->IsPet()))
+        (m_caster->GetTypeId() == TYPEID_UNIT && m_caster->ToCreature()->isPet()))
         && m_spellInfo->PowerType != POWER_HEALTH)
         castFlags |= CAST_FLAG_POWER_LEFT_SELF; // should only be sent to self, but the current messaging doesn't make that possible
 
@@ -4853,7 +4834,7 @@ void Spell::HandleEffects(Unit* pUnitTarget, Item* pItemTarget, GameObject* pGOT
 SpellCastResult Spell::CheckCast(bool strict)
 {
     // check death state
-    if (!m_caster->IsAlive() && !(m_spellInfo->Attributes & SPELL_ATTR0_PASSIVE) && !((m_spellInfo->Attributes & SPELL_ATTR0_CASTABLE_WHILE_DEAD) || (IsTriggered() && !m_triggeredByAuraSpell)))
+    if (!m_caster->isAlive() && !(m_spellInfo->Attributes & SPELL_ATTR0_PASSIVE) && !((m_spellInfo->Attributes & SPELL_ATTR0_CASTABLE_WHILE_DEAD) || (IsTriggered() && !m_triggeredByAuraSpell)))
         return SPELL_FAILED_CASTER_DEAD;
 
     // check cooldowns to prevent cheating
@@ -4971,7 +4952,7 @@ SpellCastResult Spell::CheckCast(bool strict)
         if (m_spellInfo->ExcludeCasterAuraSpell && m_caster->HasAura(sSpellMgr->GetSpellIdForDifficulty(m_spellInfo->ExcludeCasterAuraSpell, m_caster)))
             return SPELL_FAILED_CASTER_AURASTATE;
 
-        if (reqCombat && m_caster->IsInCombat() && !m_spellInfo->CanBeUsedInCombat())
+        if (reqCombat && m_caster->isInCombat() && !m_spellInfo->CanBeUsedInCombat())
             return SPELL_FAILED_AFFECTING_COMBAT;
     }
 
@@ -5088,7 +5069,7 @@ SpellCastResult Spell::CheckCast(bool strict)
                 return SPELL_FAILED_NOT_IN_ARENA;
 
     // zone check
-    if (m_caster->GetTypeId() == TYPEID_UNIT || !m_caster->ToPlayer()->IsGameMaster())
+    if (m_caster->GetTypeId() == TYPEID_UNIT || !m_caster->ToPlayer()->isGameMaster())
     {
         uint32 zone, area;
         m_caster->GetZoneAndAreaId(zone, area);
@@ -5103,7 +5084,7 @@ SpellCastResult Spell::CheckCast(bool strict)
     if (m_caster->IsMounted() && m_caster->GetTypeId() == TYPEID_PLAYER && !(_triggeredCastFlags & TRIGGERED_IGNORE_CASTER_MOUNTED_OR_ON_VEHICLE) &&
         !m_spellInfo->IsPassive() && !(m_spellInfo->Attributes & SPELL_ATTR0_CASTABLE_WHILE_MOUNTED))
     {
-        if (m_caster->IsInFlight())
+        if (m_caster->isInFlight())
             return SPELL_FAILED_NOT_ON_TAXI;
         else
             return SPELL_FAILED_NOT_MOUNTED;
@@ -5253,7 +5234,7 @@ SpellCastResult Spell::CheckCast(bool strict)
                 if (!pet->GetCurrentFoodBenefitLevel(foodItem->GetTemplate()->ItemLevel))
                     return SPELL_FAILED_FOOD_LOWLEVEL;
 
-                if (m_caster->IsInCombat() || pet->IsInCombat())
+                if (m_caster->isInCombat() || pet->isInCombat())
                     return SPELL_FAILED_AFFECTING_COMBAT;
 
                 break;
@@ -5396,7 +5377,7 @@ SpellCastResult Spell::CheckCast(bool strict)
             {
                 Creature* pet = m_caster->GetGuardianPet();
 
-                if (pet && pet->IsAlive())
+                if (pet && pet->isAlive())
                     return SPELL_FAILED_ALREADY_HAVE_SUMMON;
 
                 break;
@@ -5626,7 +5607,7 @@ SpellCastResult Spell::CheckCast(bool strict)
             {
                 // not allow cast fly spells if not have req. skills  (all spells is self target)
                 // allow always ghost flight spells
-                if (m_originalCaster && m_originalCaster->GetTypeId() == TYPEID_PLAYER && m_originalCaster->IsAlive())
+                if (m_originalCaster && m_originalCaster->GetTypeId() == TYPEID_PLAYER && m_originalCaster->isAlive())
                 {
                     Battlefield* Bf = sBattlefieldMgr->GetBattlefieldToZoneId(m_originalCaster->GetZoneId());
                     if (AreaTableEntry const* area = GetAreaEntryByAreaID(m_originalCaster->GetAreaId()))
@@ -5696,7 +5677,7 @@ SpellCastResult Spell::CheckPetCast(Unit* target)
 
     // dead owner (pets still alive when owners ressed?)
     if (Unit* owner = m_caster->GetCharmerOrOwner())
-        if (!owner->IsAlive())
+        if (!owner->isAlive())
             return SPELL_FAILED_CASTER_DEAD;
 
     if (!target && m_targets.GetUnitTarget())
@@ -6946,7 +6927,7 @@ bool SpellEvent::IsDeletable() const
 
 bool Spell::IsValidDeadOrAliveTarget(Unit const* target) const
 {
-    if (target->IsAlive())
+    if (target->isAlive())
         return !m_spellInfo->IsRequiringDeadTarget();
     if (m_spellInfo->IsAllowingDeadTarget())
         return true;
@@ -7575,19 +7556,19 @@ bool WorldObjectSpellTargetCheck::operator()(WorldObject* target)
         switch (_targetSelectionType)
         {
             case TARGET_CHECK_ENEMY:
-                if (unitTarget->IsTotem())
+                if (unitTarget->isTotem())
                     return false;
                 if (!_caster->_IsValidAttackTarget(unitTarget, _spellInfo))
                     return false;
                 break;
             case TARGET_CHECK_ALLY:
-                if (unitTarget->IsTotem())
+                if (unitTarget->isTotem())
                     return false;
                 if (!_caster->_IsValidAssistTarget(unitTarget, _spellInfo))
                     return false;
                 break;
             case TARGET_CHECK_PARTY:
-                if (unitTarget->IsTotem())
+                if (unitTarget->isTotem())
                     return false;
                 if (!_caster->_IsValidAssistTarget(unitTarget, _spellInfo))
                     return false;
@@ -7599,7 +7580,7 @@ bool WorldObjectSpellTargetCheck::operator()(WorldObject* target)
                     return false;
                 // nobreak;
             case TARGET_CHECK_RAID:
-                if (unitTarget->IsTotem())
+                if (unitTarget->isTotem())
                     return false;
                 if (!_caster->_IsValidAssistTarget(unitTarget, _spellInfo))
                     return false;

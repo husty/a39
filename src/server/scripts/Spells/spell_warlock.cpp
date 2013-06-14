@@ -351,7 +351,7 @@ class spell_warl_demonic_empowerment : public SpellScriptLoader
             {
                 if (Creature* targetCreature = GetHitCreature())
                 {
-                    if (targetCreature->IsPet())
+                    if (targetCreature->isPet())
                     {
                         CreatureTemplate const* ci = sObjectMgr->GetCreatureTemplate(targetCreature->GetEntry());
                         switch (ci->family)
