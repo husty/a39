@@ -3572,7 +3572,8 @@ class spell_gen_orc_disguise : public SpellScriptLoader
 
 enum WhisperGulchYoggSaronWhisper
 {
-    SPELL_YOGG_SARON_WHISPER_DUMMY = 29072
+    SPELL_YOGG_SARON_WHISPER_DUMMY = 29072,
+    CREATURE_UNKNOWN_VOICE         = 29881
 };
 
 class spell_gen_whisper_gulch_yogg_saron_whisper : public SpellScriptLoader
@@ -3594,7 +3595,8 @@ class spell_gen_whisper_gulch_yogg_saron_whisper : public SpellScriptLoader
             void HandleEffectPeriodic(AuraEffect const* /*aurEff*/)
             {
                 PreventDefaultAction();
-                GetTarget()->CastSpell((Unit*)NULL, SPELL_YOGG_SARON_WHISPER_DUMMY, true);
+                if (Unit* caster = GetCaster())
+                    caster->CastSpell(caster->FindNearestCreature(CREATURE_UNKNOWN_VOICE,100), SPELL_YOGG_SARON_WHISPER_DUMMY, true);
             }
 
             void Register()
