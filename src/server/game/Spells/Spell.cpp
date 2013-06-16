@@ -2663,31 +2663,34 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
                 unit->RemoveAurasByType(SPELL_AURA_MOD_STEALTH);
 				
 			// Binary Resistance System by Saqirmdev
-			if (unit->GetTypeId() == TYPEID_PLAYER && (m_caster->GetTypeId() == TYPEID_PLAYER || m_caster->ToCreature()->IsPet()) && !((m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_NORMAL) || (m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_HOLY)))
+			if (unit->GetTypeId() == TYPEID_PLAYER && m_caster->GetTypeId() == TYPEID_PLAYER && !((m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_NORMAL) || (m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_HOLY)))
 			{			
-				int32 resistChance = unit->GetResistance(SpellSchoolMask(m_spellInfo->SchoolMask));
-				int16 SpellPenetration = 0;
+				float resistChance = unit->GetResistance(SpellSchoolMask(m_spellInfo->SchoolMask));
+				if (resistChance > 252.0f) // Cap Resist Chance
+				    resistChance /= 10.0f;
+				bool canResist = false;
 				if (resistChance &&  m_spellInfo->AttributesCu & SPELL_ATTR0_CU_CAN_RESIST)
 				{
-					if (m_caster->GetTypeId() == TYPEID_PLAYER)
-						SpellPenetration = float(m_caster->ToPlayer()->GetSpellPenetration(SpellSchoolMask(m_spellInfo->SchoolMask)));
-					else if (m_caster->ToCreature()->IsPet())
-					    SpellPenetration = float(m_caster->GetOwner()->GetSpellPenetration(SpellSchoolMask(m_spellInfo->SchoolMask)));
+					int16 SpellPenetration = float(m_caster->ToPlayer()->GetSpellPenetration(SpellSchoolMask(m_spellInfo->SchoolMask)));
 
-					resistChance -= SpellPenetration;
+					if (SpellPenetration)
+						resistChance -= SpellPenetration;
 
-					if (SpellPenetration > resistChance)
-						resistChance = -1;
+					if (SpellPenetration => resistChance)
+						canResist = false;
 					else
+					    canResist = true;
+						
+					if (canResist == true)
 					{
-						resistChance = int16((resistChance / 80) * 1000); // Resist Chance Formular 130 Resist -> 14,31% 
+						resistChance = float((resistChance / 86.0f) * 1000.0f); // Resist Chance Formular 130 Resist -> 14,31% 
 				   
 						if (resistChance > 10000) // Resist can't be higher than 100% 
 							resistChance = 10000;
 						else if (resistChance < 0) // Resist can't be lower than 0
-							resistChance = -1;
+							canResist = false;
 					
-					    if (resistChance && resistChance > irand(0,10000))
+					    if (canResist && resistChance && resistChance > irand(0,10000))
 						    return SPELL_MISS_RESIST;
 					}
 				}
@@ -2718,36 +2721,38 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 	else if (!m_spellInfo->IsPositive())
 	{
 		// Binary Resistance System by Saqirmdev
-	    if (unit->GetTypeId() == TYPEID_PLAYER && (m_caster->GetTypeId() == TYPEID_PLAYER || m_caster->ToCreature()->IsPet()) && !((m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_NORMAL) || (m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_HOLY)))
+		if (unit->GetTypeId() == TYPEID_PLAYER && m_caster->GetTypeId() == TYPEID_PLAYER && !((m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_NORMAL) || (m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_HOLY)))
 		{			
-			int32 resistChance = unit->GetResistance(SpellSchoolMask(m_spellInfo->SchoolMask));
- 			int16 SpellPenetration = 0;
+			float resistChance = unit->GetResistance(SpellSchoolMask(m_spellInfo->SchoolMask));
+			if (resistChance > 252.0f) // Cap Resist Chance
+			    resistChance /= 10.0f;
+			bool canResist = false;
 			if (resistChance &&  m_spellInfo->AttributesCu & SPELL_ATTR0_CU_CAN_RESIST)
 			{
-				if (m_caster->GetTypeId() == TYPEID_PLAYER)
-                	SpellPenetration = float(m_caster->ToPlayer()->GetSpellPenetration(SpellSchoolMask(m_spellInfo->SchoolMask)));
-				else if (m_caster->ToCreature()->IsPet())
-					SpellPenetration = float(m_caster->GetOwner()->GetSpellPenetration(SpellSchoolMask(m_spellInfo->SchoolMask)));
+				int16 SpellPenetration = float(m_caster->ToPlayer()->GetSpellPenetration(SpellSchoolMask(m_spellInfo->SchoolMask)));
 
-				resistChance -= SpellPenetration;
+				if (SpellPenetration)
+					resistChance -= SpellPenetration;
 
-				if (SpellPenetration > resistChance)
-					resistChance = -1;
+				if (SpellPenetration => resistChance)
+					canResist = false;
 				else
-			    {
-				    resistChance = int16((resistChance / 80) * 1000); // Resist Chance Formular 130 Resist -> 14,31% 
-				   
-					if (resistChance > 10000) // Resist Can't be higher than 100% 
+				    canResist = true;
+					
+				if (canResist == true)
+				{
+					resistChance = float((resistChance / 86.0f) * 1000.0f); // Resist Chance Formular 130 Resist -> 14,31% 
+			   
+					if (resistChance > 10000) // Resist can't be higher than 100% 
 						resistChance = 10000;
 					else if (resistChance < 0) // Resist can't be lower than 0
-						resistChance = -1;
+						canResist = false;
 				
-					if (resistChance && resistChance > irand(0,10000))
-						return SPELL_MISS_RESIST;
+				    if (canResist && resistChance && resistChance > irand(0,10000))
+					    return SPELL_MISS_RESIST;
 				}
 			}
-		}
-    }
+		}	
 
     // Get Data Needed for Diminishing Returns, some effects may have multiple auras, so this must be done on spell hit, not aura add
     m_diminishGroup = GetDiminishingReturnsGroupForSpell(m_spellInfo, m_triggeredByAuraSpell);

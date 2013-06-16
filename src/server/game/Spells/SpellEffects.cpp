@@ -829,31 +829,27 @@ void Spell::EffectTriggerSpell(SpellEffIndex effIndex)
                 // Glyph of Mirror Image
                 if (m_caster->HasAura(63093))
                    m_caster->CastSpell(m_caster, 65047, true); // Mirror Image
-				break;
+				return;
             }
 
           case 35009: // Invisible
 		  {
 				m_caster->CombatStop();
 				m_caster->SetInCombatState(false, m_caster);		
-				break;
+				return;
 		  }
           case 58984: // Shadowmeld
 		  {		m_caster->CombatStop();
 				m_caster->SetInCombatState(false, m_caster);
-				m_caster->InterruptSpell(CURRENT_AUTOREPEAT_SPELL); // break Auto Shot and autohit
-				unitTarget->InterruptSpell(CURRENT_CHANNELED_SPELL);  // break channeled spells
 				m_caster->AttackStop();
-				break;
+				return;
 		  }
 		  case 1857: // Vanish
 		  case 26889: // Vanish Rank 3 - ???
 		  {
-		        m_caster->InterruptSpell(CURRENT_AUTOREPEAT_SPELL); // break Auto Shot and autohit
-                unitTarget->InterruptSpell(CURRENT_CHANNELED_SPELL);  // break channeled spells
 				m_caster->AttackStop();
                 m_caster->CombatStop();
-				break;
+				return;
 		  }
 
             // Vanish (not exist)
@@ -889,7 +885,7 @@ void Spell::EffectTriggerSpell(SpellEffIndex effIndex)
 	         unitTarget->RemoveAurasByType(SPELL_AURA_PERIODIC_DAMAGE, 0, unitTarget->GetAura(32409)); // SW:D shall not be removed.
                 unitTarget->RemoveAurasByType(SPELL_AURA_PERIODIC_DAMAGE_PERCENT);
                 unitTarget->RemoveAurasByType(SPELL_AURA_PERIODIC_LEECH);
-				break;
+				return;
 	      }
             // Demonic Empowerment -- succubus
             case 54437:
