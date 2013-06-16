@@ -2685,7 +2685,7 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 						
 					if (canResist == true)
 					{
-						resistChance = float((resistChance / 86.0f) * 1000.0f); // Resist Chance Formular 130 Resist -> 14,31% 
+						resistChance = float((resistChance / 66.0f) * 1000.0f); // Resist Chance Formular 130 Resist -> 14,31% 
 				   
 						if (resistChance > 10000) // Resist can't be higher than 100% 
 							resistChance = 10000;
@@ -2745,7 +2745,7 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 					
 				if (canResist == true)
 				{
-					resistChance = float((resistChance / 86.0f) * 1000.0f); // Resist Chance Formular 130 Resist -> 14,31% 
+					resistChance = float((resistChance / 66.0f) * 1000.0f); // Resist Chance Formular 130 Resist -> 14,31% 
 			   
 					if (resistChance > 10000) // Resist can't be higher than 100% 
 						resistChance = 10000;
@@ -4916,9 +4916,12 @@ SpellCastResult Spell::CheckCast(bool strict)
 	
 	// Can't casting on Spiked Target
 	if (Unit *SpikedPlayer = m_caster->GetVictim())
-	   if (SpikedPlayer->GetTypeId() == TYPEID_PLAYER && SpikedPlayer->HasAura(69065))
-	       return SPELL_FAILED_BAD_TARGETS;
+	    if (SpikedPlayer->GetTypeId() == TYPEID_PLAYER && SpikedPlayer->HasAura(69065))
+	        return SPELL_FAILED_BAD_TARGETS;
 	      
+	if (m_spellInfo->Id == 1857 || m_spellInfo->Id == 1856) // Why not this hackfix
+	    if (m_caster->HasAura(12826))
+	        return SPELL_FAILED_DONT_REPORT;
 
     // only check at first call, Stealth auras are already removed at second call
     // for now, ignore triggered spells

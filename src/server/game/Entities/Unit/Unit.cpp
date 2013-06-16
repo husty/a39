@@ -2597,7 +2597,7 @@ SpellMissInfo Unit::MagicSpellHitResult(Unit* victim, SpellInfo const* spell)
 
     // Chance resist mechanic (select max value from every mechanic spell effect)
     int32 resist_chance = victim->GetMechanicResistChance(spell) * 100;
-    tmp += resist_chance;
+    tmp = resist_chance;
 
     // Chance resist debuff
     if (!spell->IsPositive())
@@ -2627,7 +2627,7 @@ SpellMissInfo Unit::MagicSpellHitResult(Unit* victim, SpellInfo const* spell)
     if (victim->HasInArc(M_PI, this) || victim->HasAuraType(SPELL_AURA_IGNORE_HIT_DIRECTION))
     {
         int32 deflect_chance = victim->GetTotalAuraModifier(SPELL_AURA_DEFLECT_SPELLS) * 100;
-        tmp += deflect_chance;
+        tmp = deflect_chance;
         if (rand < tmp)
             return SPELL_MISS_DEFLECT;
     }
@@ -15494,6 +15494,7 @@ void Unit::Kill(Unit* victim, bool durabilityLoss)
                 if (instanceMap->IsRaidOrHeroicDungeon())
                 {
                     if (creature->GetCreatureTemplate()->flags_extra & CREATURE_FLAG_EXTRA_INSTANCE_BIND)
+                        ((InstanceMap*)instanceMap)->PermBindAllPlayers(creditedPlayer);
                         ((InstanceMap*)instanceMap)->PermBindAllPlayers(creditedPlayer);
                 }
                 else
