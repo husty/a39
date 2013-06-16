@@ -2663,23 +2663,25 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
                 unit->RemoveAurasByType(SPELL_AURA_MOD_STEALTH);
 				
 			// Binary Resistance System by Saqirmdev
-			if (unit->GetTypeId() == TYPEID_PLAYER && m_caster->GetTypeId() == TYPEID_PLAYER && !((m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_NORMAL) || (m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_HOLY)))
+			if (unit->GetTypeId() == TYPEID_PLAYER && m_caster->GetTypeId() == TYPEID_PLAYER && !((m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_NORMAL) || (m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_HOLY)) && !m_spellInfo->IsPositive())
 			{			
 				float resistChance = unit->GetResistance(SpellSchoolMask(m_spellInfo->SchoolMask));
-				if (resistChance > 252.0f) // Cap Resist Chance
-				    resistChance /= 10.0f;
 				bool canResist = false;
+				
 				if (resistChance &&  m_spellInfo->AttributesCu & SPELL_ATTR0_CU_CAN_RESIST)
 				{
 					int16 SpellPenetration = float(m_caster->ToPlayer()->GetSpellPenetration(SpellSchoolMask(m_spellInfo->SchoolMask)));
 
+					if (resistChance > 252.0f) // Cap Resist Chance
+						resistChance /= 10.0f;
+					
 					if (SpellPenetration)
 						resistChance -= SpellPenetration;
 
-					if (SpellPenetration => resistChance)
+					if (SpellPenetration >= resistChance)
 						canResist = false;
 					else
-					    canResist = true;
+						canResist = true;
 						
 					if (canResist == true)
 					{
@@ -2690,8 +2692,8 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 						else if (resistChance < 0) // Resist can't be lower than 0
 							canResist = false;
 					
-					    if (canResist && resistChance && resistChance > irand(0,10000))
-						    return SPELL_MISS_RESIST;
+						if (canResist && resistChance && resistChance > irand(0,10000))
+							return SPELL_MISS_RESIST;
 					}
 				}
 			}			
@@ -2724,17 +2726,19 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 		if (unit->GetTypeId() == TYPEID_PLAYER && m_caster->GetTypeId() == TYPEID_PLAYER && !((m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_NORMAL) || (m_spellInfo->SchoolMask & SPELL_SCHOOL_MASK_HOLY)))
 		{			
 			float resistChance = unit->GetResistance(SpellSchoolMask(m_spellInfo->SchoolMask));
-			if (resistChance > 252.0f) // Cap Resist Chance
-			    resistChance /= 10.0f;
 			bool canResist = false;
+			
 			if (resistChance &&  m_spellInfo->AttributesCu & SPELL_ATTR0_CU_CAN_RESIST)
 			{
 				int16 SpellPenetration = float(m_caster->ToPlayer()->GetSpellPenetration(SpellSchoolMask(m_spellInfo->SchoolMask)));
 
+				if (resistChance > 252.0f) // Cap Resist Chance
+					resistChance /= 10.0f;
+				
 				if (SpellPenetration)
 					resistChance -= SpellPenetration;
 
-				if (SpellPenetration => resistChance)
+				if (SpellPenetration >= resistChance)
 					canResist = false;
 				else
 				    canResist = true;
@@ -2752,7 +2756,8 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 					    return SPELL_MISS_RESIST;
 				}
 			}
-		}	
+		}
+    }		
 
     // Get Data Needed for Diminishing Returns, some effects may have multiple auras, so this must be done on spell hit, not aura add
     m_diminishGroup = GetDiminishingReturnsGroupForSpell(m_spellInfo, m_triggeredByAuraSpell);
