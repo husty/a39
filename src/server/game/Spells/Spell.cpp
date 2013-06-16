@@ -4918,10 +4918,6 @@ SpellCastResult Spell::CheckCast(bool strict)
 	if (Unit *SpikedPlayer = m_caster->GetVictim())
 	    if (SpikedPlayer->GetTypeId() == TYPEID_PLAYER && SpikedPlayer->HasAura(69065))
 	        return SPELL_FAILED_BAD_TARGETS;
-	      
-	if (m_spellInfo->Id == 1857 || m_spellInfo->Id == 1856) // Why not this hackfix
-	    if (m_caster->HasAura(12826))
-	        return SPELL_FAILED_DONT_REPORT;
 
     // only check at first call, Stealth auras are already removed at second call
     // for now, ignore triggered spells

@@ -32,7 +32,6 @@
 template<class T>
 void ConfusedMovementGenerator<T>::DoInitialize(T* unit)
 {
-    unit->StopMoving();
     float const wander_distance = 4;
     float x = unit->GetPositionX();
     float y = unit->GetPositionY();
@@ -112,6 +111,7 @@ void ConfusedMovementGenerator<T>::DoReset(T* unit)
         return;
 
     unit->StopMoving();
+    unit->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_CONFUSED);
     unit->AddUnitState(UNIT_STATE_CONFUSED | UNIT_STATE_CONFUSED_MOVE);
 }
 
@@ -125,6 +125,7 @@ bool ConfusedMovementGenerator<T>::DoUpdate(T* unit, uint32 diff)
     {
         // currently moving, update location
         unit->AddUnitState(UNIT_STATE_CONFUSED_MOVE);
+	    unit->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_CONFUSED);
 
         if (unit->movespline->Finalized())
         {
@@ -140,6 +141,7 @@ bool ConfusedMovementGenerator<T>::DoUpdate(T* unit, uint32 diff)
         {
             // start moving
             unit->AddUnitState(UNIT_STATE_CONFUSED_MOVE);
+	        unit->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_CONFUSED);
 
             ASSERT(i_nextMove <= MAX_CONF_WAYPOINTS);
             float x = i_waypoints[i_nextMove][0];
