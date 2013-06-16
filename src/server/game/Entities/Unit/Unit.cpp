@@ -15495,7 +15495,6 @@ void Unit::Kill(Unit* victim, bool durabilityLoss)
                 {
                     if (creature->GetCreatureTemplate()->flags_extra & CREATURE_FLAG_EXTRA_INSTANCE_BIND)
                         ((InstanceMap*)instanceMap)->PermBindAllPlayers(creditedPlayer);
-                        ((InstanceMap*)instanceMap)->PermBindAllPlayers(creditedPlayer);
                 }
                 else
                 {
