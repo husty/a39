@@ -2486,6 +2486,10 @@ void UnitAura::Remove(AuraRemoveMode removeMode)
 {
     if (IsRemoved())
         return;
+		
+    if (GetSpellInfo()->Id == 8178 || GetSpellInfo()->Id == 23920) // Grounding totem & Spell Reflection
+        return;
+  
     GetUnitOwner()->RemoveOwnedAura(this, removeMode);
 }
 

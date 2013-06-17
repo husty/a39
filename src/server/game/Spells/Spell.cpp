@@ -2231,6 +2231,8 @@ void Spell::AddUnitTarget(Unit* target, uint32 effectMask, bool checkIfValid /*=
 
         if (targetInfo.reflectResult == SPELL_MISS_REFLECT)     // Impossible reflect again, so simply deflect spell
             targetInfo.reflectResult = SPELL_MISS_PARRY;
+			
+		m_caster->RemoveAurasDueToSpell(23920);
 
         // Increase time interval for reflected spells by 1.5
         targetInfo.timeDelay += targetInfo.timeDelay >> 1;
@@ -2416,6 +2418,7 @@ void Spell::DoAllEffectOnTarget(TargetInfo* target)
             spellHitTarget = m_caster;
             if (m_caster->GetTypeId() == TYPEID_UNIT)
                 m_caster->ToCreature()->LowerPlayerDamageReq(target->damage);
+		//	m_caster->RemoveAurasDueToSpell(23920);
         }
     }
 

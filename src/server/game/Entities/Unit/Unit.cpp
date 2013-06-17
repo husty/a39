@@ -345,6 +345,14 @@ void Unit::Update(uint32 p_time)
 
     if (CanHaveThreatList() && getThreatManager().isNeedUpdateToClient(p_time))
         SendThreatListUpdate();
+		
+	if (ToCreature()->IsTotem())
+	{
+	 
+	
+	
+	
+	}
 	
     if (GetTypeId() == TYPEID_PLAYER || (ToCreature()->IsPet() && IsControlledByPlayer()))
     {
@@ -3517,7 +3525,10 @@ void Unit::_UnapplyAura(AuraApplicationMap::iterator &i, AuraRemoveMode removeMo
     if (aurApp->GetRemoveMode() == AURA_REMOVE_BY_EXPIRE && GetTypeId() == TYPEID_UNIT && ToCreature()->IsTotem())
         if (ToTotem()->GetSpell() == aura->GetId() && ToTotem()->GetTotemType() == TOTEM_PASSIVE)
             ToTotem()->setDeathState(JUST_DIED);
-    
+			
+	if (GetTypeId() == TYPEID_UNIT && ToCreature()->IsTotem() && ToTotem()->HasUnitState(UNIT_STATE_CONFUSED | UNIT_STATE_FLEEING | UNIT_STATE_ROOT | UNIT_STATE_STUNNED | UNIT_STATE_DISTRACTED))
+		if (ToTotem()->GetSpell() == 8178 && ToTotem()->GetTotemType() == TOTEM_PASSIVE)
+			ToTotem()->setDeathState(JUST_DIED);
 
     // Remove aurastates only if were not found
     if (!auraStateFound)
