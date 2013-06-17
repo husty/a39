@@ -346,13 +346,9 @@ void Unit::Update(uint32 p_time)
     if (CanHaveThreatList() && getThreatManager().isNeedUpdateToClient(p_time))
         SendThreatListUpdate();
 		
-	if (ToCreature()->IsTotem())
-	{
-	 
-	
-	
-	
-	}
+    if (GetTypeId() == TYPEID_UNIT && ToCreature()->IsTotem() && ToTotem()->HasAura(8179))
+	 if (HasUnitState(UNIT_STATE_CONFUSED) || HasUnitState(UNIT_STATE_FLEEING | UNIT_STATE_ROOT | UNIT_STATE_STUNNED | UNIT_STATE_DISTRACTED))
+	     ToTotem()->setDeathState(JUST_DIED);
 	
     if (GetTypeId() == TYPEID_PLAYER || (ToCreature()->IsPet() && IsControlledByPlayer()))
     {
@@ -2684,7 +2680,7 @@ SpellMissInfo Unit::SpellHitResult(Unit* victim, SpellInfo const* spell, bool Ca
         if (reflectchance > 0 && roll_chance_i(reflectchance))
         {
             // Start triggers for remove charges if need (trigger only for victim, and mark as active spell)
-            ProcDamageAndSpell(victim, PROC_FLAG_NONE, PROC_FLAG_TAKEN_SPELL_MAGIC_DMG_CLASS_NEG, PROC_EX_REFLECT, 1, BASE_ATTACK, spell);
+            //ProcDamageAndSpell(victim, PROC_FLAG_NONE, PROC_FLAG_TAKEN_SPELL_MAGIC_DMG_CLASS_NEG, PROC_EX_REFLECT, 1, BASE_ATTACK, spell);
             return SPELL_MISS_REFLECT;
         }
     }
@@ -3525,10 +3521,6 @@ void Unit::_UnapplyAura(AuraApplicationMap::iterator &i, AuraRemoveMode removeMo
     if (aurApp->GetRemoveMode() == AURA_REMOVE_BY_EXPIRE && GetTypeId() == TYPEID_UNIT && ToCreature()->IsTotem())
         if (ToTotem()->GetSpell() == aura->GetId() && ToTotem()->GetTotemType() == TOTEM_PASSIVE)
             ToTotem()->setDeathState(JUST_DIED);
-			
-	if (GetTypeId() == TYPEID_UNIT && ToCreature()->IsTotem() && ToTotem()->HasUnitState(UNIT_STATE_CONFUSED | UNIT_STATE_FLEEING | UNIT_STATE_ROOT | UNIT_STATE_STUNNED | UNIT_STATE_DISTRACTED))
-		if (ToTotem()->GetSpell() == 8178 && ToTotem()->GetTotemType() == TOTEM_PASSIVE)
-			ToTotem()->setDeathState(JUST_DIED);
 
     // Remove aurastates only if were not found
     if (!auraStateFound)
@@ -16081,9 +16073,26 @@ void Unit::RemoveCharmedBy(Unit* charmer)
 }
 
 void Unit::RestoreFaction()
-{	
+{			
     if (GetTypeId() == TYPEID_PLAYER)
+	{
         ToPlayer()->setFactionForRace(getRace());
+		
+		if (Map* map = GetMap())
+	    {
+			if (map && map->IsBattleground())
+			{
+			    Battleground* bg = ToPlayer()->GetBattleground();
+				if (bg && !bg->isArena())
+				{
+					if (ToPlayer()->GetBGTeam() == HORDE)
+						ToPlayer()->setFaction(2);
+					else if (ToPlayer()->GetBGTeam() == ALLIANCE)
+						ToPlayer()->setFaction(1);
+				}
+			}
+		}
+	}
     else
     {
         if (HasUnitTypeMask(UNIT_MASK_MINION))

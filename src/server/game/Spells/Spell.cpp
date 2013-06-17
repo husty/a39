@@ -47,6 +47,7 @@
 #include "TemporarySummon.h"
 #include "Vehicle.h"
 #include "SpellAuraEffects.h"
+#include "SpellAuras.h"
 #include "ScriptMgr.h"
 #include "ConditionMgr.h"
 #include "DisableMgr.h"
@@ -2231,8 +2232,6 @@ void Spell::AddUnitTarget(Unit* target, uint32 effectMask, bool checkIfValid /*=
 
         if (targetInfo.reflectResult == SPELL_MISS_REFLECT)     // Impossible reflect again, so simply deflect spell
             targetInfo.reflectResult = SPELL_MISS_PARRY;
-			
-		m_caster->RemoveAurasDueToSpell(23920);
 
         // Increase time interval for reflected spells by 1.5
         targetInfo.timeDelay += targetInfo.timeDelay >> 1;
@@ -2415,10 +2414,11 @@ void Spell::DoAllEffectOnTarget(TargetInfo* target)
     {
         if (target->reflectResult == SPELL_MISS_NONE)       // If reflected spell hit caster -> do all effect on him
         {
+            // Start triggers for remove charges if need (trigger only for victim, and mark as active spell)
+            m_caster->ProcDamageAndSpell(unitTarget, PROC_FLAG_NONE, PROC_FLAG_TAKEN_SPELL_MAGIC_DMG_CLASS_NEG, PROC_EX_REFLECT, 1, BASE_ATTACK, m_spellInfo);
             spellHitTarget = m_caster;
             if (m_caster->GetTypeId() == TYPEID_UNIT)
                 m_caster->ToCreature()->LowerPlayerDamageReq(target->damage);
-		//	m_caster->RemoveAurasDueToSpell(23920);
         }
     }
 
@@ -7033,12 +7033,19 @@ void Spell::DoAllEffectOnLaunchTarget(TargetInfo& targetInfo, float* multiplier)
     // In case spell hit target, do all effect on that target
     if (targetInfo.missCondition == SPELL_MISS_NONE)
         unit = m_caster->GetGUID() == targetInfo.targetGUID ? m_caster : ObjectAccessor::GetUnit(*m_caster, targetInfo.targetGUID);
+		
+	if (targetInfo.missCondition == SPELL_MISS_REFLECT && targetInfo.reflectResult == SPELL_MISS_NONE)
+	    if (m_caster && unit && unit != m_caster)
+		   if (unit->HasAura(23920))
+	           unit->RemoveAurasDueToSpell(23920);
+			   
     // In case spell reflect from target, do all effect on caster (if hit)
     else if (targetInfo.missCondition == SPELL_MISS_REFLECT && targetInfo.reflectResult == SPELL_MISS_NONE)
         unit = m_caster;
+
     if (!unit)
         return;
-
+	   
     for (uint32 i = 0; i < MAX_SPELL_EFFECTS; ++i)
     {
         if (targetInfo.effectMask & (1<<i))

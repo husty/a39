@@ -1746,7 +1746,7 @@ void Player::Update(uint32 p_time)
         else
             m_timeSyncTimer -= p_time;
     }
-
+	
     if (IsAlive())
     {
         m_regenTimer += p_time;
