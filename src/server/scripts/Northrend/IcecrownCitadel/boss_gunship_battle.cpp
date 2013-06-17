@@ -954,7 +954,7 @@ class npc_muradin_gunship : public CreatureScript
                 }
             }
 
-            void DamageTaken(Unit* attacker, uint32 /*damage*/)
+            void DamageTaken(Unit* /*attacker*/, uint32 /*damage*/)
             {    
                 if (me && _instance && _instance->GetData(DATA_TEAM_IN_INSTANCE) == HORDE && me->GetHealthPct() < 5.0f)
                     me->AI()->DoAction(ACTION_FAIL);
@@ -962,7 +962,7 @@ class npc_muradin_gunship : public CreatureScript
 				    me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
             }
         
-
+			/*
             void MovementInform(uint32 type, uint32 pointId)
             {
                 if (type != POINT_MOTION_TYPE)
@@ -970,7 +970,7 @@ class npc_muradin_gunship : public CreatureScript
 
                 if (pointId = 1)
                     me->DespawnOrUnsummon(1000);
-            }
+            }*/
 
             void UpdateAI(uint32 diff)
             {
@@ -2203,14 +2203,14 @@ class npc_saurfang_gunship : public CreatureScript
                  }
             }
 
-            void DamageTaken(Unit* attacker, uint32 /*damage*/)
+            void DamageTaken(Unit* /*attacker*/, uint32 /*damage*/)
             {    
                 if (me && _instance && _instance->GetData(DATA_TEAM_IN_INSTANCE) == HORDE && me->GetHealthPct() < 5.0f)
                     me->AI()->DoAction(ACTION_FAIL);
 				else if (me && _instance && _instance->GetData(DATA_TEAM_IN_INSTANCE) == ALLIANCE && me->GetHealthPct() < 5.0f)
 				    me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
             }
-
+            /*
             void MovementInform(uint32 type, uint32 pointId)
             {
                 if (type != POINT_MOTION_TYPE)
@@ -2219,7 +2219,7 @@ class npc_saurfang_gunship : public CreatureScript
                 if (pointId = 1)
                     me->DespawnOrUnsummon(1000);
             }
-			
+			*/
 
             void UpdateAI(uint32 diff)
             {
