@@ -1729,6 +1729,9 @@ bool WorldObject::CanSeeOrDetect(WorldObject const* obj, bool ignoreStealth, boo
     // GM visibility off or hidden NPC
     if (!obj->m_serverSideVisibility.GetValue(SERVERSIDE_VISIBILITY_GM))
     {
+	    if (IsSpectator())
+		   return false;
+		   
         // Stop checking other things for GMs
         if (m_serverSideVisibilityDetect.GetValue(SERVERSIDE_VISIBILITY_GM))
             return true;
@@ -1779,7 +1782,7 @@ bool WorldObject::CanDetect(WorldObject const* obj, bool ignoreStealth) const
 
     if (obj->IsAlwaysDetectableFor(seer))
         return true;
-
+		
     if (!ignoreStealth && !seer->CanDetectInvisibilityOf(obj))
         return false;
 
@@ -1817,6 +1820,9 @@ bool WorldObject::CanDetectInvisibilityOf(WorldObject const* obj) const
             return false;
     }
 
+	if (IsSpectator())
+		return false;
+		
     return true;
 }
 
@@ -1841,6 +1847,9 @@ bool WorldObject::CanDetectStealthOf(WorldObject const* obj) const
 
     if (!HasInArc(M_PI, obj))
         return false;
+		
+	if (IsSpectator())
+		return false;
 
     GameObject const* go = ToGameObject();
     for (uint32 i = 0; i < TOTAL_STEALTH_TYPES; ++i)
@@ -1873,7 +1882,7 @@ bool WorldObject::CanDetectStealthOf(WorldObject const* obj) const
         if (visibilityRange > MAX_PLAYER_STEALTH_DETECT_RANGE)
             visibilityRange = MAX_PLAYER_STEALTH_DETECT_RANGE;
 
-        if (distance > visibilityRange/* && !isSpectator()*/)
+        if (distance > visibilityRange)
             return false;
     }
 
