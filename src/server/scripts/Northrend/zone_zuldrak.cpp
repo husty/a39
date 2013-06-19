@@ -1396,9 +1396,9 @@ class go_scourge_enclosure : public GameObjectScript
 public:
     go_scourge_enclosure() : GameObjectScript("go_scourge_enclosure") { }
 
-    bool OnGossipHello(Player* player, GameObject* /*go*/)
+    bool OnGossipHello(Player* player, GameObject* go)
     {
-        go->UseDoorOrButton();
+	 go->UseDoorOrButton();
         if (player->GetQuestStatus(QUEST_OUR_ONLY_HOPE) == QUEST_STATUS_INCOMPLETE)
         {
             Creature* pGymerDummy = go->FindNearestCreature(NPC_GYMER_DUMMY, 20.0f);

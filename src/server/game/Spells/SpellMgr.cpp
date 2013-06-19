@@ -2856,17 +2856,17 @@ void SpellMgr::LoadSpellCustomAttr()
 			case 47436: // Batttle Shout
 			case 47440: // Comendation Shout
                 spellInfo->AttributesEx2 |= SPELL_ATTR2_CAN_TARGET_NOT_IN_LOS;
-          break;
+				break;
             case 52212: // Death Knight: Death and Decay trigger spell
                 spellInfo->AttributesEx6 |= SPELL_ATTR6_CAN_TARGET_INVISIBLE;
-          break;
+				break;
             case 48788: //Lay of Hand Rank 5 
             case 27154: //Lay of Hand Rank 4 
             case 10310: //Lay of Hand Rank 3 
             case 2800: //Lay of Hand Rank 2 
             case 633: //Lay of Hand Rank 1  
                 spellInfo->AttributesEx2 |= SPELL_ATTR2_CANT_CRIT;
-          break;
+				break;
             case 53: // Backstab
             case 2589:
             case 2590:
