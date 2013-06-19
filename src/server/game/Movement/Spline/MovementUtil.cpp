@@ -41,13 +41,9 @@ namespace Movement
         float time;
         if (isSafeFall)
         {
-<<<<<<< HEAD
-            if (path_length >= terminal_safeFall_length)
-                time = (path_length - terminal_safeFall_length) / terminalSafefallVelocity + terminal_safeFall_fallTime;
-=======
+
             if (path_length >= terminal_safefall_length)
                 time = (path_length - terminal_safefall_length) / terminalSafefallVelocity + terminalSafefallVelocity / gravity;
->>>>>>> parent of 3bcf309... Merge two commits with TrinityCoreg
             else
                 time = sqrtf(2.0f * path_length / gravity);
         }
@@ -89,8 +85,7 @@ namespace Movement
         return result;
     }
 
-<<<<<<< HEAD
-=======
+
     float computeFallElevation(float t_passed)
     {
         float result;
@@ -107,7 +102,6 @@ namespace Movement
         return result;
     }
 
->>>>>>> parent of 3bcf309... Merge two commits with TrinityCoreg
     #define STR(x) #x
 
     char const* g_MovementFlag_names[] =
