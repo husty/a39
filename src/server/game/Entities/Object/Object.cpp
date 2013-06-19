@@ -1728,15 +1728,12 @@ bool WorldObject::CanSeeOrDetect(WorldObject const* obj, bool ignoreStealth, boo
 
     // GM visibility off or hidden NPC
     if (!obj->m_serverSideVisibility.GetValue(SERVERSIDE_VISIBILITY_GM))
-    {
-		if (GetTypeId() == TYPEID_PLAYER && ToPlayer() && ToPlayer()->IsSpectator())
-			return false;
-		   
+    {	   
         // Stop checking other things for GMs
         if (m_serverSideVisibilityDetect.GetValue(SERVERSIDE_VISIBILITY_GM))
             return true;
     }
-    else
+    else if (!ToPlayer()->IsSpectator())
         return m_serverSideVisibilityDetect.GetValue(SERVERSIDE_VISIBILITY_GM) >= obj->m_serverSideVisibility.GetValue(SERVERSIDE_VISIBILITY_GM);
 
     // Ghost players, Spirit Healers, and some other NPCs
@@ -1819,9 +1816,6 @@ bool WorldObject::CanDetectInvisibilityOf(WorldObject const* obj) const
         if (ownInvisibilityDetectValue < objInvisibilityValue)
             return false;
     }
-
-	if (GetTypeId() == TYPEID_PLAYER && ToPlayer() && ToPlayer()->IsSpectator())
-		return false;
 		
     return true;
 }
@@ -1842,14 +1836,14 @@ bool WorldObject::CanDetectStealthOf(WorldObject const* obj) const
     if (unit)
         combatReach = unit->GetCombatReach();
 
+	if (GetTypeId() == TYPEID_PLAYER && ToPlayer() && ToPlayer()->IsSpectator())
+		return false;
+		
     if (distance < combatReach)
         return true;
 
     if (!HasInArc(M_PI, obj))
         return false;
-		
-	if (GetTypeId() == TYPEID_PLAYER && ToPlayer() && ToPlayer()->IsSpectator())
-		return false;
 
     GameObject const* go = ToGameObject();
     for (uint32 i = 0; i < TOTAL_STEALTH_TYPES; ++i)
