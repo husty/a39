@@ -5053,8 +5053,8 @@ SpellCastResult Spell::CheckCast(bool strict)
             if ((m_spellInfo->AttributesCu & SPELL_ATTR0_CU_REQ_TARGET_FACING_CASTER) && !target->HasInArc(static_cast<float>(M_PI), m_caster))
                 return SPELL_FAILED_NOT_INFRONT;
 
-            if (m_caster->GetEntry() != WORLD_TRIGGER) // Ignore LOS for gameobjects casts (wrongly casted by a trigger)
-                if (!(m_spellInfo->AttributesEx2 & SPELL_ATTR2_CAN_TARGET_NOT_IN_LOS) && !DisableMgr::IsDisabledFor(DISABLE_TYPE_SPELL, m_spellInfo->Id, NULL, SPELL_DISABLE_LOS) && !m_caster->IsWithinLOSInMap(target))
+            if (m_caster->GetEntry() != WORLD_TRIGGER && !(target->ToCreature()->isTotem() && target->HasAura(8178)) // Ignore LOS for gameobjects casts (wrongly casted by a trigger)
+                if (!(target->HasAura(8178) && target->GetOwner()->IsWithinLOSInMap(m_caster)) && !(m_spellInfo->AttributesEx2 & SPELL_ATTR2_CAN_TARGET_NOT_IN_LOS) && !DisableMgr::IsDisabledFor(DISABLE_TYPE_SPELL, m_spellInfo->Id, NULL, SPELL_DISABLE_LOS) && !m_caster->IsWithinLOSInMap(target))
                     return SPELL_FAILED_LINE_OF_SIGHT;
         }
     }
@@ -6762,6 +6762,12 @@ bool Spell::CheckEffectTarget(Unit const* target, uint32 eff) const
     if (IsTriggered() || m_spellInfo->AttributesEx2 & SPELL_ATTR2_CAN_TARGET_NOT_IN_LOS || DisableMgr::IsDisabledFor(DISABLE_TYPE_SPELL, m_spellInfo->Id, NULL, SPELL_DISABLE_LOS))
         return true;
 
+    if (target->ToCreature()->isTotem() && target->HasAura(8178)) // Ignore LOS for gameobjects casts (wrongly casted by a trigger)
+		return true;
+		
+    if (target->HasAura(8178) && target->GetOwner()->IsWithinLOSInMap(m_caster))
+	    return true;
+				
     /// @todo shit below shouldn't be here, but it's temporary
     //Check targets for LOS visibility (except spells without range limitations)
     switch (m_spellInfo->Effects[eff].Effect)

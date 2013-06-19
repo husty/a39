@@ -962,7 +962,7 @@ class npc_muradin_gunship : public CreatureScript
 				    me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
             }
         
-			/*
+			
             void MovementInform(uint32 type, uint32 pointId)
             {
                 if (type != POINT_MOTION_TYPE)
@@ -970,7 +970,7 @@ class npc_muradin_gunship : public CreatureScript
 
                 if (pointId = 1)
                     me->DespawnOrUnsummon(1000);
-            }*/
+            }
 
             void UpdateAI(uint32 diff)
             {
@@ -1715,7 +1715,7 @@ class npc_gunship_mage : public CreatureScript
                         {
 
                             std::list<Creature*> cannonsA;
-                            GetCreatureListWithEntryInGrid(cannonsA, me, NPC_GB_ALLIANCE_CANON, 500.0f);
+                            GetCreatureListWithEntryInGrid(cannonsA, me, NPC_GB_ALLIANCE_CANON, 750.0f);
                             for (std::list<Creature*>::iterator itr = cannonsA.begin(); itr != cannonsA.end(); ++itr)
                             {
                                 if (Vehicle* veh = (*itr)->GetVehicleKit())
@@ -1816,9 +1816,6 @@ class npc_gunship_cannon : public CreatureScript
 
             void Reset()
             {
-				me->AddExtraUnitMovementFlag(MOVEMENTFLAG2_NO_STRAFE);
-				me->AddExtraUnitMovementFlag(MOVEMENTFLAG_LEFT);
-				me->AddExtraUnitMovementFlag(MOVEMENTFLAG_RIGHT);
                 me->SetReactState(REACT_PASSIVE);
                 me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);
                 DoCast(me, SPELL_HEAT_DRAIN, true);
@@ -1863,6 +1860,7 @@ class npc_gunship_cannon : public CreatureScript
 					me->AddExtraUnitMovementFlag(MOVEMENTFLAG2_NO_STRAFE);
 					me->AddExtraUnitMovementFlag(MOVEMENTFLAG_LEFT);
 					me->AddExtraUnitMovementFlag(MOVEMENTFLAG_RIGHT);
+					me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
 
 					
                 }
@@ -2210,7 +2208,7 @@ class npc_saurfang_gunship : public CreatureScript
 				else if (me && _instance && _instance->GetData(DATA_TEAM_IN_INSTANCE) == ALLIANCE && me->GetHealthPct() < 5.0f)
 				    me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
             }
-            /*
+            
             void MovementInform(uint32 type, uint32 pointId)
             {
                 if (type != POINT_MOTION_TYPE)
@@ -2219,7 +2217,7 @@ class npc_saurfang_gunship : public CreatureScript
                 if (pointId = 1)
                     me->DespawnOrUnsummon(1000);
             }
-			*/
+			
 
             void UpdateAI(uint32 diff)
             {

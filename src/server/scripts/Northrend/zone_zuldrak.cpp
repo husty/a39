@@ -1396,7 +1396,7 @@ class go_scourge_enclosure : public GameObjectScript
 public:
     go_scourge_enclosure() : GameObjectScript("go_scourge_enclosure") { }
 
-    bool OnGossipHello(Player* player, GameObject* go)
+    bool OnGossipHello(Player* player, GameObject* /*go*/)
     {
         go->UseDoorOrButton();
         if (player->GetQuestStatus(QUEST_OUR_ONLY_HOPE) == QUEST_STATUS_INCOMPLETE)
