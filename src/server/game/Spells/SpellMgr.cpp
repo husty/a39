@@ -2843,15 +2843,12 @@ void SpellMgr::LoadSpellCustomAttr()
             case 64804: // Entrapment
             case 8172: // Totem of Cleansing
             case 8145: // Totem of Tremor
-            case 55362: // Living Bomb Explode
             case 32182: // Herosim
             case 64843: // Divine Hymn
             case 64844: // Divine Hymn (Trigger)
+            case 55362: // Living Bomb Explode
             case 44461: //Living Bomb 
             case 55361: //Living Bomb
-            case 19388: //Entrapment
-            case 19387: //Entrapment
-            case 19184: //Entrapment
             case 52865: //CotR
 			case 47436: // Batttle Shout
 			case 47440: // Comendation Shout
@@ -3060,6 +3057,12 @@ void SpellMgr::LoadDbcDataCorrections()
 
         switch (spellInfo->Id)
         {
+		    // * Hackfix for RangeProcSpells (like Living Bomb Explode)
+            case 44461: //Living Bomb 
+            case 55361: //Living Bomb
+            case 55362: // Living Bomb
+                spellInfo->rangeIndex = 13; // 200yd
+                break;
 	        case 49224: // Magic Suppression
 			case 49610:
 			case 49611:

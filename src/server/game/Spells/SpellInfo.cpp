@@ -1578,15 +1578,15 @@ SpellCastResult SpellInfo::CheckTarget(Unit const* caster, WorldObject const* ta
 //SAQIRMDEV LOS FFIX
     // Check los pre Bladestorm a totemy a pod.
     if ((Effects[0].TargetA.GetTarget() == TARGET_SRC_CASTER) && (Effects[0].TargetB.GetTarget() == TARGET_UNIT_SRC_AREA_ENEMY))
-        if (!caster->IsWithinLOSInMap(target))
+        if (!caster->IsWithinLOSInMap(target) && !AttributesEx2 & SPELL_ATTR2_CAN_TARGET_NOT_IN_LOS)
             return SPELL_FAILED_BAD_TARGETS;
 
 
 
-       // Check los pre Typhon apod.
-       if (Effects[0].TargetA.GetTarget() == TARGET_UNIT_CONE_ENEMY_104)
-               if (!caster->IsWithinLOSInMap(target))
-                       return SPELL_FAILED_LINE_OF_SIGHT;
+    // Check los pre Typhon apod.
+    if (Effects[0].TargetA.GetTarget() == TARGET_UNIT_CONE_ENEMY_104)
+        if (!caster->IsWithinLOSInMap(target) && !AttributesEx2 & SPELL_ATTR2_CAN_TARGET_NOT_IN_LOS)
+            return SPELL_FAILED_LINE_OF_SIGHT;
 //SAQIRMDEV LOS FIX
     // check GM mode and GM invisibility - only for player casts (npc casts are controlled by AI) and negative spells
     if (unitTarget != caster && (caster->IsControlledByPlayer() || !IsPositive()) && unitTarget->GetTypeId() == TYPEID_PLAYER)

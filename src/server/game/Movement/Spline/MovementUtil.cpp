@@ -30,9 +30,8 @@ namespace Movement
     float terminalSafefallVelocity = 7.0f;
 
     const float terminal_length = float(terminalVelocity * terminalVelocity) / (2.0f * gravity);
-    const float terminal_safeFall_length = (terminalSafefallVelocity * terminalSafefallVelocity) / (2.0f * gravity);
-    const float terminal_fallTime = float(terminalVelocity / gravity); // the time that needed to reach terminalVelocity
-    const float terminal_safeFall_fallTime = float(terminalSafefallVelocity / gravity); // the time that needed to reach terminalVelocity with safefall
+    const float terminal_safefall_length = (terminalSafefallVelocity * terminalSafefallVelocity) / (2.0f * gravity);
+    const float terminalFallTime = float(terminalVelocity / gravity); // the time that needed to reach terminalVelocity
 
     float computeFallTime(float path_length, bool isSafeFall)
     {
@@ -42,15 +41,20 @@ namespace Movement
         float time;
         if (isSafeFall)
         {
+<<<<<<< HEAD
             if (path_length >= terminal_safeFall_length)
                 time = (path_length - terminal_safeFall_length) / terminalSafefallVelocity + terminal_safeFall_fallTime;
+=======
+            if (path_length >= terminal_safefall_length)
+                time = (path_length - terminal_safefall_length) / terminalSafefallVelocity + terminalSafefallVelocity / gravity;
+>>>>>>> parent of 3bcf309... Merge two commits with TrinityCoreg
             else
                 time = sqrtf(2.0f * path_length / gravity);
         }
         else
         {
             if (path_length >= terminal_length)
-                time = (path_length - terminal_length) / terminalVelocity + terminal_fallTime;
+                time = (path_length - terminal_length) / terminalVelocity + terminalFallTime;
             else
                 time = sqrtf(2.0f * path_length / gravity);
         }
@@ -71,11 +75,11 @@ namespace Movement
         if (start_velocity > termVel)
             start_velocity = termVel;
 
-        float terminal_time = (isSafeFall ? terminal_safeFall_fallTime : terminal_fallTime) - start_velocity / gravity; // the time that needed to reach terminalVelocity
+        float terminal_time = terminalFallTime - start_velocity / gravity; // the time that needed to reach terminalVelocity
 
         if (t_passed > terminal_time)
         {
-            result = termVel * (t_passed - terminal_time) +
+            result = terminalVelocity * (t_passed - terminal_time) +
                 start_velocity * terminal_time +
                 gravity * terminal_time * terminal_time*0.5f;
         }
@@ -85,6 +89,25 @@ namespace Movement
         return result;
     }
 
+<<<<<<< HEAD
+=======
+    float computeFallElevation(float t_passed)
+    {
+        float result;
+
+        if (t_passed > terminalFallTime)
+        {
+            //result = terminalVelocity * (t_passed - terminal_time) + gravity*terminal_time*terminal_time*0.5f;
+            // simplified view:
+            result = terminalVelocity * (t_passed - terminalFallTime) + terminal_length;
+        }
+        else
+            result = t_passed * t_passed * gravity * 0.5f;
+
+        return result;
+    }
+
+>>>>>>> parent of 3bcf309... Merge two commits with TrinityCoreg
     #define STR(x) #x
 
     char const* g_MovementFlag_names[] =

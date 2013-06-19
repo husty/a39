@@ -816,6 +816,65 @@ class spell_hun_target_only_pet_and_owner : public SpellScriptLoader
         }
 };
 
+// Hackfix for Entrapment //
+enum Entrapment
+{
+    TALENT_ENTRAPMENT_RANK_1    = 19184,
+    TALENT_ENTRAPMENT_RANK_2    = 19387,
+    TALENT_ENTRAPMENT_RANK_3    = 19388,
+
+    SPELL_ENTRAPMENT_TRIGGER_1  = 19185,
+    SPELL_ENTRAPMENT_TRIGGER_2  = 64803,
+    SPELL_ENTRAPMENT_TRIGGER_3  = 64804,
+};
+
+class spell_hun_entrapment : public SpellScriptLoader
+{
+    public:
+        spell_hun_entrapment() : SpellScriptLoader("spell_hun_entrapment") { }
+
+        class spell_hun_entrapment_SpellScript : public SpellScript
+        {
+            PrepareSpellScript(spell_hun_entrapment_SpellScript);
+
+            bool Validate(SpellInfo const* /*spellEntry*/)
+            {
+                if (!sSpellMgr->GetSpellInfo(TALENT_ENTRAPMENT_RANK_1) || !sSpellMgr->GetSpellInfo(TALENT_ENTRAPMENT_RANK_2) || 
+                    !sSpellMgr->GetSpellInfo(TALENT_ENTRAPMENT_RANK_3) || !sSpellMgr->GetSpellInfo(SPELL_ENTRAPMENT_TRIGGER_1) ||
+                    !sSpellMgr->GetSpellInfo(SPELL_ENTRAPMENT_TRIGGER_2) || !sSpellMgr->GetSpellInfo(SPELL_ENTRAPMENT_TRIGGER_3))
+                    return false;
+                return true;
+            }
+
+            void Entrapment(SpellEffIndex /*effIndex*/)
+            {
+                Unit* caster = GetCaster();
+                if (Unit* target = GetHitUnit())
+                {
+                    if (Unit* owner = caster->GetOwner())
+                    {
+                        if (owner->HasAura(TALENT_ENTRAPMENT_RANK_3))
+                            caster->AddAura(SPELL_ENTRAPMENT_TRIGGER_3,target);
+                        else if (owner->HasAura(TALENT_ENTRAPMENT_RANK_2))
+                            caster->AddAura(SPELL_ENTRAPMENT_TRIGGER_2,target);
+                        else if (owner->HasAura(TALENT_ENTRAPMENT_RANK_1))
+                            caster->AddAura(SPELL_ENTRAPMENT_TRIGGER_1,target);
+                    }
+                }
+            }
+
+            void Register()
+            {
+                OnEffectHitTarget += SpellEffectFn(spell_hun_entrapment_SpellScript::Entrapment, EFFECT_0, SPELL_EFFECT_TRIGGER_SPELL);
+            }
+        };
+
+        SpellScript* GetSpellScript() const
+        {
+            return new spell_hun_entrapment_SpellScript();
+        }
+};
+
 void AddSC_hunter_spell_scripts()
 {
     new spell_hun_aspect_of_the_beast();
@@ -834,4 +893,5 @@ void AddSC_hunter_spell_scripts()
     new spell_hun_sniper_training();
     new spell_hun_tame_beast();
     new spell_hun_target_only_pet_and_owner();
+	new spell_hun_entrapment();
 }
