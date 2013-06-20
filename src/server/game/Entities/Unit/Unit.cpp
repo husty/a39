@@ -2596,14 +2596,10 @@ SpellMissInfo Unit::MagicSpellHitResult(Unit* victim, SpellInfo const* spell)
 		
 	int32 tmp = 10000 - HitChance;
 	int32 rand = irand(0, 10000);
-		
-    if (!(HitChance > 500 && victim->GetTypeId() == TYPEID_PLAYER))
-	{
-		int32 tmp = 10000 - HitChance;
 
-		if (rand < tmp)
-			return SPELL_MISS_MISS;
-	}
+	if (rand < tmp)
+		return SPELL_MISS_MISS;
+
     // Spells with SPELL_ATTR3_IGNORE_HIT_RESULT will additionally fully ignore
     // resist and deflect chances
     if (spell->AttributesEx3 & SPELL_ATTR3_IGNORE_HIT_RESULT)
