@@ -205,7 +205,14 @@ class arena_spectator_commands : public CommandScript
                 return false;
 
             Player* player = handler->GetSession()->GetPlayer();
-
+			
+			if (target->HasAuraType(SPELL_AURA_MOD_STEALTH))
+            {
+                handler->PSendSysMessage("Cant target Stealthed players.");
+                handler->SetSentErrorMessage(true);
+                return false;
+            }
+			
             if (!target)
             {
                 handler->PSendSysMessage("Cant find player.");

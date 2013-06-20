@@ -2851,7 +2851,7 @@ void Player::SetSpectate(bool on)
 
         setFaction(35);
 		SetGMVisible(false);
-		SetGameMaster(true);
+		SetGameMaster(false);
 
         if (Pet* pet = GetPet())
 			 RemovePet(pet, PET_SAVE_NOT_IN_SLOT, true);
@@ -2881,8 +2881,8 @@ void Player::SetSpectate(bool on)
         SetPhaseMask(newPhase, false);
 
         setFactionForRace(getRace());
-        RemoveFlag(PLAYER_FLAGS, PLAYER_FLAGS_GM);
-        RemoveFlag(UNIT_FIELD_FLAGS_2, UNIT_FLAG2_ALLOW_CHEAT_SPELLS);
+       // RemoveFlag(PLAYER_FLAGS, PLAYER_FLAGS_GM);
+        //RemoveFlag(UNIT_FIELD_FLAGS_2, UNIT_FLAG2_ALLOW_CHEAT_SPELLS);
 		SetGMVisible(true);
 		SetGameMaster(false);
 

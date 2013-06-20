@@ -345,10 +345,11 @@ void Unit::Update(uint32 p_time)
 
     if (CanHaveThreatList() && getThreatManager().isNeedUpdateToClient(p_time))
         SendThreatListUpdate();
-		
+	
+	///@todo Remove Grounding totem on Polymorph & fear..	
     if (GetTypeId() == TYPEID_UNIT && ToCreature()->IsTotem() && ToTotem()->HasAura(8179))
-	 if (HasUnitState(UNIT_STATE_FLEEING | UNIT_STATE_ROOT | UNIT_STATE_STUNNED | UNIT_STATE_DISTRACTED | UNIT_STATE_CHASE | UNIT_STATE_CONFUSED | UNIT_STATE_MOVE | UNIT_STATE_POSSESSED))
-	     ToTotem()->setDeathState(JUST_DIED);
+		if (HasUnitState(UNIT_STATE_FLEEING | UNIT_STATE_ROOT | UNIT_STATE_STUNNED | UNIT_STATE_DISTRACTED | UNIT_STATE_CHASE | UNIT_STATE_CONFUSED | UNIT_STATE_MOVE | UNIT_STATE_POSSESSED))
+			ToTotem()->setDeathState(JUST_DIED);
 	
     if (GetTypeId() == TYPEID_PLAYER || (ToCreature()->IsPet() && IsControlledByPlayer()))
     {
@@ -1983,6 +1984,15 @@ void Unit::AttackerStateUpdate (Unit* victim, WeaponAttackType attType, bool ext
 
     if ((attType == BASE_ATTACK || attType == OFF_ATTACK) && !IsWithinLOSInMap(victim))
         return;
+
+    if (GetTypeId() == TYPEID_PLAYER && ToPlayer()->IsSpectator())
+	{
+	    ClearUnitState(UNIT_STATE_MELEE_ATTACKING);
+        SendMeleeAttackStop(victim);
+		AttackStop();
+	    return;
+	}
+
 
     CombatStart(victim);
     RemoveAurasWithInterruptFlags(AURA_INTERRUPT_FLAG_MELEE_ATTACK);
@@ -9042,7 +9052,7 @@ bool Unit::Attack(Unit* victim, bool meleeAttack)
     // player cannot attack in mount state
     if (GetTypeId() == TYPEID_PLAYER && IsMounted())
         return false;
-
+		
     // nobody can attack GM in GM-mode
     if (victim->GetTypeId() == TYPEID_PLAYER)
     {
