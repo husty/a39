@@ -1328,7 +1328,8 @@ void Spell::EffectApplyAura(SpellEffIndex effIndex)
     m_spellAura->_ApplyEffectForTargets(effIndex);
 	
     if(m_spellAura->GetId() == 10 || m_spellAura->GetId() == 27212)
-        caster->SetInCombatState(true, unitTarget);
+		if (Unit *caster = GetCaster())
+			caster->SetInCombatState(true, unitTarget);
 }
 
 void Spell::EffectApplyAreaAura(SpellEffIndex effIndex)

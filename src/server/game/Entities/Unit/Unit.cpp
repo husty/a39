@@ -363,7 +363,6 @@ void Unit::Update(uint32 p_time)
 			player->SetInCombatState(true, player);
 		}
 	}
-	}
 	
 	if (GetTypeId() == TYPEID_PLAYER && (HasAura(1784) || HasAura(58984)))
 	{

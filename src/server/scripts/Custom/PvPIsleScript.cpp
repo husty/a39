@@ -203,8 +203,7 @@ class npc_summon_powerups : public CreatureScript
 				   ithree = urand(0, MAX_POWERUP_SPAWN_POINTS - 1);
 					if (i == ithree || itwo == ithree)
 						ithree = urand(0, MAX_POWERUP_SPAWN_POINTS - 1);
-						if (rand(0, 1) == 1)
-							me->SummonGameObject(GAMEOBJECT_ANCIENT, powerSpawnPoint[i].GetPositionX(), powerSpawnPoint[i].GetPositionY(), powerSpawnPoint[i].GetPositionZ(), powerSpawnPoint[i].GetOrientation(), powerSpawnPoint[i].GetOrientation(), powerSpawnPoint[i].GetOrientation(), powerSpawnPoint[i].GetOrientation(), powerSpawnPoint[i].GetOrientation(), 75000);
+					 me->SummonGameObject(GAMEOBJECT_ANCIENT, powerSpawnPoint[i].GetPositionX(), powerSpawnPoint[i].GetPositionY(), powerSpawnPoint[i].GetPositionZ(), powerSpawnPoint[i].GetOrientation(), powerSpawnPoint[i].GetOrientation(), powerSpawnPoint[i].GetOrientation(), powerSpawnPoint[i].GetOrientation(), powerSpawnPoint[i].GetOrientation(), 75000);
 
 					summonTimer = urand(35000, 50000);
                 }
