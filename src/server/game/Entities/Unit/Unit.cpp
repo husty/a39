@@ -348,7 +348,7 @@ void Unit::Update(uint32 p_time)
 	
 	///@todo Remove Grounding totem on Polymorph & fear..	
     if (GetTypeId() == TYPEID_UNIT && ToCreature()->IsTotem() && ToTotem()->HasAura(8179))
-		if (HasUnitState(UNIT_STATE_FLEEING | UNIT_STATE_ROOT | UNIT_STATE_STUNNED | UNIT_STATE_DISTRACTED | UNIT_STATE_CHASE | UNIT_STATE_CONFUSED | UNIT_STATE_MOVE | UNIT_STATE_POSSESSED))
+		if (HasUnitState(UNIT_STATE_FLEEING | UNIT_STATE_ROOT | UNIT_STATE_STUNNED | UNIT_STATE_DISTRACTED | UNIT_STATE_CHASE | UNIT_STATE_CONFUSED | UNIT_STATE_MOVE | UNIT_STATE_POSSESSED | UNIT_FLAG_SILENCED))
 			ToTotem()->setDeathState(JUST_DIED);
 	
     if (GetTypeId() == TYPEID_PLAYER || (ToCreature()->IsPet() && IsControlledByPlayer()))
@@ -4018,8 +4018,18 @@ void Unit::RemoveAurasWithMechanic(uint32 mechanic_mask, AuraRemoveMode removemo
 {
     for (AuraApplicationMap::iterator iter = m_appliedAuras.begin(); iter != m_appliedAuras.end();)
     {
-        Aura const* aura = iter->second->GetBase();
-        if (!except || aura->GetId() != except)
+		Aura const* aura = iter->second->GetBase();
+		//Fix vanishing frostfire bolt (Kerhong)
+        if (aura->GetSpellInfo()->Id == 44614 || aura->GetSpellInfo()->Id == 47610)
+        {
+           if (AuraEffect *eff = aura->GetEffect(0))
+			{
+               eff->SetAmount(0);
+               eff->HandleEffect(iter->second, AURA_REMOVE_BY_DEFAULT, false);
+			}
+          ++iter;
+        }
+		else if (!except || aura->GetId() != except)
         {
             if (aura->GetSpellInfo()->GetAllEffectsMechanicMask() & mechanic_mask)
             {

@@ -3583,7 +3583,10 @@ void Spell::EffectInterruptCast(SpellEffIndex effIndex)
                 unitTarget->InterruptSpell(CurrentSpellTypes(i), false);
             }
         }
-    }
+    }	
+    if (unitTarget->GetTypeId() == TYPEID_UNIT && unitTarget->ToCreature()->IsTotem() && unitTarget->ToTotem()->HasAura(8179))
+        unitTarget->ToTotem()->setDeathState(JUST_DIED);
+
 }
 
 void Spell::EffectSummonObjectWild(SpellEffIndex effIndex)
