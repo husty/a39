@@ -351,8 +351,7 @@ void Unit::Update(uint32 p_time)
 		if (HasUnitState(UNIT_STATE_FLEEING | UNIT_STATE_ROOT | UNIT_STATE_STUNNED | UNIT_STATE_DISTRACTED | UNIT_STATE_CHASE | UNIT_STATE_CONFUSED | UNIT_STATE_MOVE | UNIT_STATE_POSSESSED | UNIT_FLAG_SILENCED))
 			ToTotem()->setDeathState(JUST_DIED);
 			
-	if (GetTypeId() == TYPEID_PLAYER && HasAura(66))
-		if (HasUnitState(UNIT_STATE_FLEEING | UNIT_STATE_STUNNED | UNIT_STATE_DISTRACTED | UNIT_STATE_CONFUSED))	
+	if (GetTypeId() == TYPEID_PLAYER && HasAura(66) && HasUnitState(UNIT_STATE_FLEEING | UNIT_STATE_STUNNED | UNIT_STATE_DISTRACTED | UNIT_STATE_CONFUSED))
 			RemoveAurasDueToSpell(66);
 		
 	if (GetTypeId() == TYPEID_PLAYER && ToPlayer() && (HasAura(47855) || HasAura(42846)) && IsAlive())
@@ -363,6 +362,7 @@ void Unit::Update(uint32 p_time)
 				player->CombatStart(player);
 			player->SetInCombatState(true, player);
 		}
+	}
 	}
 	
 	if (GetTypeId() == TYPEID_PLAYER && (HasAura(1784) || HasAura(58984)))

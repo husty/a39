@@ -2680,9 +2680,6 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 				if (resistChance &&  m_spellInfo->AttributesCu & SPELL_ATTR0_CU_CAN_RESIST)
 				{
 					int16 SpellPenetration = float(m_caster->ToPlayer()->GetSpellPenetration(SpellSchoolMask(m_spellInfo->SchoolMask)));
-
-					if (resistChance > 252.0f) // Cap Resist Chance
-						resistChance /= 10.0f;
 					
 					if (SpellPenetration)
 						resistChance -= SpellPenetration;
@@ -2740,9 +2737,6 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 			if (resistChance &&  m_spellInfo->AttributesCu & SPELL_ATTR0_CU_CAN_RESIST)
 			{
 				int16 SpellPenetration = float(m_caster->ToPlayer()->GetSpellPenetration(SpellSchoolMask(m_spellInfo->SchoolMask)));
-
-				if (resistChance > 252.0f) // Cap Resist Chance
-					resistChance /= 10.0f;
 				
 				if (SpellPenetration)
 					resistChance -= SpellPenetration;
