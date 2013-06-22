@@ -350,7 +350,30 @@ void Unit::Update(uint32 p_time)
     if (GetTypeId() == TYPEID_UNIT && ToCreature()->IsTotem() && ToTotem()->HasAura(8179))
 		if (HasUnitState(UNIT_STATE_FLEEING | UNIT_STATE_ROOT | UNIT_STATE_STUNNED | UNIT_STATE_DISTRACTED | UNIT_STATE_CHASE | UNIT_STATE_CONFUSED | UNIT_STATE_MOVE | UNIT_STATE_POSSESSED | UNIT_FLAG_SILENCED))
 			ToTotem()->setDeathState(JUST_DIED);
+			
+	if (GetTypeId() == TYPEID_PLAYER && HasAura(66))
+		if (HasUnitState(UNIT_STATE_FLEEING | UNIT_STATE_STUNNED | UNIT_STATE_DISTRACTED | UNIT_STATE_CONFUSED))	
+			RemoveAurasDueToSpell(66);
+		
+	if (GetTypeId() == TYPEID_PLAYER && ToPlayer() && (HasAura(47855) || HasAura(42846)) && IsAlive())
+	{
+		if (Player* player = ToPlayer())
+		{
+			if (!IsInCombat())
+				player->CombatStart(player);
+			player->SetInCombatState(true, player);
+		}
+	}
 	
+	if (GetTypeId() == TYPEID_PLAYER && (HasAura(1784) || HasAura(58984)))
+	{
+		if (HasAura(2094) && IsAlive())
+		{
+			RemoveAurasDueToSpell(2094);
+			RemoveAurasDueToSpell(58984);
+			RemoveAurasDueToSpell(1784);
+		}
+	}
     if (GetTypeId() == TYPEID_PLAYER || (ToCreature()->IsPet() && IsControlledByPlayer()))
     {
         if (Player* player = ToPlayer())
@@ -360,8 +383,8 @@ void Unit::Update(uint32 p_time)
         	// Player must have combat when pet isInCombat
 			if (pet && pet->IsInCombat())
 			{
-					CombatStart(player); // if Player is in combat, owner get combat.. 
-                   	SetInCombatState(true, player);
+					player->CombatStart(player); // if Player is in combat, owner get combat.. 
+                   	player->SetInCombatState(true, player);
 			}
 	    }
     }
@@ -2672,7 +2695,7 @@ SpellMissInfo Unit::SpellHitResult(Unit* victim, SpellInfo const* spell, bool Ca
         return SPELL_MISS_NONE;
 
     // Return evade for units in evade mode
-    if (victim->GetTypeId() == TYPEID_UNIT && victim->ToCreature()->IsInEvadeMode())
+    if (victim->GetTypeId() == TYPEID_UNIT && victim->ToCreature()->IsInEvadeMode() && spell->Id != 2094)
         return SPELL_MISS_EVADE;
 
     // Try victim reflect spell

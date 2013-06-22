@@ -141,7 +141,7 @@ class pvp_island : public PlayerScript
                     // If player killed himself, do not execute any code (think of when a warlock uses Hellfire, when player falls to dead, etc.)
                     if (killerGUID == victimGUID)
                     {
-                        victim->m_Events.AddEvent(new pvp_island_resurrect_event(victim), victim->m_Events.CalculateTime(500));
+                        victim->m_Events.AddEvent(new pvp_island_resurrect_event(victim), victim->m_Events.CalculateTime(200));
  
                         if (victim->getClass() == CLASS_HUNTER || victim->getClass() == CLASS_WARLOCK)
                             victim->m_Events.AddEvent(new pvp_island_resurrect_event_pet(victim), victim->m_Events.CalculateTime(3000));
@@ -158,7 +158,7 @@ class pvp_island : public PlayerScript
                     }
 					
                     // This will cause the victim to be resurrected, teleported and health set to 100% after 1 second of dieing
-                    victim->m_Events.AddEvent(new pvp_island_resurrect_event(victim), victim->m_Events.CalculateTime(500));
+                    victim->m_Events.AddEvent(new pvp_island_resurrect_event(victim), victim->m_Events.CalculateTime(200));
  
                     // This will cause warlocks and hunters to have their last-used pet to be re-summoned when arriving on the island
                     if (victim->getClass() == CLASS_HUNTER || victim->getClass() == CLASS_WARLOCK)
@@ -192,12 +192,20 @@ class npc_summon_powerups : public CreatureScript
 		      int i;
 			
                     i = urand(0, MAX_POWERUP_SPAWN_POINTS - 1);
-                    me->SummonGameObject(GAMEOBJECT_BERSERKING, powerSpawnPoint[i].GetPositionX(), powerSpawnPoint[i].GetPositionY(), powerSpawnPoint[i].GetPositionZ(), powerSpawnPoint[i].GetOrientation(), powerSpawnPoint[i].GetOrientation(), powerSpawnPoint[i].GetOrientation(), powerSpawnPoint[i].GetOrientation(), powerSpawnPoint[i].GetOrientation(), 90000);
-                    i = urand(0, MAX_POWERUP_SPAWN_POINTS - 1);
-                    me->SummonGameObject(GAMEOBJECT_FOOD, powerSpawnPoint[i].GetPositionX(), powerSpawnPoint[i].GetPositionY(), powerSpawnPoint[i].GetPositionZ(), powerSpawnPoint[i].GetOrientation(), powerSpawnPoint[i].GetOrientation(), powerSpawnPoint[i].GetOrientation(), powerSpawnPoint[i].GetOrientation(), powerSpawnPoint[i].GetOrientation(), 90000);
-                    i = urand(0, MAX_POWERUP_SPAWN_POINTS - 1);
-                    me->SummonGameObject(GAMEOBJECT_ANCIENT, powerSpawnPoint[i].GetPositionX(), powerSpawnPoint[i].GetPositionY(), powerSpawnPoint[i].GetPositionZ(), powerSpawnPoint[i].GetOrientation(), powerSpawnPoint[i].GetOrientation(), powerSpawnPoint[i].GetOrientation(), powerSpawnPoint[i].GetOrientation(), powerSpawnPoint[i].GetOrientation(), 90000);
-                    summonTimer = urand(45000, 60000);
+                    me->SummonGameObject(GAMEOBJECT_BERSERKING, powerSpawnPoint[i].GetPositionX(), powerSpawnPoint[i].GetPositionY(), powerSpawnPoint[i].GetPositionZ(), powerSpawnPoint[i].GetOrientation(), powerSpawnPoint[i].GetOrientation(), powerSpawnPoint[i].GetOrientation(), powerSpawnPoint[i].GetOrientation(), powerSpawnPoint[i].GetOrientation(), 75000);
+                    itwo = urand(0, MAX_POWERUP_SPAWN_POINTS - 1);
+					
+					if (i == itwo)
+						itwo = urand(0, MAX_POWERUP_SPAWN_POINTS - 1);
+                    me->SummonGameObject(GAMEOBJECT_FOOD, powerSpawnPoint[i].GetPositionX(), powerSpawnPoint[i].GetPositionY(), powerSpawnPoint[i].GetPositionZ(), powerSpawnPoint[i].GetOrientation(), powerSpawnPoint[i].GetOrientation(), powerSpawnPoint[i].GetOrientation(), powerSpawnPoint[i].GetOrientation(), powerSpawnPoint[i].GetOrientation(), 75000);
+                   
+				   ithree = urand(0, MAX_POWERUP_SPAWN_POINTS - 1);
+					if (i == ithree || itwo == ithree)
+						ithree = urand(0, MAX_POWERUP_SPAWN_POINTS - 1);
+					if (urand[1,0] == 1)
+						me->SummonGameObject(GAMEOBJECT_ANCIENT, powerSpawnPoint[i].GetPositionX(), powerSpawnPoint[i].GetPositionY(), powerSpawnPoint[i].GetPositionZ(), powerSpawnPoint[i].GetOrientation(), powerSpawnPoint[i].GetOrientation(), powerSpawnPoint[i].GetOrientation(), powerSpawnPoint[i].GetOrientation(), powerSpawnPoint[i].GetOrientation(), 75000);
+
+					summonTimer = urand(35000, 50000);
                 }
                 else
                     summonTimer -= diff;

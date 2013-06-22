@@ -1323,8 +1323,12 @@ void Spell::EffectApplyAura(SpellEffIndex effIndex)
 
     if (!m_spellAura || !unitTarget)
         return;
+		
     ASSERT(unitTarget == m_spellAura->GetOwner());
     m_spellAura->_ApplyEffectForTargets(effIndex);
+	
+    if(m_spellAura->GetId() == 10 || m_spellAura->GetId() == 27212)
+        caster->SetInCombatState(true, unitTarget);
 }
 
 void Spell::EffectApplyAreaAura(SpellEffIndex effIndex)
