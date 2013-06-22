@@ -189,8 +189,9 @@ class npc_summon_powerups : public CreatureScript
             {
                 if (summonTimer <= diff)
                 {
-		      int i;
-			
+					int8 i;
+					int8 itwo;
+					int8 ithree;
                     i = urand(0, MAX_POWERUP_SPAWN_POINTS - 1);
                     me->SummonGameObject(GAMEOBJECT_BERSERKING, powerSpawnPoint[i].GetPositionX(), powerSpawnPoint[i].GetPositionY(), powerSpawnPoint[i].GetPositionZ(), powerSpawnPoint[i].GetOrientation(), powerSpawnPoint[i].GetOrientation(), powerSpawnPoint[i].GetOrientation(), powerSpawnPoint[i].GetOrientation(), powerSpawnPoint[i].GetOrientation(), 75000);
                     itwo = urand(0, MAX_POWERUP_SPAWN_POINTS - 1);
