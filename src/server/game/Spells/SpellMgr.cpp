@@ -2803,7 +2803,6 @@ void SpellMgr::LoadSpellCustomAttr()
 		// Continue After Resistance Script
 		
 		// Cant Vanish Auras
-		
 				
 		switch (spellInfo->Id)
 		{
@@ -2816,7 +2815,9 @@ void SpellMgr::LoadSpellCustomAttr()
 			case 51724: // Sap
 			case 49803: // Pounce
 				spellInfo->AttributesCu |= SPELL_ATTR0_CANT_FADED;
-			break;
+				break;
+			default:
+				break;
 		}
 		
         if (!spellInfo->_IsPositiveEffect(EFFECT_0, false))

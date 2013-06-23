@@ -1139,9 +1139,6 @@ void Aura::HandleAuraSpecificMods(AuraApplication const* aurApp, Unit* caster, b
     // mods at aura apply
     if (apply)
     {	   
-		if (target && m_spellInfo->AttributesCu & SPELL_ATTR0_CANT_FADED && target->IsControlledByPlayer())
-			target->RemoveAurasByType(SPELL_AURA_MOD_STEALTH);
-			
         switch (GetSpellInfo()->SpellFamilyName)
         {
             case SPELLFAMILY_GENERIC:
