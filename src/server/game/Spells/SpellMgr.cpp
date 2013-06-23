@@ -3075,16 +3075,6 @@ void SpellMgr::LoadDbcDataCorrections()
 
         switch (spellInfo->Id)
         {
-			case 2094: // Blind
-			case 42950: // Dragon Breath
-			case 8643: // Kidney  shot
-			case 1833: // cheap shot
-			case 12355: //  Impact
-			case 1776: // Gouge
-			case 51724: // Sap
-			case 49803: // Pounce
-				spellInfo->EffectApplyAuraName[0] = SPELL_AURA_CC_CANT_FADE;
-				break;
 		    // * Hackfix for RangeProcSpells (like Living Bomb Explode)
             case 44461: //Living Bomb 
             case 55361: //Living Bomb

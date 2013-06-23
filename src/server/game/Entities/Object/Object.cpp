@@ -1855,7 +1855,7 @@ bool WorldObject::CanDetectStealthOf(WorldObject const* obj) const
             return true;
 
         // Starting points
-        int32 detectionValue = 30;
+        int32 detectionValue = 30; 
 
         // Level difference: 5 point / level, starting from level 1.
         // There may be spells for this and the starting points too, but
@@ -1869,6 +1869,9 @@ bool WorldObject::CanDetectStealthOf(WorldObject const* obj) const
                 detectionValue -= int32(owner->getLevelForTarget(this) - 1) * 5;
 
         detectionValue -= obj->m_stealth.GetValue(StealthType(i));
+		
+		if (detectionValue < 0)
+			return false;
 
         // Calculate max distance
         float visibilityRange = float(detectionValue) * 0.3f + combatReach;

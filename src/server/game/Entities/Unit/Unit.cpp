@@ -352,8 +352,22 @@ void Unit::Update(uint32 p_time)
 			ToTotem()->setDeathState(JUST_DIED);
 			
 	if (GetTypeId() == TYPEID_PLAYER && HasAura(66) && HasUnitState(UNIT_STATE_FLEEING | UNIT_STATE_STUNNED | UNIT_STATE_DISTRACTED | UNIT_STATE_CONFUSED))
-			RemoveAurasDueToSpell(66);
-		
+		RemoveAurasDueToSpell(66);
+
+	///@todo Hackfix on Delayed spells (For Example Fearing While Block)
+	if (GetTypeId() == TYPEID_PLAYER && IsAlive() && /*(IsImmunedToDamage() || IsImmunedToSpell())*/ HasAura(45438) && HasUnitState(UNIT_STATE_FLEEING | UNIT_STATE_ROOT | UNIT_STATE_STUNNED | UNIT_STATE_CONFUSED))
+	{
+		if (HasUnitState(UNIT_STATE_CONFUSED))
+			RemoveAurasByType(SPELL_AURA_MOD_CONFUSE);
+		if (HasUnitState(UNIT_STATE_FLEEING))
+			RemoveAurasByType(SPELL_AURA_MOD_FEAR);
+		if (HasUnitState(UNIT_STATE_STUNNED))
+			RemoveAurasByType(SPELL_AURA_MOD_STUN);
+		if (HasUnitState(UNIT_STATE_ROOT))
+			RemoveAurasByType(SPELL_AURA_MOD_ROOT);
+	}
+	
+	
 	if (GetTypeId() == TYPEID_PLAYER && ToPlayer() && (HasAura(47855) || HasAura(42846)) && IsAlive())
 	{
 		if (Player* player = ToPlayer())
@@ -366,10 +380,45 @@ void Unit::Update(uint32 p_time)
 	
 	if (GetTypeId() == TYPEID_PLAYER && IsAlive() && (HasAura(1784) || HasAura(58984)))
 	{
-		if (HasAuraType(SPELL_AURA_CC_CANT_FADE))
+		if (HasAura(2094)) // Blind
 		{
 			RemoveAurasByType(SPELL_AURA_MOD_STEALTH);
-			RemoveAurasByType(SPELL_AURA_CC_CANT_FADE);
+			RemoveAurasDueToSpell(2094);
+		}
+	    else if (HasAura(1833)) // Cheap Shot
+		{
+			RemoveAurasByType(SPELL_AURA_MOD_STEALTH);
+			RemoveAurasDueToSpell(1833);
+		}
+		else if (HasAura(12355)) // Impact
+		{
+			RemoveAurasByType(SPELL_AURA_MOD_STEALTH);
+			RemoveAurasDueToSpell(12355);
+		}
+		else if (HasAura(1776)) // Gouge
+		{
+			RemoveAurasByType(SPELL_AURA_MOD_STEALTH);
+			RemoveAurasDueToSpell(1776);
+		}
+		else if (HasAura(51724)) // Sap
+		{
+			RemoveAurasByType(SPELL_AURA_MOD_STEALTH);
+			RemoveAurasDueToSpell(51724);
+		}
+		else if (HasAura(49803)) // Pounce
+		{
+			RemoveAurasByType(SPELL_AURA_MOD_STEALTH);
+			RemoveAurasDueToSpell(49803);
+		}
+		else if (HasAura(8643)) // Kidney Shot
+		{
+			RemoveAurasByType(SPELL_AURA_MOD_STEALTH);
+			RemoveAurasDueToSpell(8643);
+		}
+		else if (HasAura(42950)) // Dragon's breath
+		{
+			RemoveAurasByType(SPELL_AURA_MOD_STEALTH);
+			RemoveAurasDueToSpell(42950);
 		}
 	}
 	

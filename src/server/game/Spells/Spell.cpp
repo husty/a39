@@ -2605,12 +2605,6 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 {
     if (!unit || !effectMask)
         return SPELL_MISS_EVADE;
-		
-	if (m_spellInfo->Id == 2094)
-	{
-		unit->RemoveAurasWithInterruptFlags(AURA_INTERRUPT_FLAG_HITBYSPELL);
-		unit->RemoveAurasByType(SPELL_AURA_MOD_STEALTH);
-	}
 				
     // For delayed spells immunity may be applied between missile launch and hit - check immunity for that case
     if (m_spellInfo->Speed && (unit->IsImmunedToDamage(m_spellInfo) || unit->IsImmunedToSpell(m_spellInfo)) && !m_spellInfo->AttributesCu & SPELL_ATTR0_CANT_FADED)
@@ -2691,7 +2685,7 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 						
 					if (canResist == true)
 					{
-						resistChance = float((resistChance / 66.0f) * 1000.0f); // Resist Chance Formular 130 Resist -> 14,31% 
+						resistChance = float((resistChance / 74.0f) * 1000.0f); // Resist Chance Formular 130 Resist -> 14,31% 
 				   
 						if (resistChance > 10000) // Resist can't be higher than 100% 
 							resistChance = 10000;
@@ -2748,7 +2742,7 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 					
 				if (canResist == true)
 				{
-					resistChance = float((resistChance / 66.0f) * 1000.0f); // Resist Chance Formular 130 Resist -> 14,31% 
+					resistChance = float((resistChance / 74.0f) * 1000.0f); // Resist Chance Formular 130 Resist -> 14,31% 
 			   
 					if (resistChance > 10000) // Resist can't be higher than 100% 
 						resistChance = 10000;
