@@ -385,41 +385,6 @@ void Unit::Update(uint32 p_time)
 			RemoveAurasByType(SPELL_AURA_MOD_STEALTH);
 			RemoveAurasDueToSpell(2094);
 		}
-	    else if (HasAura(1833)) // Cheap Shot
-		{
-			RemoveAurasByType(SPELL_AURA_MOD_STEALTH);
-			RemoveAurasDueToSpell(1833);
-		}
-		else if (HasAura(12355)) // Impact
-		{
-			RemoveAurasByType(SPELL_AURA_MOD_STEALTH);
-			RemoveAurasDueToSpell(12355);
-		}
-		else if (HasAura(1776)) // Gouge
-		{
-			RemoveAurasByType(SPELL_AURA_MOD_STEALTH);
-			RemoveAurasDueToSpell(1776);
-		}
-		else if (HasAura(51724)) // Sap
-		{
-			RemoveAurasByType(SPELL_AURA_MOD_STEALTH);
-			RemoveAurasDueToSpell(51724);
-		}
-		else if (HasAura(49803)) // Pounce
-		{
-			RemoveAurasByType(SPELL_AURA_MOD_STEALTH);
-			RemoveAurasDueToSpell(49803);
-		}
-		else if (HasAura(8643)) // Kidney Shot
-		{
-			RemoveAurasByType(SPELL_AURA_MOD_STEALTH);
-			RemoveAurasDueToSpell(8643);
-		}
-		else if (HasAura(42950)) // Dragon's breath
-		{
-			RemoveAurasByType(SPELL_AURA_MOD_STEALTH);
-			RemoveAurasDueToSpell(42950);
-		}
 	}
 	
     if (GetTypeId() == TYPEID_PLAYER || (ToCreature()->IsPet() && IsControlledByPlayer()))

@@ -2785,27 +2785,10 @@ void SpellMgr::LoadSpellCustomAttr()
 			case 27223: // Death Coil
 		        spellInfo->AttributesCu |= SPELL_ATTR0_CU_CAN_RESIST;
                 break;
-		    default:
-			    break;
-		}
-		
-		// Add CustomATTR for CantInstantInShop (We using Instant cast spell with 5000 or 4000ms casting time. We must prevent bug using CustomATTR
-		switch (spellInfo->Id)
-		{
 		    case 42891: // PyroBlast
 			case 47825: // Soul Fire
 			    spellInfo->AttributesCu |= SPELL_ATTR0_CANT_INSTANT_SHOP;
 				break;
-			default:
-			    break;
-		}
-		
-		// Continue After Resistance Script
-		
-		// Cant Vanish Auras
-				
-		switch (spellInfo->Id)
-		{
 			case 2094: // Blind
 			case 42950: // Dragon Breath
 			case 8643: // Kidney  shot
@@ -2816,10 +2799,9 @@ void SpellMgr::LoadSpellCustomAttr()
 			case 49803: // Pounce
 				spellInfo->AttributesCu |= SPELL_ATTR0_CANT_FADED;
 				break;
-			default:
-				break;
-		}
-		
+		    default:
+			    break;
+	    }
         if (!spellInfo->_IsPositiveEffect(EFFECT_0, false))
             spellInfo->AttributesCu |= SPELL_ATTR0_CU_NEGATIVE_EFF0;
 
