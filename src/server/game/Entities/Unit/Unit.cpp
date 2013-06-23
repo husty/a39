@@ -364,15 +364,15 @@ void Unit::Update(uint32 p_time)
 		}
 	}
 	
-	if (GetTypeId() == TYPEID_PLAYER && (HasAura(1784) || HasAura(58984)))
+	if (GetTypeId() == TYPEID_PLAYER && IsAlive() && (HasAura(1784) || HasAura(58984)))
 	{
-		if (HasAura(2094) && IsAlive())
+		if (HasAuraType(SPELL_AURA_CC_CANT_FADE)
 		{
-			RemoveAurasDueToSpell(2094);
-			RemoveAurasDueToSpell(58984);
-			RemoveAurasDueToSpell(1784);
+			RemoveAurasByType(SPELL_AURA_MOD_STEALTH);
+			RemoveAurasByType(SPELL_AURA_CC_CANT_FADE);
 		}
 	}
+	
     if (GetTypeId() == TYPEID_PLAYER || (ToCreature()->IsPet() && IsControlledByPlayer()))
     {
         if (Player* player = ToPlayer())
@@ -2694,7 +2694,7 @@ SpellMissInfo Unit::SpellHitResult(Unit* victim, SpellInfo const* spell, bool Ca
         return SPELL_MISS_NONE;
 
     // Return evade for units in evade mode
-    if (victim->GetTypeId() == TYPEID_UNIT && victim->ToCreature()->IsInEvadeMode() && spell->Id != 2094)
+    if (victim->GetTypeId() == TYPEID_UNIT && victim->ToCreature()->IsInEvadeMode() && !spell->AttributesCu & SPELL_ATTR0_CANT_FADED)
         return SPELL_MISS_EVADE;
 
     // Try victim reflect spell

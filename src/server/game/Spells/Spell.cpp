@@ -2377,7 +2377,7 @@ void Spell::DoAllEffectOnTarget(TargetInfo* target)
     if (unit->IsAlive() != target->alive)
         return;
 
-    if (getState() == SPELL_STATE_DELAYED && !m_spellInfo->IsPositive() && (getMSTime() - target->timeDelay) <= unit->m_lastSanctuaryTime && m_spellInfo->Id != 2094)
+    if (getState() == SPELL_STATE_DELAYED && !m_spellInfo->IsPositive() && (getMSTime() - target->timeDelay) <= unit->m_lastSanctuaryTime && !m_spellInfo->AttributesCu & SPELL_ATTR0_CANT_FADED)
         return;                                             // No missinfo in that case
 
     // Get original caster (if exist) and calculate damage/healing from him data
@@ -2427,7 +2427,7 @@ void Spell::DoAllEffectOnTarget(TargetInfo* target)
         SpellMissInfo missInfo2 = DoSpellHitOnUnit(spellHitTarget, mask, target->scaleAura);
         if (missInfo2 != SPELL_MISS_NONE)
         {
-            if (missInfo2 != SPELL_MISS_MISS && m_spellInfo->Id != 2094)
+            if (missInfo2 != SPELL_MISS_MISS && !m_spellInfo->AttributesCu & SPELL_ATTR0_CANT_FADED)
                 m_caster->SendSpellMiss(unit, m_spellInfo->Id, missInfo2);
             m_damage = 0;
             spellHitTarget = NULL;
@@ -2613,7 +2613,7 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 	}
 				
     // For delayed spells immunity may be applied between missile launch and hit - check immunity for that case
-    if (m_spellInfo->Speed && (unit->IsImmunedToDamage(m_spellInfo) || unit->IsImmunedToSpell(m_spellInfo)) && m_spellInfo->Id != 2094)
+    if (m_spellInfo->Speed && (unit->IsImmunedToDamage(m_spellInfo) || unit->IsImmunedToSpell(m_spellInfo)) && !m_spellInfo->AttributesCu & SPELL_ATTR0_CANT_FADED)
         return SPELL_MISS_IMMUNE;
 	
     // disable effects to which unit is immune
@@ -2639,7 +2639,7 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
         }
     }
 
-    if (!effectMask && m_spellInfo->Id != 2094)
+    if (!effectMask && !m_spellInfo->AttributesCu & SPELL_ATTR0_CANT_FADED)
         return returnVal;
 		
     PrepareScriptHitHandlers();
@@ -2661,7 +2661,7 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
     if (m_caster != unit)
     {
         // Recheck  UNIT_FLAG_NON_ATTACKABLE for delayed spells
-        if (m_spellInfo->Speed > 0.0f && unit->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE) && unit->GetCharmerOrOwnerGUID() != m_caster->GetGUID() && m_spellInfo->Id != 2094)
+        if (m_spellInfo->Speed > 0.0f && unit->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE) && unit->GetCharmerOrOwnerGUID() != m_caster->GetGUID() && !m_spellInfo->AttributesCu & SPELL_ATTR0_CANT_FADED)
             return SPELL_MISS_EVADE;
 
         if (m_caster->_IsValidAttackTarget(unit, m_spellInfo))
@@ -2709,7 +2709,7 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
             // for delayed spells ignore negative spells (after duel end) for friendly targets
             /// @todo this cause soul transfer bugged
             // 63881 - Malady of the Mind jump spell (Yogg-Saron)
-            if (m_spellInfo->Speed > 0.0f && unit->GetTypeId() == TYPEID_PLAYER && !m_spellInfo->IsPositive() && m_spellInfo->Id != 63881 && m_spellInfo->Id != 2094)
+            if (m_spellInfo->Speed > 0.0f && unit->GetTypeId() == TYPEID_PLAYER && !m_spellInfo->IsPositive() && m_spellInfo->Id != 63881 && !m_spellInfo->AttributesCu & SPELL_ATTR0_CANT_FADED)
                 return SPELL_MISS_EVADE;
 
             // assisting case, healing and resurrection

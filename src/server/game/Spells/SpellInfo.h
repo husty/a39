@@ -189,6 +189,7 @@ enum SpellCustomAttributes
     SPELL_ATTR0_CU_REQ_CASTER_BEHIND_TARGET      = 0x00020000,
 	SPELL_ATTR0_CU_CAN_RESIST                    = 0x00100000,
 	SPELL_ATTR0_CANT_INSTANT_SHOP                = 0x00200000,
+	SPELL_ATTR0_CANT_FADED                       = 0x00400000,   // Spells like Blind, Sap (Can't vanish) 
 
     SPELL_ATTR0_CU_NEGATIVE                      = SPELL_ATTR0_CU_NEGATIVE_EFF0 | SPELL_ATTR0_CU_NEGATIVE_EFF1 | SPELL_ATTR0_CU_NEGATIVE_EFF2
 };

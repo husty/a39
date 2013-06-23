@@ -376,7 +376,8 @@ enum AuraType
     SPELL_AURA_PREVENT_RESURRECTION                         = 314,
     SPELL_AURA_UNDERWATER_WALKING                           = 315,
     SPELL_AURA_PERIODIC_HASTE                               = 316,
-    TOTAL_AURAS                                             = 317
+	SPELL_AURA_CC_CANT_FADE                                 = 317,  // Like Blind (can't vanished (remove stealth))
+    TOTAL_AURAS                                             = 318
 };
 
 enum AuraObjectType
