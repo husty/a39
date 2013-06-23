@@ -1738,6 +1738,24 @@ void Player::Update(uint32 p_time)
         else
             m_zoneUpdateTimer -= p_time;
     }
+	
+	if (m_invisibilityUpdateTimer > 0)
+	{
+		if (p_time >= m_invisibilityUpdateTimer)
+		{
+			if (HasAuraType(SPELL_AURA_MOD_STEALTH))
+			{
+				SetVisibility(VISIBILITY_GROUP_STEALTH);
+
+				SetStandFlags(UNIT_STAND_FLAGS_CREEP);
+				if (GetTypeId() == TYPEID_PLAYER)
+					SetByteFlag(PLAYER_FIELD_BYTES2, 3, PLAYER_FIELD_BYTE2_STEALTH);
+			}
+			m_invisibilityUpdateTimer = 0;
+		}
+		else
+			m_invisibilityUpdateTimer -= p_time;
+	}
 
     if (m_timeSyncTimer > 0)
     {

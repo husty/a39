@@ -1601,7 +1601,8 @@ class Player : public Unit, public GridObject<Player>
         bool HasTalent(uint32 spell_id, uint8 spec) const;
 
         uint32 CalculateTalentsPoints() const;
-
+        uint32 m_invisibilityUpdateTimer;
+		
         // Dual Spec
         void UpdateSpecCount(uint8 count);
         uint32 GetActiveSpec() { return m_activeSpec; }

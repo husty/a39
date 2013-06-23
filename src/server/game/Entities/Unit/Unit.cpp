@@ -382,8 +382,10 @@ void Unit::Update(uint32 p_time)
 	{
 		if (HasAura(2094)) // Blind
 		{
+			int32 i = irand(0,4);
+			if (i >= 3)
+				RemoveAurasDueToSpell(2094);
 			RemoveAurasByType(SPELL_AURA_MOD_STEALTH);
-			RemoveAurasDueToSpell(2094);
 		}
 	}
 	

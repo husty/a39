@@ -2379,9 +2379,9 @@ void Spell::DoAllEffectOnTarget(TargetInfo* target)
 
     if (getState() == SPELL_STATE_DELAYED && !m_spellInfo->IsPositive() && (getMSTime() - target->timeDelay) <= unit->m_lastSanctuaryTime)
     {
-		if (m_spellInfo->AttributesCu & SPELL_ATTR0_CANT_FADED || m_spellInfo->Id == 2094)
+		if (m_spellInfo->AttributesCu & SPELL_ATTR0_CANT_FADED)
 		{
-      	 // Do Nothing
+      	    // Do Nothing
 		}
 		else
 			return;                   
