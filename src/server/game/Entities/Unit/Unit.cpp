@@ -366,7 +366,7 @@ void Unit::Update(uint32 p_time)
 	
 	if (GetTypeId() == TYPEID_PLAYER && IsAlive() && (HasAura(1784) || HasAura(58984)))
 	{
-		if (HasAuraType(SPELL_AURA_CC_CANT_FADE)
+		if (HasAuraType(SPELL_AURA_CC_CANT_FADE))
 		{
 			RemoveAurasByType(SPELL_AURA_MOD_STEALTH);
 			RemoveAurasByType(SPELL_AURA_CC_CANT_FADE);
@@ -3375,10 +3375,16 @@ void Unit::_AddAura(UnitAura* aura, Unit* caster)
     if (aura->IsRemoved())
         return;
 
-    aura->SetIsSingleTarget(caster && aura->GetSpellInfo()->IsSingleTarget());
+    aura->SetIsSingleTarget(caster && (aura->GetSpellInfo()->IsSingleTarget() || aura->HasEffectType(SPELL_AURA_CONTROL_VEHICLE)));
     if (aura->IsSingleTarget())
     {
-        ASSERT((IsInWorld() && !IsDuringRemoveFromWorld()) || (aura->GetCasterGUID() == GetGUID()));
+        ASSERT((IsInWorld() && !IsDuringRemoveFromWorld()) || (aura->GetCasterGUID() == GetGUID()) ||
+                (isBeingLoaded() && aura->HasEffectType(SPELL_AURA_CONTROL_VEHICLE)));
+                /* @HACK: Player is not in world during loading auras.
+                 *        Single target auras are not saved or loaded from database
+                 *        but may be created as a result of aura links (player mounts with passengers)
+                 */
+
         // register single target aura
         caster->GetSingleCastAuras().push_back(aura);
         // remove other single target auras
@@ -3386,7 +3392,7 @@ void Unit::_AddAura(UnitAura* aura, Unit* caster)
         for (Unit::AuraList::iterator itr = scAuras.begin(); itr != scAuras.end();)
         {
             if ((*itr) != aura &&
-                (*itr)->GetSpellInfo()->IsSingleTargetWith(aura->GetSpellInfo()))
+                (*itr)->IsSingleTargetWith(aura))
             {
                 (*itr)->Remove();
                 itr = scAuras.begin();
